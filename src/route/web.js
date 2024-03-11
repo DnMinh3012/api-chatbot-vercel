@@ -4,8 +4,8 @@ const serverless = require('serverless-http')
 let router = expess.Router();
 
 let initWebRouter = (app) => {
-    router.get("/", (req, res) => {
-        res.send("app is running")
+    router.get("/minh", (req, res) => {
+        res.send("hello do nhat minh")
     });
     router.post('/webhook', controller.postWebhook);
     router.get('/webhook', controller.getWebhook);
