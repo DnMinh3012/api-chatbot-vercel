@@ -7,26 +7,31 @@ let getHomePage = (req, res) => {
 let postWebhook = (req, res) => {
     let body = req.body;
 
-    if (body.object === 'page' && body.entry && body.entry.length > 0) {
+    if (body.object === 'page') {
         body.entry.forEach(function (entry) {
+            // Gets the body of the webhook event
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
 
+
+            // Get the sender PSID
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
 
+            // Check if the event is a message or postback and
+            // pass the event to the appropriate handler function
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback);
             }
+
         });
         res.status(200).send('Event_Received');
     } else {
         res.sendStatus(404);
     }
 }
-
 let getWebhook = (req, res) => {
     let verify_token = process.env.verify_token;
     let mode = req.query["hub.mode"];
@@ -48,16 +53,18 @@ let getWebhook = (req, res) => {
 }
 
 function handleMessage(sender_psid, received_message) {
+
     let response;
 
-    // Nếu tin nhắn chứa văn bản
+    // Checks if the message contains text
     if (received_message.text) {
-        // Tạo payload cho một tin nhắn văn bản cơ bản
+        // Create the payload for a basic text message, which
+        // will be added to the body of our request to the Send API
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
     } else if (received_message.attachments) {
-        // Nếu tin nhắn chứa tệp đính kèm
+        // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
             "attachment": {
@@ -86,11 +93,10 @@ function handleMessage(sender_psid, received_message) {
         }
     }
 
-    // Gửi tin nhắn phản hồi
+    // Send the response message
     callSendAPI(sender_psid, response);
 }
-
-function handlePostback(sender_psid, received_postback) {
+function handlePostback(sender_psid, received_Postback) {
     let response;
 
     // Get the payload for the postback
