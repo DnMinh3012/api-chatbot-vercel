@@ -50,15 +50,14 @@ let getWebhook = (req, res) => {
 function handleMessage(sender_psid, received_message) {
     let response;
 
-    // Checks if the message contains text
+    // Nếu tin nhắn chứa văn bản
     if (received_message.text) {
-        // Create the payload for a basic text message, which
-        // will be added to the body of our request to the Send API
+        // Tạo payload cho một tin nhắn văn bản cơ bản
         response = {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
     } else if (received_message.attachments) {
-        // Get the URL of the message attachment
+        // Nếu tin nhắn chứa tệp đính kèm
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
             "attachment": {
@@ -87,9 +86,10 @@ function handleMessage(sender_psid, received_message) {
         }
     }
 
-    // Send the response message
+    // Gửi tin nhắn phản hồi
     callSendAPI(sender_psid, response);
 }
+
 function handlePostback(sender_psid, received_postback) {
     let response;
 
