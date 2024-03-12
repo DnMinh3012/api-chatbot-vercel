@@ -7,34 +7,26 @@ let getHomePage = (req, res) => {
 let postWebhook = (req, res) => {
     let body = req.body;
 
-    if (body.object === 'page') {
+    if (body.object === 'page' && body.entry && body.entry.length > 0) {
         body.entry.forEach(function (entry) {
-            body.entry.forEach(function (entry) {
+            let webhook_event = entry.messaging[0];
+            console.log(webhook_event);
 
-                // Gets the body of the webhook event
-                let webhook_event = entry.messaging[0];
-                console.log(webhook_event);
+            let sender_psid = webhook_event.sender.id;
+            console.log('Sender PSID: ' + sender_psid);
 
-
-                // Get the sender PSID
-                let sender_psid = webhook_event.sender.id;
-                console.log('Sender PSID: ' + sender_psid);
-
-                // Check if the event is a message or postback and
-                // pass the event to the appropriate handler function
-                if (webhook_event.message) {
-                    handleMessage(sender_psid, webhook_event.message);
-                } else if (webhook_event.postback) {
-                    handlePostback(sender_psid, webhook_event.postback);
-                }
-
-            });
+            if (webhook_event.message) {
+                handleMessage(sender_psid, webhook_event.message);
+            } else if (webhook_event.postback) {
+                handlePostback(sender_psid, webhook_event.postback);
+            }
         });
         res.status(200).send('Event_Received');
     } else {
         res.sendStatus(404);
     }
 }
+
 let getWebhook = (req, res) => {
     let verify_token = process.env.verify_token;
     let mode = req.query["hub.mode"];
