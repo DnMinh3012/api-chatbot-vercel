@@ -33,7 +33,7 @@ let postWebhook = (req, res) => {
     }
 }
 let getWebhook = (req, res) => {
-    let verify_token = process.env.verify_token;
+    let VERIFY_TOKEN = process.env.VERIFY_TOKEN;
     let mode = req.query["hub.mode"];
     let token = req.query["hub.verify_token"];
     let challenge = req.query["hub.challenge"];
@@ -125,7 +125,7 @@ function callSendAPI(sender_psid, response) {
         "uri": "https://graph.facebook.com/v2.6/me/messages",
         "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
         "method": "POST",
-        "json": request_body
+        "json": request_body``
     }, (err, res, body) => {
         if (!err) {
             console.log('message sent!')
