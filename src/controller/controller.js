@@ -9,23 +9,26 @@ let postWebhook = (req, res) => {
 
     if (body.object === 'page') {
         body.entry.forEach(function (entry) {
-            // Gets the body of the webhook event
-            let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
+            body.entry.forEach(function (entry) {
+
+                // Gets the body of the webhook event
+                let webhook_event = entry.messaging[0];
+                console.log(webhook_event);
 
 
-            // Get the sender PSID
-            let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
+                // Get the sender PSID
+                let sender_psid = webhook_event.sender.id;
+                console.log('Sender PSID: ' + sender_psid);
 
-            // Check if the event is a message or postback and
-            // pass the event to the appropriate handler function
-            if (webhook_event.message) {
-                handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.postback) {
-                handlePostback(sender_psid, webhook_event.postback);
-            }
+                // Check if the event is a message or postback and
+                // pass the event to the appropriate handler function
+                if (webhook_event.message) {
+                    handleMessage(sender_psid, webhook_event.message);
+                } else if (webhook_event.postback) {
+                    handlePostback(sender_psid, webhook_event.postback);
+                }
 
+            });
         });
         res.status(200).send('Event_Received');
     } else {
@@ -53,7 +56,6 @@ let getWebhook = (req, res) => {
 }
 
 function handleMessage(sender_psid, received_message) {
-
     let response;
 
     // Checks if the message contains text
@@ -96,7 +98,7 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
-function handlePostback(sender_psid, received_Postback) {
+function handlePostback(sender_psid, received_postback) {
     let response;
 
     // Get the payload for the postback
