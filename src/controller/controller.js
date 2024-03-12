@@ -23,7 +23,7 @@ let postWebhook = (req, res) => {
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
-                console.log("bcxyz")
+                handlePostback(sender_psid, webhook_event.postback);
             }
 
         });
@@ -78,12 +78,12 @@ function handleMessage(sender_psid, received_message) {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "Yes!",
+                                "title": "Yes",
                                 "payload": "yes",
                             },
                             {
                                 "type": "postback",
-                                "title": "No!",
+                                "title": "No",
                                 "payload": "no",
                             }
                         ],
