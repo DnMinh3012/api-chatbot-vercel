@@ -66,7 +66,6 @@ let getWebhook = (req, res) => {
 }
 
 function handleMessage(sender_psid, received_message) {
-
     let response;
 
     // Checks if the message contains text
@@ -91,12 +90,12 @@ function handleMessage(sender_psid, received_message) {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "Yes",
+                                "title": "Yes!",
                                 "payload": "yes",
                             },
                             {
                                 "type": "postback",
-                                "title": "No",
+                                "title": "No!",
                                 "payload": "no",
                             }
                         ],
@@ -109,6 +108,7 @@ function handleMessage(sender_psid, received_message) {
     // Send the response message
     callSendAPI(sender_psid, response);
 }
+
 function handlePostback(sender_psid, received_Postback) {
     let response;
 
@@ -126,7 +126,6 @@ function handlePostback(sender_psid, received_Postback) {
     // Send the message to acknowledge the postback
     callSendAPI(sender_psid, response);
 }
-
 function callSendAPI(sender_psid, response) {
     // Construct the message body
     let request_body = {
@@ -134,12 +133,12 @@ function callSendAPI(sender_psid, response) {
             "id": sender_psid
         },
         "message": response
-    }
+    };
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
+        "uri": "https://graph.facebook.com/v6.0/me/messages",
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
