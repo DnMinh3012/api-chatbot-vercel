@@ -28,24 +28,11 @@ let postWebhook = (req, res) => {
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.postback) {
+            } else {
+                // if (webhook_event.postback) {
                 console.log("12345");
-                // handlePostback(sender_psid, webhook_event.postback);
-                let response;
+                handlePostback(sender_psid, webhook_event.postback);
 
-                // Get the payload for the postback
-                let payload = webhook_event.postback.payload;
-
-                // Set the response based on the postback payload
-                if (payload === 'yes') {
-                    response = { "text": "Thanks!" }
-                } else if (payload === 'no') {
-                    response = { "text": "Oops, try sending another image." }
-                } else if (payload === 'GET_STARTED') {
-                    response = { "text": "Xin chào mừng bạn" }
-                }
-                // Send the message to acknowledge the postback
-                callSendAPI(sender_psid, response);
             }
 
         });
@@ -60,15 +47,15 @@ let postWebhook = (req, res) => {
 };
 
 let getWebhook = (req, res) => {
-    let verify_token = process.env.verify_token;
+    let VERIFY_TOKEN = process.env.VERIFY_TOKEN;
     let mode = req.query["hub.mode"];
-    let token = req.query["hub.verify_token"];
+    let token = req.query["hub.VERIFY_TOKEN"];
     let challenge = req.query["hub.challenge"];
 
     // Check if a token and mode is in the query string of the request
     if (mode && token) {
         // Check the mode and token sent is correct
-        if (mode === "subscribe" && token === verify_token) {
+        if (mode === "subscribe" && token === VERIFY_TOKEN) {
             // Respond with the challenge token from the request
             console.log("WEBHOOK_VERIFIED");
             res.status(200).send(challenge);
