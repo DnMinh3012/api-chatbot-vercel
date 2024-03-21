@@ -23,12 +23,12 @@ let postWebhook = (req, res) => {
             // Get the sender PSID
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
-            console.log("webhook evenr:", webhook_event);
+            console.log("webhook event:", webhook_event);
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.message.postback) {
+            } else if (webhook_event.postback) {
                 console.log("12345");
                 handlePostback(sender_psid, webhook_event.postback);
             }
