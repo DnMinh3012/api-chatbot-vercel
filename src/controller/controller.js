@@ -4,7 +4,7 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 let getHomePage = (req, res) => {
     return res.render('homePage.ejs');
 }
-
+// messaging_postbacks
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
@@ -25,9 +25,9 @@ let postWebhook = (req, res) => {
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.attachment.payload.elements.buttons.type == postback) {
+            } else if (webhook_event.postback) {
                 console.log("12345");
-                handlePostback(sender_psid, webhook_event.postback);
+                handlePostback(sender_psid, webhook_event.messaging_postbacks);
             }
         });
         // Return a '200 OK' response to all events
