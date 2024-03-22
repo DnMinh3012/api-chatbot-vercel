@@ -27,7 +27,7 @@ let postWebhook = (req, res) => {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
                 console.log("12345");
-                handlePostback(sender_psid, webhook_event.messaging_postbacks);
+                handlePostback(sender_psid, webhook_event.postback);
             }
         });
         // Return a '200 OK' response to all events
