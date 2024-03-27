@@ -23,7 +23,7 @@ let postWebhook = (req, res) => {
     if (body.object === 'page') {
 
         // Iterate over each entry - there may be multiple if batched
-        body.entry.forEach(function(entry) {
+        body.entry.forEach(function (entry) {
 
             // Gets the body of the webhook event
             let webhook_event = entry.messaging[0];
@@ -81,6 +81,13 @@ let getWebhook = (req, res) => {
 
 // Handles messages events
 let handleMessage = async (sender_psid, message) => {
+    if (message.text == 'xin chao') {
+        let username = await chatBotService.getFacebookUsername(sender_psid);
+        user.name = username;
+        //send welcome response to users
+
+        await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+    }
     //checking quick reply
     if (message && message.quick_reply && message.quick_reply.payload) {
         if (message.quick_reply.payload === "SMALL" || message.quick_reply.payload === "MEDIUM" || message.quick_reply.payload === "LARGE") {
@@ -148,7 +155,7 @@ let handleMessage = async (sender_psid, message) => {
 };
 
 let handleMessageWithEntities = (message) => {
-    let entitiesArr = [ "wit$datetime:datetime", "wit$phone_number:phone_number", "wit$greetings", "wit$thanks", "wit$bye" ];
+    let entitiesArr = ["wit$datetime:datetime", "wit$phone_number:phone_number", "wit$greetings", "wit$thanks", "wit$bye"];
     let entityChosen = "";
     let data = {}; // data is an object saving value and name of the entity.
     entitiesArr.forEach((name) => {
