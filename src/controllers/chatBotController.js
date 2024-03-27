@@ -83,15 +83,14 @@ let getWebhook = (req, res) => {
 let handleMessage = async (sender_psid, message) => {
 
     if (message.text) {
-        i = 0;
-        let username = await chatBotService.getFacebookUsername(sender_psid);
-        user.name = username;
-        //send welcome response to users
-        if (i == 0) {
-            await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
-        }
-        ++i;
         switch (message.text) {
+            case "xin chao":
+                //send main menu to users
+                let username = await chatBotService.getFacebookUsername(sender_psid);
+                user.name = username;
+                //send welcome response to users
+                await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+                break;
             case "MENU":
                 //send main menu to users
                 await chatBotService.sendMainMenu(sender_psid);
