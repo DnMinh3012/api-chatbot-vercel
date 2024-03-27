@@ -40,21 +40,15 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                             {
                                 "title": "Vimaru restaurant",
                                 "image_url": "https://bit.ly/imageToSend",
-                                "buttons": [
+                                "text": [
                                     {
-                                        "type": "postback",
-                                        "title": "SHOW MAIN MENU",
-                                        "payload": "MENU",
+                                        "text": "bạn muốn xem menu xin vui long nhập 'MENU'"
                                     },
                                     {
-                                        "type": "postback",
-                                        "title": "RESERVE A TABLE",
-                                        "payload": "RESERVE_TABLE",
+                                        "text": "bạn muốn xem menu xin vui long nhập 'MENU'"
                                     },
                                     {
-                                        "type": "postback",
-                                        "title": "GUIDE TO USE THIS BOT",
-                                        "payload": "GUIDE_BOT",
+                                        "text": "bạn muốn xem menu xin vui long nhập 'MENU'"
                                     }
                                 ],
                             }]
