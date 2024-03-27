@@ -604,7 +604,7 @@ let sendMessageAskingQuality = (sender_id) => {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v19.0/me/messages",
+        "uri": "https://graph.facebook.com/v9.0/me/messages",
         "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
@@ -635,7 +635,7 @@ let sendMessageAskingPhoneNumber = (sender_id) => {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v19.0/me/messages",
+        "uri": "https://graph.facebook.com/v9.0/me/messages",
         "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
@@ -970,7 +970,7 @@ let sendMessage = (sender_psid, response) => {
 
             // Send the HTTP request to the Messenger Platform
             request({
-                "uri": "https://graph.facebook.com/v19.0/me/messages",
+                "uri": "https://graph.facebook.com/v9.0/me/messages",
                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
                 "method": "POST",
                 "json": request_body
@@ -1002,7 +1002,7 @@ let sendTypingOn = (sender_psid) => {
 
             // Send the HTTP request to the Messenger Platform
             request({
-                "uri": "https://graph.facebook.com/v19.0/me/messages",
+                "uri": "https://graph.facebook.com/v9.0/me/messages",
                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
                 "method": "POST",
                 "json": request_body
@@ -1031,7 +1031,7 @@ let markMessageSeen = (sender_psid) => {
 
             // Send the HTTP request to the Messenger Platform
             request({
-                "uri": "https://graph.facebook.com/v19.0/me/messages",
+                "uri": "https://graph.facebook.com/v9.0/me/messages",
                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
                 "method": "POST",
                 "json": request_body
