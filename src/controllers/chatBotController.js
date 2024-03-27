@@ -88,7 +88,7 @@ let handleMessage = async (sender_psid, message) => {
         //send welcome response to users
         await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
         switch (message.text) {
-            case "MAIN_MENU":
+            case "MENU":
                 //send main menu to users
                 await chatBotService.sendMainMenu(sender_psid);
                 break;
