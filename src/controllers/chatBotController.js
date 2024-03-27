@@ -205,7 +205,7 @@ let handleMessage = async (sender_psid, message) => {
     } else if (entity.name === "wit$greetings") {
         await homepageService.sendResponseGreetings(sender_psid, locale);
     } else if (entity.name === "wit$thanks") {
-        await homepageService.sendResponseThanks(sender_psid, locale);
+        // await homepageService.sendResponseThanks(sender_psid, locale);
     } else if (entity.name === "wit$bye") {
         await homepageService.sendResponseBye(sender_psid, locale);
     } else {
