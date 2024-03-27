@@ -40,7 +40,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                             {
                                 "title": "Vimaru restaurant",
                                 "image_url": "https://bit.ly/imageToSend",
-                                "text": [
+                                "git": [
                                     {
                                         "type": "postback",
                                         "title": "SHOW MAIN MENU",
