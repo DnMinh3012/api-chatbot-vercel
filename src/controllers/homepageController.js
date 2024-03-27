@@ -108,9 +108,8 @@ let handleMessage = async (sender_psid, received_message) => {
     // Check if the message contains text
     if (received_message.text) {
         // Create the payload for a basic text message
-        response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an image!`
-        }
+        response = await chatbotService.sendMessageWelcomeNewUser(sender_psid);
+
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
