@@ -10,7 +10,9 @@ const URL_SHOW_CLASSIC = "https://ardo.com/files/attachments/.10202/w1440h700q85
 const IMAGE_MAIN_MENU_1 = "https://bit.ly/3PEVSVH"
 const IMAGE_MAIN_MENU_2 = "https://bit.ly/4aoMzBy"
 const IMAGE_MAIN_MENU_3 = "https://bit.ly/4aumRvg"
-
+const APPETIZERS_IMAGE = "https://bit.ly/3IWplGV";
+const FISH_IMAGE = "https://bit.ly/3x8sJMe";
+const SHOW_CLASSICS_IMAGE = "https://bit.ly/3TvzRdc";
 let getFacebookUsername = (sender_psid) => {
     return new Promise((resolve, reject) => {
         // Send the HTTP request to the Messenger Platform
@@ -155,7 +157,7 @@ let sendMainMenu = (sender_psid) => {
 
 };
 
-let sendLunchMenu = (sender_psid) => {
+let HandleSendLunchMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = {
@@ -165,49 +167,52 @@ let sendLunchMenu = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Appetizers",
-                                "image_url": "https://bit.ly/imageAppetizer",
+                                "title": "Món tráng miệng",
+                                "subtitle": "Nhà hàng có rất nhiều món tráng miệng hấp dẫn",
+                                "image_url": APPETIZERS_IMAGE,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Món khai vị",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_APPETIZERS",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Entree Salad",
-                                "image_url": "https://bit.ly/imageSalad",
+                                "title": "Salad",
+                                "subtitle": "Salad cho người ăn chay",
+                                "image_url": IMAGE_SALAD,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SALAD",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_ENTREE_SALAD",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Fish and Shell Fish",
-                                "image_url": "https://bit.ly/imageFish",
+                                "title": "Cá 7 món",
+                                "subtitle": "Cá chép om dưa",
+                                "image_url": FISH_IMAGE,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Các món cá",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_FISH",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Skeens Classics",
-                                "subtitle": "and Dry-aged on Premise",
-                                "image_url": "https://bit.ly/imageClassics",
+                                "title": "Các món truyền thống",
+                                "subtitle": "Các món ăn Việt Nam truyền thống ",
+                                "image_url": URL_SHOW_CLASSIC,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Các món truyền thống",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_CLASSICS",
                                     }
                                 ],
@@ -242,7 +247,7 @@ let sendLunchMenu = (sender_psid) => {
     });
 };
 
-let sendDinnerMenu = (sender_psid) => {
+let HandleSendDinnerMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response1 = {
@@ -485,7 +490,7 @@ let goBackToMainMenu = (sender_psid) => {
 };
 
 let goBackToLunchMenu = (sender_psid) => {
-    sendLunchMenu(sender_psid);
+    HandleSendLunchMenu(sender_psid);
 };
 
 let handleReserveTable = (sender_psid) => {
@@ -1056,8 +1061,8 @@ module.exports = {
     getFacebookUsername: getFacebookUsername,
     getStartedResponse: getStartedResponse,
     sendMainMenu: sendMainMenu,
-    sendLunchMenu: sendLunchMenu,
-    sendDinnerMenu: sendDinnerMenu,
+    HandleSendLunchMenu: HandleSendLunchMenu,
+    HandleSendDinnerMenu: HandleSendDinnerMenu,
     sendPubMenu: sendPubMenu,
     sendAppetizer: sendAppetizer,
     goBackToMainMenu: goBackToMainMenu,
