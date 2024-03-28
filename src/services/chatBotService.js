@@ -43,17 +43,17 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Xem thực đơn xin hãy nhập 'menu'",
-                                        "payload": "MAIN_MENU"
+                                        "title": "SHOW MAIN MENU",
+                                        "payload": "MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "để đặt bàn xin hãy nhập 'datban'",
+                                        "title": "RESERVE A TABLE",
                                         "payload": "RESERVE_TABLE",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "Để xem không gian nhà hàng hãy nhập'khonggian'",
+                                        "title": "GUIDE TO USE THIS BOT",
                                         "payload": "GUIDE_BOT",
                                     }
                                 ],
@@ -94,17 +94,17 @@ let sendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Để xem menu buổi trưa xin hãy nhập 'lunch'",
+                                        "title": "LUNCH MENU",
                                         "payload": "LUNCH_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "Để xem menu buổi tối xin hãy nhập 'dinner'",
+                                        "title": "DINNER MENU",
                                         "payload": "DINNER_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "Để xem menu PUB xin hãy nhập 'pub'",
+                                        "title": "PUB MENU",
                                         "payload": "PUB_MENU",
                                     }
                                 ],
@@ -117,7 +117,7 @@ let sendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Để đặt bàn xin hãy nhập 'datban'",
+                                        "title": "RESERVE A TABLE",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -130,7 +130,7 @@ let sendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Để xem không gian nhà hàng xin hãy nhập 'khonggian'",
+                                        "title": "SHOW ROOMS",
                                         "payload": "SHOW_ROOMS",
                                     }
                                 ],
