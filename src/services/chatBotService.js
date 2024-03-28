@@ -27,7 +27,7 @@ let getFacebookUsername = (sender_psid) => {
     });
 };
 
-let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
+let getStartedResponse = (username, sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response_first = { "text": `xin chào ${username} đến nhà hàng của chúng tôi` };
@@ -88,18 +88,18 @@ let sendMainMenu = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Our menus",
-                                "subtitle": "We are pleased to offer you a wide-range of menu for lunch or dinner.",
+                                "title": "MENU của Vimaru Restaurant",
+                                "subtitle": "Chúng tôi hân hạnh mang đến cho bạn những món ăn phong phú",
                                 "image_url": "https://bit.ly/imageMenu",
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "MENU buổi trưa",
+                                        "title": "Bữa trưa",
                                         "payload": "LUNCH_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "MENU Buổi tối",
+                                        "title": "Bữa tối",
                                         "payload": "DINNER_MENU",
                                     },
                                     {
@@ -111,8 +111,8 @@ let sendMainMenu = (sender_psid) => {
                             },
 
                             {
-                                "title": "Hours",
-                                "subtitle": "MON-FRI 10AM - 11PM  | SAT 5PM - 10PM | SUN 5PM - 9PM",
+                                "title": "Giờ mở cửa",
+                                "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
                                 "image_url": " https://bit.ly/imageOpening",
                                 "buttons": [
                                     {
@@ -124,13 +124,13 @@ let sendMainMenu = (sender_psid) => {
                             },
 
                             {
-                                "title": "Banquet Rooms",
-                                "subtitle": "Restaurant accommodates up to 300 seated guests and similar at cocktail receptions",
+                                "title": "Không gian nhà hàng",
+                                "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
                                 "image_url": " https://bit.ly/imageShowRooms",
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Xem các phòng ăn",
+                                        "title": "Chi tiết",
                                         "payload": "SHOW_ROOMS",
                                     }
                                 ],
@@ -1050,7 +1050,7 @@ let markMessageSeen = (sender_psid) => {
 
 module.exports = {
     getFacebookUsername: getFacebookUsername,
-    sendResponseWelcomeNewCustomer: sendResponseWelcomeNewCustomer,
+    getStartedResponse: getStartedResponse,
     sendMainMenu: sendMainMenu,
     sendLunchMenu: sendLunchMenu,
     sendDinnerMenu: sendDinnerMenu,

@@ -89,7 +89,7 @@ let handleMessage = async (sender_psid, message) => {
     //             let username = await chatBotService.getFacebookUsername(sender_psid);
     //             user.name = username;
     //             //send welcome response to users
-    //             await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+    //             await chatBotService.getStartedResponse(username, sender_psid);
     //             break;
     //         case "menu":
     //             //send main menu to users
@@ -265,7 +265,7 @@ let handlePostback = async (sender_psid, received_postback) => {
             user.name = username;
             //send welcome response to users
 
-            await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+            await chatBotService.getStartedResponse(username, sender_psid);
             break;
         case "MAIN_MENU":
             //send main menu to users
