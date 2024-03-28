@@ -87,11 +87,11 @@ let getStartedResponse = (username, sender_psid) => {
             };
 
             //send a welcome message
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response_first);
 
             //send a image with button view main menu
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response_second);
 
             resolve("done!")
@@ -165,7 +165,7 @@ let sendMainMenu = (sender_psid) => {
                     }
                 }
             };
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
             resolve("done");
         } catch (e) {
@@ -256,7 +256,7 @@ let HandleSendLunchMenu = (sender_psid) => {
                     }
                 }
             };
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
             resolve("done");
         } catch (e) {
@@ -326,25 +326,25 @@ let HandleSendDinnerMenu = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response1);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response2);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response3);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response4);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response5);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response6);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response7);
 
             resolve("done");
@@ -415,25 +415,24 @@ let sendPubMenu = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
             await sendMessage(sender_psid, response1);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response2);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response3);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response4);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response5);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response6);
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response7);
             resolve("done");
         } catch (e) {
@@ -456,7 +455,7 @@ let handleReserveTable = (sender_psid) => {
         try {
             let username = await getFacebookUsername(sender_psid);
             let response = { text: `Hi ${username},Thời gian và ngày bạn muốn đặt bàn ?` };
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
@@ -534,7 +533,7 @@ let handleShowRooms = (sender_psid) => {
             };
 
             //send a welcome message
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
@@ -734,9 +733,9 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
                     }
                 }
             };
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response2);
             resolve("done");
         } catch (e) {
@@ -778,9 +777,9 @@ let showRoomDetail = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response2);
 
             resolve("done!");
@@ -843,7 +842,7 @@ let handleViewDetailAppetizer = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
@@ -884,9 +883,9 @@ let handleViewDetailSalad = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response2);
 
             resolve("done");
@@ -948,7 +947,7 @@ let handleViewDetailFish = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
@@ -1009,7 +1008,7 @@ let handleViewDetailClassic = (sender_psid) => {
                 }
             };
 
-            await sendTypingOn(sender_psid);
+
             await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
@@ -1067,9 +1066,9 @@ let sendTypingOn = (sender_psid) => {
                 "json": request_body
             }, (err, res, body) => {
                 if (!err) {
-                    resolve('done!')
+                    console.log("senTypingOn sent!")
                 } else {
-                    reject("Unable to send message:" + err);
+                    reject("Unable to send senTypingOn:" + err);
                 }
             });
         } catch (e) {
@@ -1078,7 +1077,7 @@ let sendTypingOn = (sender_psid) => {
     });
 };
 
-let markMessageSeen = (sender_psid) => {
+let markReadMessage = (sender_psid) => {
     return new Promise((resolve, reject) => {
         try {
             let request_body = {
@@ -1128,7 +1127,7 @@ module.exports = {
     handleViewDetailSalad: handleViewDetailSalad,
     handleViewDetailFish: handleViewDetailFish,
     handleViewDetailClassic: handleViewDetailClassic,
-    markMessageSeen: markMessageSeen,
+    markReadMessage: markReadMessage,
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage
 };

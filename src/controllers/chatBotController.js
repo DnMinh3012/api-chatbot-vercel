@@ -88,7 +88,7 @@ let handleMessage = async (sender_psid, message) => {
             if (message.quick_reply.payload === "SMALL") user.quantity = "1-2 people";
             if (message.quick_reply.payload === "MEDIUM") user.quantity = "2-5 people";
             if (message.quick_reply.payload === "LARGE") user.quantity = "More than 5 people";
-            await chatBotService.markMessageSeen(sender_psid);
+            await chatBotService.markReadMessage(sender_psid);
             await chatBotService.sendTypingOn(sender_psid);
             await chatBotService.sendMessageAskingPhoneNumber(sender_psid);
             return;
@@ -103,7 +103,7 @@ let handleMessage = async (sender_psid, message) => {
             await chatBotService.sendNotificationToTelegram(user);
 
             // send messages to the user
-            await chatBotService.markMessageSeen(sender_psid);
+            await chatBotService.markReadMessage(sender_psid);
             await chatBotService.sendTypingOn(sender_psid);
             await chatBotService.sendMessageDoneReserveTable(sender_psid);
         }
@@ -115,7 +115,7 @@ let handleMessage = async (sender_psid, message) => {
     let locale = entity.locale;
 
     await chatBotService.sendTypingOn(sender_psid);
-    await chatBotService.markMessageSeen(sender_psid);
+    await chatBotService.markReadMessage(sender_psid);
 
     if (entity.name === "wit$datetime:datetime") {
         //handle quick reply message: asking about the party size , how many people
@@ -187,7 +187,7 @@ let handlePostback = async (sender_psid, received_postback) => {
     let payload = received_postback.payload;
     // Set the response based on the postback payload
 
-    await chatBotService.markMessageSeen(sender_psid);
+    await chatBotService.markReadMessage(sender_psid);
     switch (payload) {
         case "RESTART_BOT":
         case "GET_STARTED":
@@ -261,7 +261,7 @@ let handlePostback = async (sender_psid, received_postback) => {
 };
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
+let callSendAPI = async (sender_psid, response) => {
     // Construct the message body
     let request_body = {
         "recipient": {
@@ -269,7 +269,8 @@ function callSendAPI(sender_psid, response) {
         },
         "message": response
     };
-
+    await chatBotService.sendTypingOn(sender_psid);
+    await chatBotService.markReadMessage(sender_psid);
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v9.0/me/messages",
