@@ -99,10 +99,10 @@ let handleMessage = async (sender_psid, message) => {
     //             await homepageService.sendGuideToUseBot(sender_psid);
     //             break;
     //         case "lunch":
-    //             await chatBotService.sendLunchMenu(sender_psid);
+    //             await chatBotService.HandleSendLunchMenu(sender_psid);
     //             break;
     //         case "dinner":
-    //             await chatBotService.sendDinnerMenu(sender_psid);
+    //             await chatBotService.HandleSendDinnerMenu(sender_psid);
     //             break;
     //         case "pub":
     //             await chatBotService.sendPubMenu(sender_psid);
@@ -275,10 +275,10 @@ let handlePostback = async (sender_psid, received_postback) => {
             await homepageService.sendGuideToUseBot(sender_psid);
             break;
         case "LUNCH_MENU":
-            await chatBotService.sendLunchMenu(sender_psid);
+            await chatBotService.HandleSendLunchMenu(sender_psid);
             break;
         case "DINNER_MENU":
-            await chatBotService.sendDinnerMenu(sender_psid);
+            await chatBotService.HandleSendDinnerMenu(sender_psid);
             break;
         case "PUB_MENU":
             await chatBotService.sendPubMenu(sender_psid);
