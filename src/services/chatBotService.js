@@ -20,13 +20,13 @@ const IMAGE_DETAIL_APPERTIZER1 = "https://bit.ly/3TEnOug";
 const IMAGE_DETAIL_APPERTIZER2 = "https://bit.ly/49ePag7";
 const IMAGE_DETAIL_APPERTIZER3 = "https://bit.ly/49n8hVC";
 
-const IMAGE_DETAIL_FISH1 = "https://bit.ly/3TEWI66"; //cá song hấp xì dầu
-const IMAGE_DETAIL_FISH2 = "https://bitly.is/4a2WpsR";// lẩu cá tầm
-const IMAGE_DETAIL_FISH3 = "https://bit.ly/3TAgBLF"; // cá ngạnh xào nấm
+const IMAGE_DETAIL_FISH1 = "https://bit.ly/3TEWI66";
+const IMAGE_DETAIL_FISH2 = "https://bitly.is/4a2WpsR";
+const IMAGE_DETAIL_FISH3 = "https://bit.ly/3TAgBLF";
 
-const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3TANV5k"; //Heo sữa quay lu
-const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3VG3CdZ"; //Chả giò
-const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3PDpPp6"; //Nem cua bể
+const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3TANV5k";
+const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3VG3CdZ";
+const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3PDpPp6";
 
 
 
