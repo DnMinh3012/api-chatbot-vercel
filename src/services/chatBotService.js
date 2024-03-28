@@ -30,7 +30,7 @@ let getFacebookUsername = (sender_psid) => {
 let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response_first = { "text": `xia chào ${username} đến nhà hàng của chúng tôi` };
+            let response_first = { "text": `xin chào ${username} đến nhà hàng của chúng tôi` };
             let response_second = {
                 "attachment": {
                     "type": "template",
@@ -43,17 +43,17 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW MAIN MENU",
-                                        "payload": "MENU",
+                                        "title": "Xem Menu",
+                                        "payload": "MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt Bàn ",
                                         "payload": "RESERVE_TABLE",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "GUIDE TO USE THIS BOT",
+                                        "title": "Hướng dẫn sử dụng",
                                         "payload": "GUIDE_BOT",
                                     }
                                 ],
@@ -94,12 +94,12 @@ let sendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "LUNCH MENU",
+                                        "title": "MENU buổi trưa",
                                         "payload": "LUNCH_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "DINNER MENU",
+                                        "title": "MENU Buổi tối",
                                         "payload": "DINNER_MENU",
                                     },
                                     {
@@ -117,7 +117,7 @@ let sendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -130,7 +130,7 @@ let sendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW ROOMS",
+                                        "title": "Xem các phòng ăn",
                                         "payload": "SHOW_ROOMS",
                                     }
                                 ],
@@ -166,7 +166,7 @@ let sendLunchMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW APPETIZERS",
+                                        "title": "Món khai vị",
                                         "payload": "SHOW_APPETIZERS",
                                     }
                                 ],
@@ -178,7 +178,7 @@ let sendLunchMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW ENTREE SALAD",
+                                        "title": "SALAD",
                                         "payload": "SHOW_ENTREE_SALAD",
                                     }
                                 ],
@@ -190,7 +190,7 @@ let sendLunchMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW FISH",
+                                        "title": "Các món cá",
                                         "payload": "SHOW_FISH",
                                     }
                                 ],
@@ -203,7 +203,7 @@ let sendLunchMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW CLASSICS",
+                                        "title": "Các món truyền thống",
                                         "payload": "SHOW_CLASSICS",
                                     }
                                 ],
@@ -215,12 +215,12 @@ let sendLunchMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "BACK TO MAIN MENU",
+                                        "title": "Quay lại MENU chính",
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -282,16 +282,16 @@ let sendDinnerMenu = (sender_psid) => {
                     "type": "template",
                     "payload": {
                         "template_type": "button",
-                        "text": `Back to main menu or make a reservation ?`,
+                        "text": `Quay lại menu chính hoặc đặt bàn?`,
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "MENU",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
@@ -371,16 +371,16 @@ let sendPubMenu = (sender_psid) => {
                     "type": "template",
                     "payload": {
                         "template_type": "button",
-                        "text": `Back to main menu or make a reservation ?`,
+                        "text": `Quay lại menu chính hoặc đặt bàn?`,
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "MENU",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
@@ -448,17 +448,17 @@ let sendAppetizer = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW LUNCH MENU",
+                                        "title": "Menu buổi trưa",
                                         "payload": "BACK_TO_LUNCH_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "BACK TO MAIN MENU",
+                                        "title": "Menu buổi trưa",
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -488,7 +488,7 @@ let handleReserveTable = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let username = await getFacebookUsername(sender_psid);
-            let response = { text: `Hi ${username}, What time and date you would like to reserve a table ?` };
+            let response = { text: `Hi ${username},Thời gian và ngày bạn muốn đặt bàn ?` };
             await sendTypingOn(sender_psid);
             await sendMessage(sender_psid, response);
         } catch (e) {
@@ -513,7 +513,7 @@ let handleShowRooms = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW DESCRIPTION",
+                                        "title": "Xem MÔ TẢ",
                                         "payload": "SHOW_ROOM_DETAIL",
                                     }
                                 ],
@@ -526,7 +526,7 @@ let handleShowRooms = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW DESCRIPTION",
+                                        "title": "Xem MÔ TẢ",
                                         "payload": "SHOW_ROOM_DETAIL",
                                     }
                                 ],
@@ -539,7 +539,7 @@ let handleShowRooms = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW DESCRIPTION",
+                                        "title": "Xem MÔ TẢ",
                                         "payload": "SHOW_ROOM_DETAIL",
                                     }
                                 ],
@@ -551,12 +551,12 @@ let handleShowRooms = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "BACK TO MAIN MENU",
+                                        "title": "Quay lại MENU chính",
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -674,7 +674,7 @@ let sendMessageDoneReserveTable = async (sender_id) => {
                     "buttons": [
                         {
                             "type": "postback",
-                            "title": "SHOW MAIN MENU",
+                            "title": "MENU",
                             "payload": "MAIN_MENU"
                         },
                         {
@@ -798,12 +798,12 @@ let showRoomDetail = (sender_psid) => {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "MENU",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
@@ -843,12 +843,12 @@ let sendSalad = (sender_psid) => {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "MENU",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
@@ -888,12 +888,12 @@ let sendFish = (sender_psid) => {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "MENU",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
@@ -933,12 +933,12 @@ let sendClassic = (sender_psid) => {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "MENU",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
