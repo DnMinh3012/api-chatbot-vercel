@@ -4,9 +4,13 @@ require("dotenv").config();
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
-const URL_SALAD_GIF = "https://media0.giphy.com/media/9Vk8qP9EmWB8FePccb/giphy.gif?cid=ecf05e478d0c93d69e72264c8ebbf58a9a1d7ae294754131&rid=giphy.gif";
+const IMAGE_SALAD = "https://bit.ly/3TRKYyq";
 const URL_SHOW_FISH = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ztjeouq2jlas5b2zxksm";
 const URL_SHOW_CLASSIC = "https://ardo.com/files/attachments/.10202/w1440h700q85_AZ1.jpg";
+const IMAGE_MAIN_MENU_1 = "https://bit.ly/3PEVSVH"
+const IMAGE_MAIN_MENU_2 = "https://bit.ly/4aoMzBy"
+const IMAGE_MAIN_MENU_3 = "https://bit.ly/4aumRvg"
+
 let getFacebookUsername = (sender_psid) => {
     return new Promise((resolve, reject) => {
         // Send the HTTP request to the Messenger Platform
@@ -90,7 +94,7 @@ let sendMainMenu = (sender_psid) => {
                             {
                                 "title": "MENU của Vimaru Restaurant",
                                 "subtitle": "Chúng tôi hân hạnh mang đến cho bạn những món ăn phong phú",
-                                "image_url": "https://bit.ly/imageMenu",
+                                "image_url": IMAGE_MAIN_MENU_1,
                                 "buttons": [
                                     {
                                         "type": "postback",
@@ -113,7 +117,7 @@ let sendMainMenu = (sender_psid) => {
                             {
                                 "title": "Giờ mở cửa",
                                 "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
-                                "image_url": " https://bit.ly/imageOpening",
+                                "image_url": IMAGE_MAIN_MENU_2,
                                 "buttons": [
                                     {
                                         "type": "postback",
@@ -126,7 +130,7 @@ let sendMainMenu = (sender_psid) => {
                             {
                                 "title": "Không gian nhà hàng",
                                 "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
-                                "image_url": " https://bit.ly/imageShowRooms",
+                                "image_url": IMAGE_MAIN_MENU_3,
                                 "buttons": [
                                     {
                                         "type": "postback",
@@ -830,7 +834,7 @@ let sendSalad = (sender_psid) => {
                 "attachment": {
                     "type": "image",
                     "payload": {
-                        "url": URL_SALAD_GIF
+                        "url": IMAGE_SALAD
                     }
                 }
             };
