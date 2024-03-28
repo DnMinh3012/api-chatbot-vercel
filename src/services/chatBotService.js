@@ -4,15 +4,33 @@ require("dotenv").config();
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
-const IMAGE_SALAD = "https://bit.ly/3TRKYyq";
-const URL_SHOW_FISH = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ztjeouq2jlas5b2zxksm";
-const URL_SHOW_CLASSIC = "https://ardo.com/files/attachments/.10202/w1440h700q85_AZ1.jpg";
+
 const IMAGE_MAIN_MENU_1 = "https://bit.ly/3PEVSVH"
 const IMAGE_MAIN_MENU_2 = "https://bit.ly/4aoMzBy"
 const IMAGE_MAIN_MENU_3 = "https://bit.ly/4aumRvg"
+
+const IMAGE_SALAD = "https://bit.ly/3TRKYyq";
 const APPETIZERS_IMAGE = "https://bit.ly/3IWplGV";
 const FISH_IMAGE = "https://bit.ly/3x8sJMe";
 const SHOW_CLASSICS_IMAGE = "https://bit.ly/3TvzRdc";
+
+const IMAGE_BACK_MAIN_MENU = "https://bit.ly/3PEVSVH"
+
+const IMAGE_DETAIL_APPERTIZER1 = "https://bit.ly/3TEnOug";
+const IMAGE_DETAIL_APPERTIZER2 = "https://bit.ly/49ePag7";
+const IMAGE_DETAIL_APPERTIZER3 = "https://bit.ly/49n8hVC";
+
+const IMAGE_DETAIL_FISH1 = "https://bit.ly/3TEWI66"; //cá song hấp xì dầu
+const IMAGE_DETAIL_FISH2 = "https://bitly.is/4a2WpsR";// lẩu cá tầm
+const IMAGE_DETAIL_FISH3 = "https://bit.ly/3TAgBLF"; // cá ngạnh xào nấm
+
+const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3TANV5k"; //Heo sữa quay lu
+const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3VG3CdZ"; //Chả giò
+const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3PDpPp6"; //Nem cua bể
+
+
+
+
 let getFacebookUsername = (sender_psid) => {
     return new Promise((resolve, reject) => {
         // Send the HTTP request to the Messenger Platform
@@ -208,7 +226,7 @@ let HandleSendLunchMenu = (sender_psid) => {
                             {
                                 "title": "Các món truyền thống",
                                 "subtitle": "Các món ăn Việt Nam truyền thống ",
-                                "image_url": URL_SHOW_CLASSIC,
+                                "image_url": SHOW_CLASSICS_IMAGE,
                                 "buttons": [
                                     {
                                         "type": "postback",
@@ -220,7 +238,7 @@ let HandleSendLunchMenu = (sender_psid) => {
 
                             {
                                 "title": "Go back",
-                                "image_url": " https://bit.ly/imageToSend",
+                                "image_url": IMAGE_BACK_MAIN_MENU,
                                 "buttons": [
                                     {
                                         "type": "postback",
@@ -424,72 +442,12 @@ let sendPubMenu = (sender_psid) => {
     });
 };
 
-let sendAppetizer = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let response = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Little Neck Clams on the Half Shell",
-                                "subtitle": "Dozen - $20.00",
-                                "image_url": "https://bit.ly/appetizers1",
-                            },
 
-                            {
-                                "title": "Fresh Oysters",
-                                "subtitle": "1/2 Dozen - $21.00 | Dozen - $40.00",
-                                "image_url": "https://bit.ly/appetizers2",
-                            },
-
-                            {
-                                "title": "Lobster Salad",
-                                "subtitle": "Half Lobster with Avocado and Grapefruit",
-                                "image_url": "https://bit.ly/appetizers3",
-                            },
-
-                            {
-                                "title": "Go back",
-                                "image_url": " https://bit.ly/imageToSend",
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Menu buổi trưa",
-                                        "payload": "BACK_TO_LUNCH_MENU",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Menu buổi trưa",
-                                        "payload": "BACK_TO_MAIN_MENU",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
-                                    }
-                                ],
-                            }
-                        ]
-                    }
-                }
-            };
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response);
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
-
-let goBackToMainMenu = (sender_psid) => {
+let handleBackToMainMenu = (sender_psid) => {
     sendMainMenu(sender_psid);
 };
 
-let goBackToLunchMenu = (sender_psid) => {
+let handleBackToLunchMenu = (sender_psid) => {
     HandleSendLunchMenu(sender_psid);
 };
 
@@ -832,7 +790,68 @@ let showRoomDetail = (sender_psid) => {
     })
 };
 
-let sendSalad = (sender_psid) => {
+let handleViewDetailAppetizer = (sender_psid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let response = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Món tráng miệng không thể thiếu trong mỗi nhà hàng Trung Hoa - 1$",
+                                "image_url": IMAGE_DETAIL_APPERTIZER1,
+                            },
+
+                            {
+                                "title": "Xôi Xoài",
+                                "subtitle": "Là món tráng miệng đến từ Đài Loan, với lớp vỏ bơ kết hợp với mứt dứa rất dễ làm bạn gây nghiện - 1$",
+                                "image_url": IMAGE_DETAIL_APPERTIZER2,
+                            },
+
+                            {
+                                "title": "Bingsu",
+                                "subtitle": "Món Bingsu ngon bắt mắt sẽ là món tráng miệng tuyệt vời trong mùa hè - 1$",
+                                "image_url": IMAGE_DETAIL_APPERTIZER3,
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_BACK_MAIN_MENU,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Menu buổi trưa",
+                                        "payload": "BACK_TO_LUNCH_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Menu buổi tối",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                }
+            };
+
+            await sendTypingOn(sender_psid);
+            await sendMessage(sender_psid, response);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let handleViewDetailSalad = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response1 = {
@@ -876,34 +895,53 @@ let sendSalad = (sender_psid) => {
         }
     });
 };
-
-let sendFish = (sender_psid) => {
+let handleViewDetailFish = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": URL_SHOW_FISH
-                    }
-                }
-            };
-            let response2 = {
+            let response = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "button",
-                        "text": `Fish fry \n$60.00`,
-                        "buttons": [
+                        "template_type": "generic",
+                        "elements": [
                             {
-                                "type": "postback",
-                                "title": "MENU",
-                                "payload": "MAIN_MENU"
+                                "title": "cá song hấp xì dầu",
+                                "subtitle": "300k",
+                                "image_url": IMAGE_DETAIL_FISH1,
                             },
+
                             {
-                                "type": "postback",
-                                "title": "Đặt bàn",
-                                "payload": "RESERVE_TABLE",
+                                "title": "lẩu cá tầm",
+                                "subtitle": "200k",
+                                "image_url": IMAGE_DETAIL_FISH2,
+                            },
+
+                            {
+                                "title": " cá ngạnh xào nấm",
+                                "subtitle": "100k",
+                                "image_url": IMAGE_DETAIL_FISH3,
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_BACK_MAIN_MENU,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Menu buổi trưa",
+                                        "payload": "BACK_TO_LUNCH_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Menu buổi tối",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
                             }
                         ]
                     }
@@ -911,44 +949,60 @@ let sendFish = (sender_psid) => {
             };
 
             await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            resolve("done");
+            await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
         }
     });
 };
 
-let sendClassic = (sender_psid) => {
+let handleViewDetailClassic = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": URL_SHOW_CLASSIC
-                    }
-                }
-            };
-            let response2 = {
+            let response = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "button",
-                        "text": `Perfect oven baked fries \n$30.00`,
-                        "buttons": [
+                        "template_type": "generic",
+                        "elements": [
                             {
-                                "type": "postback",
-                                "title": "MENU",
-                                "payload": "MAIN_MENU"
+                                "title": "Heo sữa quay lu",
+                                "subtitle": "300k",
+                                "image_url": IMAGE_DETAIL_CLASSIC1,
                             },
+
                             {
-                                "type": "postback",
-                                "title": "Đặt bàn",
-                                "payload": "RESERVE_TABLE",
+                                "title": "Chả giò",
+                                "subtitle": "200k",
+                                "image_url": IMAGE_DETAIL_CLASSIC2,
+                            },
+
+                            {
+                                "title": "Nem cua bể",
+                                "subtitle": "100k",
+                                "image_url": IMAGE_DETAIL_CLASSIC3,
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_BACK_MAIN_MENU,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Menu buổi trưa",
+                                        "payload": "BACK_TO_LUNCH_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Menu buổi tối",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
                             }
                         ]
                     }
@@ -956,11 +1010,7 @@ let sendClassic = (sender_psid) => {
             };
 
             await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            resolve("done");
+            await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
         }
@@ -1064,9 +1114,9 @@ module.exports = {
     HandleSendLunchMenu: HandleSendLunchMenu,
     HandleSendDinnerMenu: HandleSendDinnerMenu,
     sendPubMenu: sendPubMenu,
-    sendAppetizer: sendAppetizer,
-    goBackToMainMenu: goBackToMainMenu,
-    goBackToLunchMenu: goBackToLunchMenu,
+    handleViewDetailAppetizer: handleViewDetailAppetizer,
+    handleBackToMainMenu: handleBackToMainMenu,
+    handleBackToLunchMenu: handleBackToLunchMenu,
     handleReserveTable: handleReserveTable,
     handleShowRooms: handleShowRooms,
     sendMessageAskingQuality: sendMessageAskingQuality,
@@ -1075,9 +1125,9 @@ module.exports = {
     sendNotificationToTelegram: sendNotificationToTelegram,
     sendMessageDefaultForTheBot: sendMessageDefaultForTheBot,
     showRoomDetail: showRoomDetail,
-    sendSalad: sendSalad,
-    sendFish: sendFish,
-    sendClassic: sendClassic,
+    handleViewDetailSalad: handleViewDetailSalad,
+    handleViewDetailFish: handleViewDetailFish,
+    handleViewDetailClassic: handleViewDetailClassic,
     markMessageSeen: markMessageSeen,
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage

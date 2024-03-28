@@ -81,75 +81,7 @@ let getWebhook = (req, res) => {
 
 // Handles messages events
 let handleMessage = async (sender_psid, message) => {
-
-    // if (message.text) {
-    //     switch (message.text) {
-    //         case "xin chao":
-    //             //send main menu to users
-    //             let username = await chatBotService.getFacebookUsername(sender_psid);
-    //             user.name = username;
-    //             //send welcome response to users
-    //             await chatBotService.getStartedResponse(username, sender_psid);
-    //             break;
-    //         case "menu":
-    //             //send main menu to users
-    //             await chatBotService.sendMainMenu(sender_psid);
-    //             break;
-    //         case "GUIDE_BOT":
-    //             await homepageService.sendGuideToUseBot(sender_psid);
-    //             break;
-    //         case "lunch":
-    //             await chatBotService.HandleSendLunchMenu(sender_psid);
-    //             break;
-    //         case "dinner":
-    //             await chatBotService.HandleSendDinnerMenu(sender_psid);
-    //             break;
-    //         case "pub":
-    //             await chatBotService.sendPubMenu(sender_psid);
-    //             break;
-    //         case "datban":
-    //             await chatBotService.handleReserveTable(sender_psid);
-    //             break;
-    //         case "SHOW_ROOMS":
-    //             await chatBotService.handleShowRooms(sender_psid);
-    //             break;
-    //         case "khonggian":
-    //             await chatBotService.showRoomDetail(sender_psid);
-    //             break;
-    //         case "SHOW_APPETIZERS":
-    //             await chatBotService.sendAppetizer(sender_psid);
-    //             break;
-
-    //         case "SHOW_ENTREE_SALAD":
-    //             await chatBotService.sendSalad(sender_psid);
-    //             break;
-    //         case "SHOW_FISH":
-    //             await chatBotService.sendFish(sender_psid);
-    //             break;
-    //         case "SHOW_CLASSICS":
-    //             await chatBotService.sendClassic(sender_psid);
-    //             break;
-
-    //         case "BACK_TO_MAIN_MENU":
-    //             await chatBotService.goBackToMainMenu(sender_psid);
-    //             break;
-    //         case "BACK_TO_LUNCH_MENU":
-    //             await chatBotService.goBackToLunchMenu(sender_psid);
-    //             break;
-
-    //         case "yes":
-    //             response = { text: "Thank you!" };
-    //             callSendAPI(sender_psid, response);
-    //             break;
-    //         case "no":
-    //             response = { text: "Please try another image." };
-    //             callSendAPI(sender_psid, response);
-    //             break;
-    //         default:
-    //             console.log("Something wrong with switch case payload");
-    //     }
-    // }
-    //checking quick reply
+    //checking quick repl
     if (message && message.quick_reply && message.quick_reply.payload) {
         if (message.quick_reply.payload === "SMALL" || message.quick_reply.payload === "MEDIUM" || message.quick_reply.payload === "LARGE") {
             //asking about phone number
@@ -293,24 +225,24 @@ let handlePostback = async (sender_psid, received_postback) => {
             await chatBotService.showRoomDetail(sender_psid);
             break;
         case "SHOW_APPETIZERS":
-            await chatBotService.sendAppetizer(sender_psid);
+            await chatBotService.handleViewDetailAppetizer(sender_psid);
             break;
 
         case "SHOW_ENTREE_SALAD":
-            await chatBotService.sendSalad(sender_psid);
+            await chatBotService.handleViewDetailSalad(sender_psid);
             break;
         case "SHOW_FISH":
-            await chatBotService.sendFish(sender_psid);
+            await chatBotService.handleViewDetailFish(sender_psid);
             break;
         case "SHOW_CLASSICS":
-            await chatBotService.sendClassic(sender_psid);
+            await chatBotService.handleViewDetailClassic(sender_psid);
             break;
 
         case "BACK_TO_MAIN_MENU":
-            await chatBotService.goBackToMainMenu(sender_psid);
+            await chatBotService.handleBackToMainMenu(sender_psid);
             break;
         case "BACK_TO_LUNCH_MENU":
-            await chatBotService.goBackToLunchMenu(sender_psid);
+            await chatBotService.handleBackToLunchMenu(sender_psid);
             break;
 
         case "yes":

@@ -5,11 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node src/server.js"
+    "start": "nodemon --exec npx babel-node src/server.js"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/haryphamdev/messenger-restaurant-chat-bot.git"
+    "type": "git"
   },
   "keywords": [
     "messenger",
@@ -21,9 +20,9 @@
   "author": "Nhat Minh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/haryphamdev/messenger-restaurant-chat-bot/issues"
+    "url": "https://github.com/DnMinh3012/api-chatbot-vercel"
   },
-  "homepage": "https://github.com/haryphamdev/messenger-restaurant-chat-bot#readme",
+  "homepage": "https://github.com/DnMinh3012/api-chatbot-vercel",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cron": "^1.8.2",
