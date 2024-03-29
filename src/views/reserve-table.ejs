@@ -87,7 +87,7 @@
                 },
                 function error(err) {
                     // error
-                    console.log('Lỗi đặt bàn Eric bot', err);
+                    console.log('Lỗi đặt bàn: ', err);
                 }
             );
         };
@@ -127,7 +127,7 @@
                     email: $("#email").val(),
                     phoneNumber: $("#phoneNumber").val()
                 };
-
+                console.log("check: ", check)
                 if (!check) {
                     //close webview
                     MessengerExtensions.requestCloseBrowser(function success() {
