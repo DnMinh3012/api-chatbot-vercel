@@ -58,7 +58,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                                         "payload": "GUIDE_BOT",
                                     }
                                 ],
-                            } ]
+                            }]
                     }
                 }
             };
@@ -679,9 +679,9 @@ let sendMessageDoneReserveTable = async (sender_id) => {
                             "payload": "MAIN_MENU"
                         },
                         {
-                            "type":"phone_number",
-                            "title":"☎ HOT LINE",
-                            "payload":"+911911"
+                            "type": "phone_number",
+                            "title": "☎ HOT LINE",
+                            "payload": "+911911"
                         },
                         {
                             "type": "postback",
@@ -736,8 +736,8 @@ let sendNotificationToTelegram = (user) => {
 };
 
 let sendMessageDefaultForTheBot = (sender_psid) => {
-    return new Promise (async (resolve, reject) => {
-        try{
+    return new Promise(async (resolve, reject) => {
+        try {
             let response1 = {
                 "text": "Sorry, I'm just a bot, man ^^ \nYou can test me with all these buttons or try to make a reservation.\n\nThis video may help you to understand me 😉"
             };
@@ -773,7 +773,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
             await sendTypingOn(sender_psid);
             await sendMessage(sender_psid, response2);
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -781,7 +781,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
 
 let showRoomDetail = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -818,7 +818,7 @@ let showRoomDetail = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done!");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     })
@@ -826,7 +826,7 @@ let showRoomDetail = (sender_psid) => {
 
 let sendSalad = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -863,7 +863,7 @@ let sendSalad = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -871,7 +871,7 @@ let sendSalad = (sender_psid) => {
 
 let sendFish = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -908,7 +908,7 @@ let sendFish = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -916,7 +916,7 @@ let sendFish = (sender_psid) => {
 
 let sendClassic = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -953,7 +953,7 @@ let sendClassic = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -992,42 +992,13 @@ let sendMessage = (sender_psid, response) => {
 };
 
 let sendTypingOn = (sender_psid) => {
-    return new Promise ((resolve, reject) => {
-       try{
-           let request_body = {
-               "recipient": {
-                   "id": sender_psid
-               },
-               "sender_action":"typing_on"
-           };
-
-           // Send the HTTP request to the Messenger Platform
-           request({
-               "uri": "https://graph.facebook.com/v6.0/me/messages",
-               "qs": { "access_token": PAGE_ACCESS_TOKEN },
-               "method": "POST",
-               "json": request_body
-           }, (err, res, body) => {
-               if (!err) {
-                   resolve('done!')
-               } else {
-                   reject("Unable to send message:" + err);
-               }
-           });
-       } catch (e) {
-           reject(e);
-       }
-    });
-};
-
-let markMessageSeen = (sender_psid) => {
     return new Promise((resolve, reject) => {
         try {
             let request_body = {
                 "recipient": {
                     "id": sender_psid
                 },
-                "sender_action":"mark_seen"
+                "sender_action": "typing_on"
             };
 
             // Send the HTTP request to the Messenger Platform
@@ -1043,8 +1014,37 @@ let markMessageSeen = (sender_psid) => {
                     reject("Unable to send message:" + err);
                 }
             });
-        }catch (e) {
-          reject(e);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let markMessageSeen = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "mark_seen"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
         }
     });
 };
@@ -1065,11 +1065,11 @@ module.exports = {
     sendMessageAskingPhoneNumber: sendMessageAskingPhoneNumber,
     sendMessageDoneReserveTable: sendMessageDoneReserveTable,
     sendNotificationToTelegram: sendNotificationToTelegram,
-    sendMessageDefaultForTheBot:sendMessageDefaultForTheBot,
+    sendMessageDefaultForTheBot: sendMessageDefaultForTheBot,
     showRoomDetail: showRoomDetail,
     sendSalad: sendSalad,
     sendFish: sendFish,
-    sendClassic:sendClassic,
+    sendClassic: sendClassic,
     markMessageSeen: markMessageSeen,
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage
