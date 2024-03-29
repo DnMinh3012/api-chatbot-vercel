@@ -348,7 +348,7 @@ let handleSendDinnerMenu = (sender_psid) => {
     });
 };
 
-let goBackToMainMenu = (sender_psid) => {
+let handleBackToMainMenu = (sender_psid) => {
     handleSendMainMenu(sender_psid);
 };
 
@@ -980,6 +980,46 @@ let markMessageSeen = (sender_psid) => {
     });
 };
 
+let setupPersistentMenu = async (req, res) => {
+    let request_body = {
+        "persistent_menu": [
+            {
+                "locale": "default",
+                "composer_input_disabled": false,
+                "call_to_actions": [
+                    {
+                        "type": "postback",
+                        "title": "Khởi động lại Bot",
+                        "payload": "RE_STARTED"
+                    },
+                    {
+                        "type": "web_url",
+                        "title": "Truy cập FanPage Vỉmaru Restaurant",
+                        "url": "https://www.facebook.com/profile.php?id=61556806597524",
+                        "webview_height_ratio": "full"
+                    }
+                ]
+            }
+        ]
+    }
+    // Send the HTTP request to the Messenger Platform
+    await request({
+        "uri": `https: //graph.facebook.com/v18.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
+        "qs": {
+            "access_token": PAGE_ACCESS_TOKEN
+        },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        console.log(body);
+        if (!err) {
+            console.log('setup PersistentMenu succeeds!')
+        } else {
+            console.error("Unable to send message:" + err);
+        }
+    });
+    return res.send("setup PersistentMenu succeeds")
+}
 module.exports = {
     getFacebookUsername: getFacebookUsername,
     handleGetStartedResponding: handleGetStartedResponding,
@@ -987,8 +1027,8 @@ module.exports = {
     handleSendLunchMenu: handleSendLunchMenu,
     handleSendDinnerMenu: handleSendDinnerMenu,
     handleDetailAppetizer: handleDetailAppetizer,
-    goBackToMainMenu: goBackToMainMenu,
-    goBackToLunchMenu: goBackToLunchMenu,
+    handleBackToMainMenu: handleBackToMainMenu,
+    handleBackToLunchMenu: handleBackToLunchMenu,
     handleReserveTable: handleReserveTable,
     handleShowRooms: handleShowRooms,
     sendMessageAskingQuality: sendMessageAskingQuality,
@@ -1002,5 +1042,6 @@ module.exports = {
     handleDetailClassic: handleDetailClassic,
     markMessageSeen: markMessageSeen,
     sendTypingOn: sendTypingOn,
-    sendMessage: sendMessage
+    sendMessage: sendMessage,
+    setupPersistentMenu: setupPersistentMenu
 };
