@@ -236,10 +236,10 @@ let handlePostback = async (sender_psid, received_postback) => {
             break;
 
         case "BACK_TO_MAIN_MENU":
-            await chatBotService.BackToMainMenu(sender_psid);
+            await chatBotService.handleBackToMainMenu(sender_psid);
             break;
         case "BACK_TO_LUNCH_MENU":
-            await chatBotService.BackToLunchMenu(sender_psid);
+            await chatBotService.handleBackToLunchMenu(sender_psid);
             break;
 
         case "yes":
