@@ -24,6 +24,11 @@ const IMAGE_DETAIL_FISH3 = "https://bit.ly/3TANV5k";
 const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3VG3CdZ";
 const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3TANV5k";
 const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3TANV5k";
+const IMAGE_ROOMS1 = "https://bit.ly/3TXh8c7";
+const IMAGE_ROOMS2 = "https://bit.ly/49fXMDd";
+const IMAGE_ROOMS3 = "https://bit.ly/49lULBf";
+
+
 
 
 
@@ -379,39 +384,39 @@ let handleShowRooms = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Bull Moose Room",
-                                "subtitle": "The room is suited for parties of up to 25 people",
-                                "image_url": "https://bit.ly/showRoom1",
+                                "title": "Phòng gia đình",
+                                "subtitle": "Phòng thích hợp cho tiệc tối đa 25 người",
+                                "image_url": IMAGE_ROOMS1,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW DESCRIPTION",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_ROOM_DETAIL",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Lillie Langstry Room",
-                                "subtitle": "The room is suited for parties of up to 35 people",
-                                "image_url": "https://bit.ly/showRoom2",
+                                "title": "Phòng Họp",
+                                "subtitle": "Phòng phù hợp cho tiệc tối đa 35 người",
+                                "image_url": IMAGE_ROOMS2,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW DESCRIPTION",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_ROOM_DETAIL",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Lincoln Room",
-                                "subtitle": "The room is suited for parties of up to 45 people",
-                                "image_url": "https://bit.ly/showRoom3",
+                                "title": "Phòng sự kiện",
+                                "subtitle": "Phòng thích hợp cho tiệc tối đa 45 người",
+                                "image_url": IMAGE_ROOMS1,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW DESCRIPTION",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_ROOM_DETAIL",
                                     }
                                 ],
