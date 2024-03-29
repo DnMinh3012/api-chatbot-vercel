@@ -257,12 +257,12 @@ let handleSendGuideToUseBot = (sender_psid) => {
                     "\n\nVimaru Restaurant👇" +
                     "\nFanpage: \n👉 https://www.facebook.com/profile.php?id=61556806597524"
             };
-            let response5 = {
+            let response3 = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "button",
-                        "text": `Back to main menu or make a reservation ?`,
+                        "text": `Quay trở lại Menu chính?`,
                         "buttons": [
                             {
                                 "type": "postback",
@@ -285,9 +285,6 @@ let handleSendGuideToUseBot = (sender_psid) => {
             await chatBotService.sendMessage(sender_psid, response2);
             await chatBotService.sendTypingOn(sender_psid);
             await chatBotService.sendMessage(sender_psid, response3);
-            await chatBotService.sendTypingOn(sender_psid);
-            await chatBotService.sendMessage(sender_psid, response5);
-
             resolve("done");
         } catch (e) {
             reject(e);

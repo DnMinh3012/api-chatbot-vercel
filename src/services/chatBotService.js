@@ -17,16 +17,16 @@ const IMAGE_DETAIL_AP = "https://bit.ly/3TEnOug";
 const IMAGE_DETAIL_AP2 = "https://bit.ly/49ePag7";
 const IMAGE_DETAIL_AP3 = "https://bit.ly/49n8hVC";
 
-const IMAGE_DETAIL_FISH = "https://bit.ly/3TEWI66";
-const IMAGE_DETAIL_FISH2 = "https://bitly.is/4a2WpsR";
-const IMAGE_DETAIL_FISH3 = "https://bit.ly/3TANV5k";
+const IMAGE_DETAIL_FISH = "https://bit.ly/4ap8TuG";
+const IMAGE_DETAIL_FISH2 = "https://bit.ly/4az5cCu";
+const IMAGE_DETAIL_FISH3 = "https://bit.ly/3xftJhX";
 
 const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3VG3CdZ";
 const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3TANV5k";
 const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3TANV5k";
-const IMAGE_ROOMS1 = "https://bit.ly/3TXh8c7";
-const IMAGE_ROOMS2 = "https://bit.ly/49fXMDd";
-const IMAGE_ROOMS3 = "https://bit.ly/49lULBf";
+const IMAGE_ROOMS1 = "https://bit.ly/3PHK0CF";
+const IMAGE_ROOMS2 = "https://bit.ly/3xdblpM";
+const IMAGE_ROOMS3 = "https://bit.ly/4asUs9v";
 
 
 
@@ -412,7 +412,7 @@ let handleShowRooms = (sender_psid) => {
                             {
                                 "title": "Phòng sự kiện",
                                 "subtitle": "Phòng thích hợp cho tiệc tối đa 45 người",
-                                "image_url": IMAGE_ROOMS1,
+                                "image_url": IMAGE_ROOMS3,
                                 "buttons": [
                                     {
                                         "type": "postback",
