@@ -269,8 +269,7 @@ let callSendAPI = async (sender_psid, response) => {
         },
         "message": response
     };
-    await chatBotService.sendTypingOn(sender_psid);
-    await chatBotService.markReadMessage(sender_psid);
+
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v9.0/me/messages",
