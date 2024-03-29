@@ -81,70 +81,50 @@ let getWebhook = (req, res) => {
 
 // Handles messages events
 let handleMessage = async (sender_psid, message) => {
-    //checking quick reply
-    if (message && message.quick_reply && message.quick_reply.payload) {
-        if (message.quick_reply.payload === "SMALL" || message.quick_reply.payload === "MEDIUM" || message.quick_reply.payload === "LARGE") {
-            //asking about phone number
-            if (message.quick_reply.payload === "SMALL") user.quantity = "1-2 people";
-            if (message.quick_reply.payload === "MEDIUM") user.quantity = "2-5 people";
-            if (message.quick_reply.payload === "LARGE") user.quantity = "More than 5 people";
-            await chatBotService.markMessageSeen(sender_psid);
-            await chatBotService.sendTypingOn(sender_psid);
-            await chatBotService.sendMessageAskingPhoneNumber(sender_psid);
-            return;
+    let response;
+
+    // Checks if the message contains text
+    if (received_message.text) {
+        // Create the payload for a basic text message, which
+        // will be added to the body of our request to the Send API
+        response = {
+            "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
-        // pay load is a phone number
-        if (message.quick_reply.payload !== " ") {
-            //done a reservation
-            // npm install --save moment to use moment
-            user.phoneNumber = message.quick_reply.payload;
-            user.createdAt = moment(Date.now()).zone("+07:00").format('MM/DD/YYYY h:mm A');
-            //send a notification to Telegram Group chat by Telegram bot.
-            await chatBotService.sendNotificationToTelegram(user);
-
-            // send messages to the user
-            await chatBotService.markMessageSeen(sender_psid);
-            await chatBotService.sendTypingOn(sender_psid);
-            await chatBotService.sendMessageDoneReserveTable(sender_psid);
+    } else if (received_message.attachments) {
+        // Get the URL of the message attachment
+        let attachment_url = received_message.attachments[
+            0
+        ].payload.url;
+        response = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                        {
+                            "title": "Is this the right picture?",
+                            "subtitle": "Tap a button to answer.",
+                            "image_url": attachment_url,
+                            "buttons": [
+                                {
+                                    "type": "postback",
+                                    "title": "Yes!",
+                                    "payload": "yes",
+                                },
+                                {
+                                    "type": "postback",
+                                    "title": "No!",
+                                    "payload": "no",
+                                }
+                            ],
+                        }
+                    ]
+                }
+            }
         }
-        return;
     }
-
-    //handle text message
-    let entity = handleMessageWithEntities(message);
-    let locale = entity.locale;
-
-    await chatBotService.sendTypingOn(sender_psid);
-    await chatBotService.markMessageSeen(sender_psid);
-
-    if (entity.name === "wit$datetime:datetime") {
-        //handle quick reply message: asking about the party size , how many people
-        user.time = moment(entity.value).zone("+07:00").format('MM/DD/YYYY h:mm A');
-
-        await chatBotService.sendMessageAskingQuality(sender_psid);
-    } else if (entity.name === "wit$phone_number:phone_number") {
-        //handle quick reply message: done reserve table
-
-        user.phoneNumber = entity.value;
-        user.createdAt = moment(Date.now()).zone("+07:00").format('MM/DD/YYYY h:mm A');
-        //send a notification to Telegram Group chat by Telegram bot.
-        await chatBotService.sendNotificationToTelegram(user);
-
-        // send messages to the user
-        await chatBotService.sendMessageDoneReserveTable(sender_psid);
-
-    } else if (entity.name === "wit$greetings") {
-        // await homepageService.sendResponseGreetings(sender_psid, locale);
-    } else if (entity.name === "wit$thanks") {
-        // await homepageService.sendResponseThanks(sender_psid, locale);
-    } else if (entity.name === "wit$bye") {
-        // await homepageService.sendResponseBye(sender_psid, locale);
-    } else {
-        //default reply
-        await chatBotService.sendMessageDefaultForTheBot(sender_psid);
-    }
-
-    //handle attachment message
+    // Send the response message
+    callSendAPI(sender_psid, response);
 };
 
 let handleMessageWithEntities = (message) => {
