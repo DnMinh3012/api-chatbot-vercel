@@ -179,12 +179,12 @@ let handleSendLunchMenu = (sender_psid) => {
                         "elements": [
                             {
                                 "title": "Tráng miện",
+                                "subtitle": "Tráng miệng đa dạng",
                                 "image_url": IMAGE_AP,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Tráng miệng",
-                                        "subtitle": "Tráng miệng đa dạng",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_APPETIZERS",
                                     }
                                 ],
@@ -219,7 +219,7 @@ let handleSendLunchMenu = (sender_psid) => {
                             {
                                 "title": "Các món truyền thống",
                                 "subtitle": "Các món ngon truyền thống ẩm thực Việt Nam",
-                                "image_url": "https://bit.ly/imageClassics",
+                                "image_url": IMAGE_CLASSIC,
                                 "buttons": [
                                     {
                                         "type": "postback",
@@ -269,12 +269,12 @@ let handleSendDinnerMenu = (sender_psid) => {
                         "elements": [
                             {
                                 "title": "Tráng miện",
+                                "subtitle": "Tráng miệng đa dạng",
                                 "image_url": IMAGE_AP,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "Tráng miệng",
-                                        "subtitle": "Tráng miệng đa dạng",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_APPETIZERS",
                                     }
                                 ],
@@ -309,7 +309,7 @@ let handleSendDinnerMenu = (sender_psid) => {
                             {
                                 "title": "Các món truyền thống",
                                 "subtitle": "Các món ngon truyền thống ẩm thực Việt Nam",
-                                "image_url": "https://bit.ly/imageClassics",
+                                "image_url": IMAGE_CLASSIC,
                                 "buttons": [
                                     {
                                         "type": "postback",
