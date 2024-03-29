@@ -259,7 +259,7 @@ function callSendAPI(sender_psid, response) {
     });
 }
 let getReserveTable = (req, res) => {
-    return res.render('handleReserveTable.ejs');
+    return res.render('reserve-table.ejs');
 }
 
 let handleReserveTableAjax = async (req, res) => {

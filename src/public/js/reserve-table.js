@@ -48,3 +48,39 @@ function validateInputFields() {
 }
 
 
+function handleClickButtonReserveTable() {
+    $("#btnReserveTable").on("click", function (e) {
+        alert("1111")
+        let check = validateInputFields(); //return true or false
+
+        let data = {
+            psid: $("#psid").val(),
+            customerName: $("#customerName").val(),
+            email: $("#email").val(),
+            phoneNumber: $("#phoneNumber").val()
+        };
+
+        if (!check) {
+            //close webview
+            MessengerExtensions.requestCloseBrowser(function success() {
+                // webview closed
+            }, function error(err) {
+                // an error occurred
+                console.log(err);
+            });
+
+            //send data to node.js server 
+            $.ajax({
+                url: `${window.location.origin}/reserve-table-ajax`,
+                method: "POST",
+                data: data,
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+    });
+}
