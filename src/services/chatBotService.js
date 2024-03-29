@@ -1,6 +1,7 @@
 import request from "request";
 
 require("dotenv").config();
+const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_MAIN_MENU = "https://bit.ly/49eBGAU"
@@ -257,7 +258,7 @@ let handleSendLunchMenu = (sender_psid) => {
     });
 };
 
-let sendDinnerMenu = (sender_psid) => {
+let handleSendDinnerMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = {
@@ -694,7 +695,7 @@ let showRoomDetail = (sender_psid) => {
     })
 };
 
-let sendSalad = (sender_psid) => {
+let handleDetailSalad = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response1 = {
@@ -984,8 +985,7 @@ module.exports = {
     handleGetStartedResponding: handleGetStartedResponding,
     handleSendMainMenu: handleSendMainMenu,
     handleSendLunchMenu: handleSendLunchMenu,
-    sendDinnerMenu: sendDinnerMenu,
-    sendPubMenu: sendPubMenu,
+    handleSendDinnerMenu: handleSendDinnerMenu,
     handleDetailAppetizer: handleDetailAppetizer,
     goBackToMainMenu: goBackToMainMenu,
     goBackToLunchMenu: goBackToLunchMenu,
@@ -997,9 +997,9 @@ module.exports = {
     sendNotificationToTelegram: sendNotificationToTelegram,
     sendMessageDefaultForTheBot: sendMessageDefaultForTheBot,
     showRoomDetail: showRoomDetail,
-    sendSalad: sendSalad,
-    sendFish: sendFish,
-    sendClassic: sendClassic,
+    handleDetailSalad: handleDetailSalad,
+    handleDetailFish: handleDetailFish,
+    handleDetailClassic: handleDetailClassic,
     markMessageSeen: markMessageSeen,
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage

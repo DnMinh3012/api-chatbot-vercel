@@ -248,19 +248,14 @@ let handleSendGuideToUseBot = (sender_psid) => {
         try {
 
             let response1 = {
-                "text": "Hi there! I'm a chatbot building with Node.js platform.\nSo, What can I do? 😎" +
-                    "\n\nFirst, I can show you the restaurant's menu: lunch, dinner and pub menu, etc. " +
-                    "\n\nThen, you can make a reservation. No worry, it isn't a 'real' restaurant. Feel free to test me. 😊"
+                "text": "Xin chào! Tôi là người xây dựng chatbot trên nền tảng Node.js.\nVậy tôi có thể làm gì? 😎" +
+                    "\n\nĐầu tiên, tôi có thể cho bạn xem thực đơn của nhà hàng: thực đơn bữa trưa, bữa tối và quán rượu, v.v." +
+                    "\n\nSau đó, bạn có thể đặt chỗ trước."
             };
             let response2 = {
-                text: "Second, I can understand the sentences with meaning 'greetings', 'thanks' and 'bye'." +
-                    "\n\nE.g: If you say 'What's up 🇺🇸' or 'hola 🇪🇸' or 'hallo 🇩🇪', I know that it's a 'greetings' sentence. The same thing with 'thanks' and 'bye' sentences." +
-                    "\n\nTry to say: hello, bye, thanks a lot, Bonjour 🇫🇷, etc. you will understand what I mean. 😗"
-            };
-            let response3 = {
-                text: "Finally, remember I'm just a bot. So, That 's what can do for you today. 🤠" +
-                    "\n\nBuild this bot from scratch with Node.js:👇" +
-                    "\nYoutube: \n👉 https://bit.ly/tutorialBuildAwesomeBot"
+                text: "Để tìm hiểu thông tin kỹ hơn xin vui lòng truy cập Fanpage" +
+                    "\n\nVimaru Restaurant👇" +
+                    "\nFanpage: \n👉 https://www.facebook.com/profile.php?id=61556806597524"
             };
             let response5 = {
                 "attachment": {
@@ -271,12 +266,12 @@ let handleSendGuideToUseBot = (sender_psid) => {
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "Menu chính",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]

@@ -134,11 +134,11 @@ let handleMessage = async (sender_psid, message) => {
         await chatBotService.sendMessageDoneReserveTable(sender_psid);
 
     } else if (entity.name === "wit$greetings") {
-        await homepageService.sendResponseGreetings(sender_psid, locale);
+        // await homepageService.sendResponseGreetings(sender_psid, locale);
     } else if (entity.name === "wit$thanks") {
-        await homepageService.sendResponseThanks(sender_psid, locale);
+        // await homepageService.sendResponseThanks(sender_psid, locale);
     } else if (entity.name === "wit$bye") {
-        await homepageService.sendResponseBye(sender_psid, locale);
+        // await homepageService.sendResponseBye(sender_psid, locale);
     } else {
         //default reply
         await chatBotService.sendMessageDefaultForTheBot(sender_psid);
@@ -196,23 +196,20 @@ let handlePostback = async (sender_psid, received_postback) => {
             user.name = username;
             //send welcome response to users
 
-            await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+            await chatBotService.handleGetStartedResponding(username, sender_psid);
             break;
         case "MAIN_MENU":
             //send main menu to users
             await chatBotService.handleSendMainMenu(sender_psid);
             break;
         case "GUIDE_BOT":
-            await homepageService.sendGuideToUseBot(sender_psid);
+            await homepageService.handleSendGuideToUseBot(sender_psid);
             break;
         case "LUNCH_MENU":
-            await chatBotService.sendLunchMenu(sender_psid);
+            await chatBotService.handleSendLunchMenu(sender_psid);
             break;
         case "DINNER_MENU":
-            await chatBotService.sendDinnerMenu(sender_psid);
-            break;
-        case "PUB_MENU":
-            await chatBotService.sendPubMenu(sender_psid);
+            await chatBotService.handleSendDinnerMenu(sender_psid);
             break;
         case "RESERVE_TABLE":
             await chatBotService.handleReserveTable(sender_psid);
@@ -224,24 +221,24 @@ let handlePostback = async (sender_psid, received_postback) => {
             await chatBotService.showRoomDetail(sender_psid);
             break;
         case "SHOW_APPETIZERS":
-            await chatBotService.sendAppetizer(sender_psid);
+            await chatBotService.handleDetailAppetizer(sender_psid);
             break;
 
         case "SHOW_ENTREE_SALAD":
-            await chatBotService.sendSalad(sender_psid);
+            await chatBotService.handleDetailSalad(sender_psid);
             break;
         case "SHOW_FISH":
-            await chatBotService.sendFish(sender_psid);
+            await chatBotService.handleDetailFish(sender_psid);
             break;
         case "SHOW_CLASSICS":
-            await chatBotService.sendClassic(sender_psid);
+            await chatBotService.handleDetailClassic(sender_psid);
             break;
 
         case "BACK_TO_MAIN_MENU":
-            await chatBotService.goBackToMainMenu(sender_psid);
+            await chatBotService.BackToMainMenu(sender_psid);
             break;
         case "BACK_TO_LUNCH_MENU":
-            await chatBotService.goBackToLunchMenu(sender_psid);
+            await chatBotService.BackToLunchMenu(sender_psid);
             break;
 
         case "yes":
