@@ -8,6 +8,7 @@
 
 window.extAsyncInit = function () {
     // the Messenger Extensions JS SDK is done loading 
+
     MessengerExtensions.getContext('753933095237424',
         function success(thread_context) {
             // success
@@ -17,14 +18,15 @@ window.extAsyncInit = function () {
         },
         function error(err) {
             // error
-            console.log('Lỗi đặt bàn bot', err);
+            console.log('Lỗi đặt bàn Eric bot', err);
         }
     );
 };
 
+//validate inputs
 function validateInputFields() {
     const EMAIL_REG = /[a-zA-Z][a-zA-Z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}/g;
-    const PHONE_NUMBER_REG = /^\d{10,11}$/;
+
     let email = $("#email");
     let phoneNumber = $("#phoneNumber");
 
@@ -35,7 +37,7 @@ function validateInputFields() {
         email.removeClass("is-invalid");
     }
 
-    if (phoneNumber.val().match(PHONE_NUMBER_REG)) {
+    if (phoneNumber.val() === "") {
         phoneNumber.addClass("is-invalid");
         return true;
     } else {
@@ -44,6 +46,7 @@ function validateInputFields() {
 
     return false;
 }
+
 
 function handleClickButtonReserveTable() {
     $("#btnReserveTable").on("click", function (e) {
