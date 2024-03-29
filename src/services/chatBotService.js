@@ -21,12 +21,13 @@ const IMAGE_DETAIL_FISH = "https://bit.ly/4ap8TuG";
 const IMAGE_DETAIL_FISH2 = "https://bit.ly/4az5cCu";
 const IMAGE_DETAIL_FISH3 = "https://bit.ly/3xftJhX";
 
-const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3VG3CdZ";
-const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3TANV5k";
-const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3TANV5k";
-const IMAGE_ROOMS1 = "https://bit.ly/3PHK0CF";
-const IMAGE_ROOMS2 = "https://bit.ly/3xdblpM";
-const IMAGE_ROOMS3 = "https://bit.ly/4asUs9v";
+const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/4asUs9v";
+const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3xdblpM";
+const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3PHK0CF";
+
+const IMAGE_ROOMS1 = "https://bit.ly/3TXh8c7";
+const IMAGE_ROOMS2 = "https://bit.ly/49fXMDd";
+const IMAGE_ROOMS3 = "https://bit.ly/49lULBf";
 
 
 
@@ -690,9 +691,11 @@ let handleShowDetailRooms = (sender_psid) => {
                                 "payload": "MAIN_MENU"
                             },
                             {
-                                "type": "postback",
+                                "type": "web_url",
+                                "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                 "title": "Đặt bàn",
-                                "payload": "RESERVE_TABLE",
+                                "webview_height_ratio": "tall",
+                                "messenger_extensions": true
                             }
                         ]
                     }
@@ -735,9 +738,12 @@ let handleDetailSalad = (sender_psid) => {
                                 "payload": "MAIN_MENU"
                             },
                             {
-                                "type": "postback",
-                                "title": "RESERVE A TABLE",
-                                "payload": "RESERVE_TABLE",
+
+                                "type": "web_url",
+                                "url": `${process.env.URL_WEB_VIEW_ORDER}`,
+                                "title": "Đặt bàn",
+                                "webview_height_ratio": "tall",
+                                "messenger_extensions": true
                             }
                         ]
                     }
@@ -798,9 +804,12 @@ let handleDetailAppetizer = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
@@ -858,9 +867,11 @@ let handleDetailFish = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }

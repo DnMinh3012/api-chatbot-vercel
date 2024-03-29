@@ -261,8 +261,35 @@ function callSendAPI(sender_psid, response) {
 let getReserveTable = (req, res) => {
     return res.render('handleReserveTable.ejs');
 }
+
+let handleReserveTableAjax = async (req, res) => {
+    try {
+        let customerName = "";
+        if (req.body.customerName === "") {
+            customerName = "trong";
+        } else customerName = req.body.customerName;
+
+        let response1 = {
+            "text": `Thong tin khach dat ban
+            \nHo va ten: ${customerName}
+            \nEmail: ${req.body.email}
+            \nSo Dien Thoai: ${req.body.phoneNumber}`
+        }
+
+        await chatBotService.sendMessage(req.body.psid, response1)
+        return res.status(200).json({
+            message: 'ok'
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: 'Sever Error'
+        })
+    }
+}
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
+    handleReserveTableAjax: handleReserveTableAjax,
 };
