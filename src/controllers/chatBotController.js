@@ -40,6 +40,7 @@ let postWebhook = (req, res) => {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback);
+                console.log("postback correct")
             }
 
         });
