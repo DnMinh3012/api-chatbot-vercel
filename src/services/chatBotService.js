@@ -650,7 +650,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
     });
 };
 
-let showRoomDetail = (sender_psid) => {
+let handleShowDetailRooms = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response1 = {
@@ -990,7 +990,7 @@ let setupPersistentMenu = async (req, res) => {
                     {
                         "type": "postback",
                         "title": "Khởi động lại Bot",
-                        "payload": "RE_STARTED"
+                        "payload": "RESTART_BOT"
                     },
                     {
                         "type": "web_url",
@@ -1036,7 +1036,7 @@ module.exports = {
     sendMessageDoneReserveTable: sendMessageDoneReserveTable,
     sendNotificationToTelegram: sendNotificationToTelegram,
     sendMessageDefaultForTheBot: sendMessageDefaultForTheBot,
-    showRoomDetail: showRoomDetail,
+    handleShowDetailRooms: handleShowDetailRooms,
     handleDetailSalad: handleDetailSalad,
     handleDetailFish: handleDetailFish,
     handleDetailClassic: handleDetailClassic,
