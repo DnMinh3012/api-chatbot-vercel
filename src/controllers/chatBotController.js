@@ -275,11 +275,11 @@ let handleReserveTableAjax = async (req, res) => {
             \nEmail: ${req.body.email}
             \nSo Dien Thoai: ${req.body.phoneNumber}`
         }
-        console.log("psid: ", req.body.psid)
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
             message: 'ok'
         })
+        console.log("psid: ", req.body.psid)
     } catch (e) {
         console.log("Loi Reserve table: ", e);
         return res.status(500).json({
