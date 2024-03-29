@@ -994,7 +994,7 @@ let setupPersistentMenu = async (req, res) => {
                     },
                     {
                         "type": "web_url",
-                        "title": "Truy cập FanPage Vỉmaru Restaurant",
+                        "title": "Truy cập FanPage",
                         "url": "https://www.facebook.com/profile.php?id=61556806597524",
                         "webview_height_ratio": "full"
                     }
@@ -1004,7 +1004,7 @@ let setupPersistentMenu = async (req, res) => {
     }
     // Send the HTTP request to the Messenger Platform
     await request({
-        "uri": `https: //graph.facebook.com/v18.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
+        "uri": `https://graph.facebook.com/v18.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
         "qs": {
             "access_token": PAGE_ACCESS_TOKEN
         },
