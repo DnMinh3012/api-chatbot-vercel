@@ -424,16 +424,16 @@ let handleShowRooms = (sender_psid) => {
 
                             {
                                 "title": "Go back",
-                                "image_url": " https://bit.ly/imageToSend",
+                                "image_url": IMAGE_MAIN_MENU4,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "BACK TO MAIN MENU",
+                                        "title": "Quay lại Menu",
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -671,16 +671,16 @@ let handleShowDetailRooms = (sender_psid) => {
                     "type": "template",
                     "payload": {
                         "template_type": "button",
-                        "text": `The rooms is suited for parties up to 45 people.`,
+                        "text": `Phòng thích hợp cho tiệc tối đa 45 người.`,
                         "buttons": [
                             {
                                 "type": "postback",
-                                "title": "SHOW MAIN MENU",
+                                "title": "Xem Menu",
                                 "payload": "MAIN_MENU"
                             },
                             {
                                 "type": "postback",
-                                "title": "RESERVE A TABLE",
+                                "title": "Đặt bàn",
                                 "payload": "RESERVE_TABLE",
                             }
                         ]
@@ -808,30 +808,50 @@ let handleDetailAppetizer = (sender_psid) => {
 let handleDetailFish = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": URL_SHOW_FISH
-                    }
-                }
-            };
-            let response2 = {
+            let response = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "button",
-                        "text": `Fish fry \n$60.00`,
-                        "buttons": [
+                        "template_type": "generic",
+                        "elements": [
                             {
-                                "type": "postback",
-                                "title": "SHOW MAIN MENU",
-                                "payload": "MAIN_MENU"
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_FISH,
                             },
+
                             {
-                                "type": "postback",
-                                "title": "RESERVE A TABLE",
-                                "payload": "RESERVE_TABLE",
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_FISH2,
+                            },
+
+                            {
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_FISH3,
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_MAIN_MENU4,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại",
+                                        "payload": "BACK_TO_LUNCH_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại menu chính",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
                             }
                         ]
                     }
@@ -839,11 +859,7 @@ let handleDetailFish = (sender_psid) => {
             };
 
             await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            resolve("done");
+            await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
         }
@@ -853,30 +869,50 @@ let handleDetailFish = (sender_psid) => {
 let handleDetailClassic = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": URL_SHOW_CLASSIC
-                    }
-                }
-            };
-            let response2 = {
+            let response = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "button",
-                        "text": `Perfect oven baked fries \n$30.00`,
-                        "buttons": [
+                        "template_type": "generic",
+                        "elements": [
                             {
-                                "type": "postback",
-                                "title": "SHOW MAIN MENU",
-                                "payload": "MAIN_MENU"
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_CLASSIC1,
                             },
+
                             {
-                                "type": "postback",
-                                "title": "RESERVE A TABLE",
-                                "payload": "RESERVE_TABLE",
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_CLASSIC2,
+                            },
+
+                            {
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_CLASSIC3,
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_MAIN_MENU4,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại",
+                                        "payload": "BACK_TO_LUNCH_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại menu chính",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
                             }
                         ]
                     }
@@ -884,11 +920,7 @@ let handleDetailClassic = (sender_psid) => {
             };
 
             await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            resolve("done");
+            await sendMessage(sender_psid, response);
         } catch (e) {
             reject(e);
         }
