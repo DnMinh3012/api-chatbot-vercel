@@ -352,7 +352,7 @@ let handleBackToMainMenu = (sender_psid) => {
     handleSendMainMenu(sender_psid);
 };
 
-let goBackToLunchMenu = (sender_psid) => {
+let handleBackToLunchMenu = (sender_psid) => {
     handleSendLunchMenu(sender_psid);
 };
 
