@@ -212,9 +212,6 @@ let handlePostback = async (sender_psid, received_postback) => {
         case "DINNER_MENU":
             await chatBotService.handleSendDinnerMenu(sender_psid);
             break;
-        case "RESERVE_TABLE":
-            await chatBotService.handleReserveTable(sender_psid);
-            break;
         case "SHOW_ROOMS":
             await chatBotService.handleShowRooms(sender_psid);
             break;
@@ -281,8 +278,11 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
-
+let getReserveTable = (req, res) => {
+    return res.render('handleReserveTable.ejs');
+}
 module.exports = {
     postWebhook: postWebhook,
-    getWebhook: getWebhook
+    getWebhook: getWebhook,
+    getReserveTable: getReserveTable,
 };

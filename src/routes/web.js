@@ -7,6 +7,7 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
     router.get("/", homepageController.getHomepage);
+    router.get("/form-reserve-table", chatBotController.getReserveTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);
     router.get("/profile", homepageController.getFacebookUserProfile);
