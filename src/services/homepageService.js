@@ -39,7 +39,7 @@ let setUpMessengerPlatform = (PAGE_ACCESS_TOKEN) => {
                 ],
 
                 "whitelisted_domains": [
-                    process.env.SERVER_URL                ]
+                    process.env.SERVER_URL]
             };
 
             request({
@@ -243,12 +243,12 @@ let sendResponseBye = (sender_psid, locale) => {
     });
 };
 
-let sendGuideToUseBot = (sender_psid) => {
+let handleSendGuideToUseBot = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
 
             let response1 = {
-                "text" : "Hi there! I'm a chatbot building with Node.js platform.\nSo, What can I do? 😎" +
+                "text": "Hi there! I'm a chatbot building with Node.js platform.\nSo, What can I do? 😎" +
                     "\n\nFirst, I can show you the restaurant's menu: lunch, dinner and pub menu, etc. " +
                     "\n\nThen, you can make a reservation. No worry, it isn't a 'real' restaurant. Feel free to test me. 😊"
             };
@@ -258,7 +258,7 @@ let sendGuideToUseBot = (sender_psid) => {
                     "\n\nTry to say: hello, bye, thanks a lot, Bonjour 🇫🇷, etc. you will understand what I mean. 😗"
             };
             let response3 = {
-                text:  "Finally, remember I'm just a bot. So, That 's what can do for you today. 🤠" +
+                text: "Finally, remember I'm just a bot. So, That 's what can do for you today. 🤠" +
                     "\n\nBuild this bot from scratch with Node.js:👇" +
                     "\nYoutube: \n👉 https://bit.ly/tutorialBuildAwesomeBot"
             };
@@ -304,5 +304,5 @@ module.exports = {
     sendResponseGreetings: sendResponseGreetings,
     sendResponseThanks: sendResponseThanks,
     sendResponseBye: sendResponseBye,
-    sendGuideToUseBot: sendGuideToUseBot
+    handleSendGuideToUseBot: handleSendGuideToUseBot
 };

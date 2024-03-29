@@ -23,7 +23,7 @@ let postWebhook = (req, res) => {
     if (body.object === 'page') {
 
         // Iterate over each entry - there may be multiple if batched
-        body.entry.forEach(function(entry) {
+        body.entry.forEach(function (entry) {
 
             // Gets the body of the webhook event
             let webhook_event = entry.messaging[0];
@@ -148,7 +148,7 @@ let handleMessage = async (sender_psid, message) => {
 };
 
 let handleMessageWithEntities = (message) => {
-    let entitiesArr = [ "wit$datetime:datetime", "wit$phone_number:phone_number", "wit$greetings", "wit$thanks", "wit$bye" ];
+    let entitiesArr = ["wit$datetime:datetime", "wit$phone_number:phone_number", "wit$greetings", "wit$thanks", "wit$bye"];
     let entityChosen = "";
     let data = {}; // data is an object saving value and name of the entity.
     entitiesArr.forEach((name) => {
@@ -200,7 +200,7 @@ let handlePostback = async (sender_psid, received_postback) => {
             break;
         case "MAIN_MENU":
             //send main menu to users
-            await chatBotService.sendMainMenu(sender_psid);
+            await chatBotService.handleSendMainMenu(sender_psid);
             break;
         case "GUIDE_BOT":
             await homepageService.sendGuideToUseBot(sender_psid);

@@ -3,10 +3,29 @@ import request from "request";
 require("dotenv").config();
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
-const URL_SALAD_GIF = "https://media0.giphy.com/media/9Vk8qP9EmWB8FePccb/giphy.gif?cid=ecf05e478d0c93d69e72264c8ebbf58a9a1d7ae294754131&rid=giphy.gif";
-const URL_SHOW_FISH = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ztjeouq2jlas5b2zxksm";
-const URL_SHOW_CLASSIC = "https://ardo.com/files/attachments/.10202/w1440h700q85_AZ1.jpg";
+const IMAGE_MAIN_MENU = "https://bit.ly/49eBGAU"
+const IMAGE_MAIN_MENU2 = "https://bit.ly/4aoMzBy"
+const IMAGE_MAIN_MENU3 = "https://bit.ly/4aumRvg"
+const IMAGE_MAIN_MENU4 = "https://bit.ly/3PEVSVH"
+
+const IMAGE_FISH = "https://bit.ly/3x8sJMe";
+const IMAGE_AP = "https://bit.ly/3IWplGV";
+const IMAGE_CLASSIC = "https://bit.ly/3TvzRdc";
+
+const IMAGE_DETAIL_AP = "https://bit.ly/3TEnOug";
+const IMAGE_DETAIL_AP2 = "https://bit.ly/49ePag7";
+const IMAGE_DETAIL_AP3 = "https://bit.ly/49n8hVC";
+
+const IMAGE_DETAIL_FISH = "https://bit.ly/3TEWI66";
+const IMAGE_DETAIL_FISH2 = "https://bitly.is/4a2WpsR";
+const IMAGE_DETAIL_FISH3 = "https://bit.ly/3TANV5k";
+
+const IMAGE_DETAIL_CLASSIC1 = "https://bit.ly/3VG3CdZ";
+const IMAGE_DETAIL_CLASSIC2 = "https://bit.ly/3TANV5k";
+const IMAGE_DETAIL_CLASSIC3 = "https://bit.ly/3TANV5k";
+
+
+
 let getFacebookUsername = (sender_psid) => {
     return new Promise((resolve, reject) => {
         // Send the HTTP request to the Messenger Platform
@@ -27,10 +46,10 @@ let getFacebookUsername = (sender_psid) => {
     });
 };
 
-let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
+let handleGetStartedResponding = (username, sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response_first = { "text": `Welcome ${username} to HaryPhamDev's Restaurant` };
+            let response_first = { "text": `Xin chào ${username} đến Vimaru Restaurant` };
             let response_second = {
                 "attachment": {
                     "type": "template",
@@ -38,27 +57,27 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "HaryPhamDev 's restaurant",
-                                "subtitle": "My restaurant is legendary, its classic wine collection equally so.",
+                                "title": "Vimaru restaurant",
+                                "subtitle": "Xin được phục vụ cho bạn những món ngon nhất",
                                 "image_url": "https://bit.ly/imageToSend",
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW MAIN MENU",
+                                        "title": "MENU",
                                         "payload": "MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "GUIDE TO USE THIS BOT",
+                                        "title": "Hướng dẫn sử dụng Bot",
                                         "payload": "GUIDE_BOT",
                                     }
                                 ],
-                            } ]
+                            }]
                     }
                 }
             };
@@ -79,7 +98,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
     });
 };
 
-let sendMainMenu = (sender_psid) => {
+let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = {
@@ -89,49 +108,45 @@ let sendMainMenu = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Our menus",
-                                "subtitle": "We are pleased to offer you a wide-range of menu for lunch or dinner.",
-                                "image_url": "https://bit.ly/imageMenu",
+                                "title": "Menu chính",
+                                "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ 2 loại menu sau",
+                                "image_url": IMAGE_MAIN_MENU,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "LUNCH MENU",
+                                        "title": "Buổi trưa",
                                         "payload": "LUNCH_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "DINNER MENU",
+                                        "title": "Buổi tối",
                                         "payload": "DINNER_MENU",
                                     },
-                                    {
-                                        "type": "postback",
-                                        "title": "PUB MENU",
-                                        "payload": "PUB_MENU",
-                                    }
+
                                 ],
                             },
 
                             {
-                                "title": "Hours",
-                                "subtitle": "MON-FRI 10AM - 11PM  | SAT 5PM - 10PM | SUN 5PM - 9PM",
-                                "image_url": " https://bit.ly/imageOpening",
+                                "title": "Giờ mở của",
+                                "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
+                                "image_url": IMAGE_MAIN_MENU2,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Banquet Rooms",
-                                "subtitle": "Restaurant accommodates up to 300 seated guests and similar at cocktail receptions",
-                                "image_url": " https://bit.ly/imageShowRooms",
+                                "title": "Không gian nhà hàng",
+                                "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
+                                "image_url": IMAGE_MAIN_MENU3,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW ROOMS",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_ROOMS",
                                     }
                                 ],
@@ -152,7 +167,7 @@ let sendMainMenu = (sender_psid) => {
 
 };
 
-let sendLunchMenu = (sender_psid) => {
+let handleSendLunchMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = {
@@ -162,44 +177,47 @@ let sendLunchMenu = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Appetizers",
-                                "image_url": "https://bit.ly/imageAppetizer",
+                                "title": "Tráng miện",
+                                "image_url": IMAGE_AP,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW APPETIZERS",
+                                        "title": "Tráng miệng",
+                                        "subtitle": "Tráng miệng đa dạng",
                                         "payload": "SHOW_APPETIZERS",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Entree Salad",
+                                "title": "Salad",
+                                "subtitle": "Salad cho người ăn chay",
                                 "image_url": "https://bit.ly/imageSalad",
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW ENTREE SALAD",
+                                        "title": "Xem chi tiết",
                                         "payload": "SHOW_ENTREE_SALAD",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Fish and Shell Fish",
-                                "image_url": "https://bit.ly/imageFish",
+                                "title": "Các món cá",
+                                "subtitle": "Cá 7 món",
+                                "image_url": IMAGE_FISH,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW FISH",
+                                        "title": "xem chi tiết",
                                         "payload": "SHOW_FISH",
                                     }
                                 ],
                             },
 
                             {
-                                "title": "Skeens Classics",
-                                "subtitle": "and Dry-aged on Premise",
+                                "title": "Các món truyền thống",
+                                "subtitle": "Các món ngon truyền thống ẩm thực Việt Nam",
                                 "image_url": "https://bit.ly/imageClassics",
                                 "buttons": [
                                     {
@@ -211,17 +229,17 @@ let sendLunchMenu = (sender_psid) => {
                             },
 
                             {
-                                "title": "Go back",
-                                "image_url": " https://bit.ly/imageToSend",
+                                "title": "Quay lại MENU chính",
+                                "image_url": IMAGE_MAIN_MENU4,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "BACK TO MAIN MENU",
+                                        "title": "Quay lại",
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -242,183 +260,6 @@ let sendLunchMenu = (sender_psid) => {
 let sendDinnerMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "text": "Lump crab cocktail\n$25.00"
-            };
-            let response2 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://djfoodie.com/wp-content/uploads/Crab-Cocktail-3-800.jpg"
-                    }
-                }
-            };
-
-            let response3 = {
-                "text": "House cured salmon\n$16.00"
-            };
-            let response4 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://www.thespruceeats.com/thmb/rys3IyH2DB6Ma_r4IQ6emN-2jYw=/4494x3000/filters:fill(auto,1)/simple-homemade-gravlax-recipe-2216618_hero-01-592dadcba64743f98aa1f7a14f81d5b4.jpg"
-                    }
-                }
-            };
-
-            let response5 = {
-                "text": "Steamed Whole Maine Lobsters\n$35.00"
-            };
-            let response6 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://portcitydaily.com/wp-content/uploads/For-the-Shell-of-It.jpg"
-                    }
-                }
-            };
-
-            let response7 = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": `Back to main menu or make a reservation ?`,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "SHOW MAIN MENU",
-                                "payload": "MAIN_MENU"
-                            },
-                            {
-                                "type": "postback",
-                                "title": "RESERVE A TABLE",
-                                "payload": "RESERVE_TABLE",
-                            }
-                        ]
-                    }
-                }
-            };
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response3);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response4);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response5);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response6);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response7);
-
-            resolve("done");
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
-
-let sendPubMenu = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let response1 = {
-                "text": "Hamburger with French Fries\n$19.50"
-            };
-            let response2 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://previews.123rf.com/images/genmike/genmike1411/genmike141100010/33951440-burger-and-french-fries.jpg"
-                    }
-                }
-            };
-
-            let response3 = {
-                "text": "Ham and Cheese on a Baguette as Salad or Sandwich\n$21.00"
-            };
-            let response4 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://s3-ap-southeast-1.amazonaws.com/v3-live.image.oddle.me/product/Blackforesthamcheesebfd18d.jpg"
-                    }
-                }
-            };
-
-            let response5 = {
-                "text": "Braised short rib salad\n$29.50"
-            };
-            let response6 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/ribs_0.jpg?itok=bOf0t_NF"
-                    }
-                }
-            };
-
-            let response7 = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": `Back to main menu or make a reservation ?`,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "SHOW MAIN MENU",
-                                "payload": "MAIN_MENU"
-                            },
-                            {
-                                "type": "postback",
-                                "title": "RESERVE A TABLE",
-                                "payload": "RESERVE_TABLE",
-                            }
-                        ]
-                    }
-                }
-            };
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response3);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response4);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response5);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response6);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response7);
-            resolve("done");
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
-
-let sendAppetizer = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
             let response = {
                 "attachment": {
                     "type": "template",
@@ -426,40 +267,69 @@ let sendAppetizer = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Little Neck Clams on the Half Shell",
-                                "subtitle": "Dozen - $20.00",
-                                "image_url": "https://bit.ly/appetizers1",
-                            },
-
-                            {
-                                "title": "Fresh Oysters",
-                                "subtitle": "1/2 Dozen - $21.00 | Dozen - $40.00",
-                                "image_url": "https://bit.ly/appetizers2",
-                            },
-
-                            {
-                                "title": "Lobster Salad",
-                                "subtitle": "Half Lobster with Avocado and Grapefruit",
-                                "image_url": "https://bit.ly/appetizers3",
-                            },
-
-                            {
-                                "title": "Go back",
-                                "image_url": " https://bit.ly/imageToSend",
+                                "title": "Tráng miện",
+                                "image_url": IMAGE_AP,
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW LUNCH MENU",
-                                        "payload": "BACK_TO_LUNCH_MENU",
-                                    },
+                                        "title": "Tráng miệng",
+                                        "subtitle": "Tráng miệng đa dạng",
+                                        "payload": "SHOW_APPETIZERS",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Salad",
+                                "subtitle": "Salad cho người ăn chay",
+                                "image_url": "https://bit.ly/imageSalad",
+                                "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "BACK TO MAIN MENU",
+                                        "title": "Xem chi tiết",
+                                        "payload": "SHOW_ENTREE_SALAD",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Các món cá",
+                                "subtitle": "Cá 7 món",
+                                "image_url": IMAGE_FISH,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "xem chi tiết",
+                                        "payload": "SHOW_FISH",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Các món truyền thống",
+                                "subtitle": "Các món ngon truyền thống ẩm thực Việt Nam",
+                                "image_url": "https://bit.ly/imageClassics",
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "SHOW CLASSICS",
+                                        "payload": "SHOW_CLASSICS",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Quay lại MENU chính",
+                                "image_url": IMAGE_MAIN_MENU4,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại",
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
+                                        "title": "Đặt bàn",
                                         "payload": "RESERVE_TABLE",
                                     }
                                 ],
@@ -468,9 +338,9 @@ let sendAppetizer = (sender_psid) => {
                     }
                 }
             };
-
             await sendTypingOn(sender_psid);
             await sendMessage(sender_psid, response);
+            resolve("done");
         } catch (e) {
             reject(e);
         }
@@ -478,11 +348,11 @@ let sendAppetizer = (sender_psid) => {
 };
 
 let goBackToMainMenu = (sender_psid) => {
-    sendMainMenu(sender_psid);
+    handleSendMainMenu(sender_psid);
 };
 
 let goBackToLunchMenu = (sender_psid) => {
-    sendLunchMenu(sender_psid);
+    handleSendLunchMenu(sender_psid);
 };
 
 let handleReserveTable = (sender_psid) => {
@@ -679,9 +549,9 @@ let sendMessageDoneReserveTable = async (sender_id) => {
                             "payload": "MAIN_MENU"
                         },
                         {
-                            "type":"phone_number",
-                            "title":"☎ HOT LINE",
-                            "payload":"+911911"
+                            "type": "phone_number",
+                            "title": "☎ HOT LINE",
+                            "payload": "+911911"
                         },
                         {
                             "type": "postback",
@@ -736,8 +606,8 @@ let sendNotificationToTelegram = (user) => {
 };
 
 let sendMessageDefaultForTheBot = (sender_psid) => {
-    return new Promise (async (resolve, reject) => {
-        try{
+    return new Promise(async (resolve, reject) => {
+        try {
             let response1 = {
                 "text": "Sorry, I'm just a bot, man ^^ \nYou can test me with all these buttons or try to make a reservation.\n\nThis video may help you to understand me 😉"
             };
@@ -773,7 +643,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
             await sendTypingOn(sender_psid);
             await sendMessage(sender_psid, response2);
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -781,7 +651,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
 
 let showRoomDetail = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -818,7 +688,7 @@ let showRoomDetail = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done!");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     })
@@ -826,7 +696,7 @@ let showRoomDetail = (sender_psid) => {
 
 let sendSalad = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -863,15 +733,75 @@ let sendSalad = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
 };
 
-let sendFish = (sender_psid) => {
+let handleDetailAppetizer = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
+            let response = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_AP,
+                            },
+
+                            {
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_AP2,
+                            },
+
+                            {
+                                "title": "Bánh kếp đậu đỏ",
+                                "subtitle": "Giá - $20.00",
+                                "image_url": IMAGE_DETAIL_AP3,
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_MAIN_MENU4,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại",
+                                        "payload": "BACK_TO_LUNCH_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại menu chính",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                }
+            };
+
+            await sendTypingOn(sender_psid);
+            await sendMessage(sender_psid, response);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+let handleDetailFish = (sender_psid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -908,15 +838,15 @@ let sendFish = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
 };
 
-let sendClassic = (sender_psid) => {
+let handleDetailClassic = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = {
                 "attachment": {
                     "type": "image",
@@ -953,7 +883,7 @@ let sendClassic = (sender_psid) => {
             await sendMessage(sender_psid, response2);
 
             resolve("done");
-        }catch (e) {
+        } catch (e) {
             reject(e);
         }
     });
@@ -992,42 +922,13 @@ let sendMessage = (sender_psid, response) => {
 };
 
 let sendTypingOn = (sender_psid) => {
-    return new Promise ((resolve, reject) => {
-       try{
-           let request_body = {
-               "recipient": {
-                   "id": sender_psid
-               },
-               "sender_action":"typing_on"
-           };
-
-           // Send the HTTP request to the Messenger Platform
-           request({
-               "uri": "https://graph.facebook.com/v6.0/me/messages",
-               "qs": { "access_token": PAGE_ACCESS_TOKEN },
-               "method": "POST",
-               "json": request_body
-           }, (err, res, body) => {
-               if (!err) {
-                   resolve('done!')
-               } else {
-                   reject("Unable to send message:" + err);
-               }
-           });
-       } catch (e) {
-           reject(e);
-       }
-    });
-};
-
-let markMessageSeen = (sender_psid) => {
     return new Promise((resolve, reject) => {
         try {
             let request_body = {
                 "recipient": {
                     "id": sender_psid
                 },
-                "sender_action":"mark_seen"
+                "sender_action": "typing_on"
             };
 
             // Send the HTTP request to the Messenger Platform
@@ -1043,20 +944,49 @@ let markMessageSeen = (sender_psid) => {
                     reject("Unable to send message:" + err);
                 }
             });
-        }catch (e) {
-          reject(e);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let markMessageSeen = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "mark_seen"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
         }
     });
 };
 
 module.exports = {
     getFacebookUsername: getFacebookUsername,
-    sendResponseWelcomeNewCustomer: sendResponseWelcomeNewCustomer,
-    sendMainMenu: sendMainMenu,
-    sendLunchMenu: sendLunchMenu,
+    handleGetStartedResponding: handleGetStartedResponding,
+    handleSendMainMenu: handleSendMainMenu,
+    handleSendLunchMenu: handleSendLunchMenu,
     sendDinnerMenu: sendDinnerMenu,
     sendPubMenu: sendPubMenu,
-    sendAppetizer: sendAppetizer,
+    handleDetailAppetizer: handleDetailAppetizer,
     goBackToMainMenu: goBackToMainMenu,
     goBackToLunchMenu: goBackToLunchMenu,
     handleReserveTable: handleReserveTable,
@@ -1065,11 +995,11 @@ module.exports = {
     sendMessageAskingPhoneNumber: sendMessageAskingPhoneNumber,
     sendMessageDoneReserveTable: sendMessageDoneReserveTable,
     sendNotificationToTelegram: sendNotificationToTelegram,
-    sendMessageDefaultForTheBot:sendMessageDefaultForTheBot,
+    sendMessageDefaultForTheBot: sendMessageDefaultForTheBot,
     showRoomDetail: showRoomDetail,
     sendSalad: sendSalad,
     sendFish: sendFish,
-    sendClassic:sendClassic,
+    sendClassic: sendClassic,
     markMessageSeen: markMessageSeen,
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage
