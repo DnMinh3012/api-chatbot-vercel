@@ -73,9 +73,11 @@ let handleGetStartedResponding = (username, sender_psid) => {
                                         "payload": "MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     },
                                     {
                                         "type": "postback",
@@ -138,9 +140,12 @@ let handleSendMainMenu = (sender_psid) => {
                                 "image_url": IMAGE_MAIN_MENU2,
                                 "buttons": [
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             },
@@ -244,9 +249,12 @@ let handleSendLunchMenu = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
@@ -334,9 +342,12 @@ let handleSendDinnerMenu = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
@@ -432,9 +443,12 @@ let handleShowRooms = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
@@ -787,9 +801,12 @@ let handleDetailAppetizer = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
@@ -847,9 +864,12 @@ let handleDetailFish = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
@@ -908,9 +928,12 @@ let handleDetailClassic = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "postback",
+
+                                        "type": "web_url",
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                                         "title": "Đặt bàn",
-                                        "payload": "RESERVE_TABLE",
+                                        "webview_height_ratio": "tall",
+                                        "messenger_extensions": true
                                     }
                                 ],
                             }
