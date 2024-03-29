@@ -268,85 +268,86 @@ let HandleSendLunchMenu = (sender_psid) => {
 let HandleSendDinnerMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "text": "Lump crab cocktail\n$25.00"
-            };
-            let response2 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://djfoodie.com/wp-content/uploads/Crab-Cocktail-3-800.jpg"
-                    }
-                }
-            };
-
-            let response3 = {
-                "text": "House cured salmon\n$16.00"
-            };
-            let response4 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://www.thespruceeats.com/thmb/rys3IyH2DB6Ma_r4IQ6emN-2jYw=/4494x3000/filters:fill(auto,1)/simple-homemade-gravlax-recipe-2216618_hero-01-592dadcba64743f98aa1f7a14f81d5b4.jpg"
-                    }
-                }
-            };
-
-            let response5 = {
-                "text": "Steamed Whole Maine Lobsters\n$35.00"
-            };
-            let response6 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": "https://portcitydaily.com/wp-content/uploads/For-the-Shell-of-It.jpg"
-                    }
-                }
-            };
-
-            let response7 = {
+            let response = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "button",
-                        "text": `Quay lại menu chính hoặc đặt bàn?`,
-                        "buttons": [
+                        "template_type": "generic",
+                        "elements": [
                             {
-                                "type": "postback",
-                                "title": "MENU",
-                                "payload": "MAIN_MENU"
+                                "title": "Món tráng miệng",
+                                "subtitle": "Nhà hàng có rất nhiều món tráng miệng hấp dẫn",
+                                "image_url": APPETIZERS_IMAGE,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Xem chi tiết",
+                                        "payload": "SHOW_APPETIZERS",
+                                    }
+                                ],
                             },
+
                             {
-                                "type": "postback",
-                                "title": "Đặt bàn",
-                                "payload": "RESERVE_TABLE",
+                                "title": "Salad",
+                                "subtitle": "Salad cho người ăn chay",
+                                "image_url": IMAGE_SALAD,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Xem chi tiết",
+                                        "payload": "SHOW_ENTREE_SALAD",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Cá 7 món",
+                                "subtitle": "Cá chép om dưa",
+                                "image_url": FISH_IMAGE,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Xem chi tiết",
+                                        "payload": "SHOW_FISH",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Các món truyền thống",
+                                "subtitle": "Các món ăn Việt Nam truyền thống ",
+                                "image_url": SHOW_CLASSICS_IMAGE,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Xem chi tiết",
+                                        "payload": "SHOW_CLASSICS",
+                                    }
+                                ],
+                            },
+
+                            {
+                                "title": "Go back",
+                                "image_url": IMAGE_BACK_MAIN_MENU,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay lại MENU chính",
+                                        "payload": "BACK_TO_MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "RESERVE_TABLE",
+                                    }
+                                ],
                             }
                         ]
                     }
                 }
             };
-
             await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response3);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response4);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response5);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response6);
-
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response7);
-
+            await sendMessage(sender_psid, response);
             resolve("done");
         } catch (e) {
             reject(e);
@@ -464,7 +465,7 @@ let handleReserveTable = (sender_psid) => {
     });
 };
 
-let handleShowRooms = (sender_psid) => {
+let handleShowDetailRooms = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = {
@@ -1118,7 +1119,7 @@ module.exports = {
     handleBackToMainMenu: handleBackToMainMenu,
     handleBackToLunchMenu: handleBackToLunchMenu,
     handleReserveTable: handleReserveTable,
-    handleShowRooms: handleShowRooms,
+    handleShowDetailRooms: handleShowDetailRooms,
     sendMessageAskingQuality: sendMessageAskingQuality,
     sendMessageAskingPhoneNumber: sendMessageAskingPhoneNumber,
     sendMessageDoneReserveTable: sendMessageDoneReserveTable,
