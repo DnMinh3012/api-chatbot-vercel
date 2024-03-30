@@ -464,79 +464,6 @@ let handleShowRooms = (sender_psid) => {
     });
 };
 
-let sendMessageAskingQuality = (sender_id) => {
-    let request_body = {
-        "recipient": {
-            "id": sender_id
-        },
-        "messaging_type": "RESPONSE",
-        "message": {
-            "text": "What is your party size ?",
-            "quick_replies": [
-                {
-                    "content_type": "text",
-                    "title": "1-2",
-                    "payload": "SMALL",
-                }, {
-                    "content_type": "text",
-                    "title": "2-5",
-                    "payload": "MEDIUM",
-                },
-                {
-                    "content_type": "text",
-                    "title": "more than 5",
-                    "payload": "LARGE",
-                }
-            ]
-        }
-    };
-
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
-};
-
-let sendMessageAskingPhoneNumber = (sender_id) => {
-    let request_body = {
-        "recipient": {
-            "id": sender_id
-        },
-        "messaging_type": "RESPONSE",
-        "message": {
-            "text": "Thank you. And what's the best phone number for us to reach you at?",
-            "quick_replies": [
-                {
-                    "content_type": "user_phone_number",
-                }
-            ]
-        }
-    };
-
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
-};
-
 let sendMessageDoneReserveTable = async (sender_id) => {
     try {
         let response = {
@@ -587,41 +514,6 @@ let sendMessageDoneReserveTable = async (sender_id) => {
     }
 };
 
-let sendNotificationToTelegram = (user) => {
-    return new Promise((resolve, reject) => {
-        try {
-            let request_body = {
-                chat_id: process.env.TELEGRAM_GROUP_ID,
-                parse_mode: "HTML",
-                text: `
-| --- <b>A new reservation</b> --- |
-| ------------------------------------------------|
-| 1. Username: <b>${user.name}</b>   |
-| 2. Phone number: <b>${user.phoneNumber}</b> |
-| 3. Time: <b>${user.time}</b> |
-| 4. Quantity: <b>${user.quantity}</b> |
-| 5. Created at: ${user.createdAt} |
-| ------------------------------------------------ |                           
-      `
-            };
-
-            // Send the HTTP request to the Telegram
-            request({
-                "uri": `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-                "method": "POST",
-                "json": request_body
-            }, (err, res, body) => {
-                if (!err) {
-                    resolve('done!')
-                } else {
-                    reject("Unable to send message:" + err);
-                }
-            });
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
 
 let sendMessageDefaultForTheBot = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
@@ -1093,10 +985,7 @@ module.exports = {
     handleBackToLunchMenu: handleBackToLunchMenu,
     handleReserveTable: handleReserveTable,
     handleShowRooms: handleShowRooms,
-    sendMessageAskingQuality: sendMessageAskingQuality,
-    sendMessageAskingPhoneNumber: sendMessageAskingPhoneNumber,
     sendMessageDoneReserveTable: sendMessageDoneReserveTable,
-    sendNotificationToTelegram: sendNotificationToTelegram,
     sendMessageDefaultForTheBot: sendMessageDefaultForTheBot,
     handleShowDetailRooms: handleShowDetailRooms,
     handleDetailSalad: handleDetailSalad,
@@ -1105,5 +994,5 @@ module.exports = {
     markMessageSeen: markMessageSeen,
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage,
-    setupPersistentMenu: setupPersistentMenu
+    setupPersistentMenu: setupPersistentMenu,
 };
