@@ -275,19 +275,13 @@ let handleReserveTableAjax = async (req, res) => {
             currentNumber: "1",
             note: "trống"
         }
-        await chatBotService.writeDateToGoogleSheet(data);
 
         let customerName = "";
         if (req.body.customerName === "") {
             customerName = usernameFB;
         } else customerName = req.body.customerName;
 
-        let response1 = {
-            "text": `Thong tin khach dat ban
-            \nHo va ten: ${customerName}
-            \nEmail: ${req.body.email}
-            \nSo Dien Thoai: ${req.body.phoneNumber}`
-        }
+        let response1 = data
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
             message: 'ok',

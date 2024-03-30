@@ -46,8 +46,8 @@ let writeDateToGoogleSheet = async (data) => {
     const doc = new GoogleSpreadsheet(SPEADSHEET_ID);
 
     const serviceAccountAuth = new JWT({
-        email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        key: process.env.GOOGLE_PRIVATE_KEY,
+        email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        key: GOOGLE_PRIVATE_KEY,
         scopes: [
             'https://www.googleapis.com/auth/spreadsheets',
         ],
