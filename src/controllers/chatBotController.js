@@ -269,7 +269,7 @@ let handleReserveTableAjax = async (req, res) => {
     try {
         let customerName = "";
         if (req.body.customerName === "") {
-            customerName = chatBotService.getFacebookUsername(req.body.psid);
+            customerName = await chatBotService.getFacebookUsername(req.body.psid);
         } else customerName = req.body.customerName;
 
         let response1 = {
