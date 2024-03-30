@@ -61,8 +61,6 @@ let writeDateToGoogleSheet = async (data) => {
         "Email": "data.email",
         "Số điện thoại": "data.phoneNumber",
         "Thời gian": formatDate,
-        "Số người": "1",
-        "note": "trống"
     });
 
 }
