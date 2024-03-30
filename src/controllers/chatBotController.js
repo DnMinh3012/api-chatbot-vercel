@@ -273,11 +273,8 @@ let handleReserveTableAjax = async (req, res) => {
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
         }
-        if (data) {
-            await chatBotService.writeDateToGoogleSheet(data);
-        } else {
-            console.log("data undifine")
-        }
+
+        await chatBotService.writeDateToGoogleSheet(data);
 
         let customerName = "";
         if (req.body.customerName === "") {
@@ -299,7 +296,7 @@ let handleReserveTableAjax = async (req, res) => {
     } catch (e) {
         console.log("Loi Reserve table: ", e);
         return res.status(500).json({
-            message: 'Sever Error'
+            message: e
         })
     }
 }
