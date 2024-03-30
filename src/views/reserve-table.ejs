@@ -77,7 +77,7 @@
                 function success(thread_context) {
                     // success
                     //set psid to input
-                    $("#psid").val(thread_context.psid);
+                    $("#psid").val(thread_context.sender_psid);
                     handleClickButtonReserveTable();
                 },
                 function error(err) {
