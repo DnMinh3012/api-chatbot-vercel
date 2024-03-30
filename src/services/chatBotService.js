@@ -57,9 +57,9 @@ let writeDateToGoogleSheet = async (data) => {
     const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
 
     await sheet.addRow({
-        "Tên": data.username,
-        "Email": data.email,
-        "Số điện thoại": data.phoneNumber,
+        "Tên": "data.username",
+        "Email": "data.email",
+        "Số điện thoại": "data.phoneNumber",
         "Thời gian": formatDate,
         "Số người": "1",
         "note": "trống"
