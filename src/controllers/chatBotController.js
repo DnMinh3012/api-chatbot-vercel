@@ -275,9 +275,10 @@ let handleReserveTableAjax = async (req, res) => {
             \nEmail: ${req.body.email}
             \nSo Dien Thoai: ${req.body.phoneNumber}`
         }
-        await chatBotService.sendMessage(100014643706042, response1)
+        await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
-            message: 'ok'
+            message: 'ok',
+            psid: req.body.psid,
         })
         console.log("psid laf: ", req.body.psid)
     } catch (e) {
