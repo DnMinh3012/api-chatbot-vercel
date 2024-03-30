@@ -44,15 +44,16 @@ let writeDateToGoogleSheet = async (data) => {
     let formatDate = moment(currentDate).format(format);
 
     const doc = new GoogleSpreadsheet(SPEADSHEET_ID);
-    await doc.useServiceAccountAuth({
-        client_email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        private_key: GOOGLE_PRIVATE_KEY,
+
+    const serviceAccountAuth = new JWT({
+        email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        key: process.env.GOOGLE_PRIVATE_KEY,
+        scopes: [
+            'https://www.googleapis.com/auth/spreadsheets',
+        ],
     });
 
-
     await doc.loadInfo(); // loads document properties and worksheets
-
-
     const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
 
     await sheet.addRow({
@@ -63,8 +64,6 @@ let writeDateToGoogleSheet = async (data) => {
         "Số người": "1",
         "note": "trống"
     });
-
-
 
 }
 
