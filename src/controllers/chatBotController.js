@@ -279,7 +279,7 @@ let handleReserveTableAjax = async (req, res) => {
         return res.status(200).json({
             message: 'ok'
         })
-        console.log("psid: ", req.body.psid)
+        console.log("psid laf: ", req.body.psid)
     } catch (e) {
         console.log("Loi Reserve table: ", e);
         return res.status(500).json({

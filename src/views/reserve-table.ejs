@@ -19,7 +19,6 @@
 
     <!-- Load custom Javascript and CSS-->
     <link rel="stylesheet" href="/src/public/css/style.css">
-    <script src="/src/public/js/reserve-table.js"></script>
 
 </head>
 
@@ -45,7 +44,8 @@
                     <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
                     <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable"> ĐẶT BÀN </button>
+                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> ĐẶT BÀN
+                </button>
             </div>
 
         </div>
@@ -54,12 +54,9 @@
     <footer>
         <div class="text-center">
             <div class="">
-                <span class="mr-3"> &copy; <a title="Xem full tutorial trên Youtube"
-                        href="https://www.youtube.com/playlist?list=PLncHg6Kn2JT6oBfsbNTYHWJNkjF3tNpp4"
-                        target="_blank">Chatbot Tutorial</a></span>
+                <span class="mr-3"> &copy; <a title="Minh dep trai" href="#" target="_blank">Minh dep trai</a></span>
                 <span class="ml-3">
-                    Tạo bởi <a href="https://www.youtube.com/channel/UCVkBcokjObNZiXavfAE1-fA?sub_confirmation=1"
-                        title="Xem kênh Hỏi Dân IT" target="_blank">Vimaru Restaurant</a>
+                    Tạo bởi <a href="#" title="Vimaru Restaurant" target="_blank">Vimaru Restaurant</a>
                 </span>
             </div>
         </div>
@@ -69,7 +66,7 @@
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) { return; }
             js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+            js.src = "/connect.facebook.net/en_US/messenger.Extensions.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'Messenger'));
 
