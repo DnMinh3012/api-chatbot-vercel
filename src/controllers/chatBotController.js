@@ -259,9 +259,9 @@ function callSendAPI(sender_psid, response) {
     });
 }
 let getReserveTable = (req, res) => {
-    let senderId = req.params.senderId;
+    let senderId = req.params.sender_psid;
     return res.render('reserve-table.ejs', {
-        senderId: senderId
+        sender_psid: senderId
     });
 }
 
