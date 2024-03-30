@@ -7,11 +7,11 @@ let router = express.Router();
 
 let initWebRoutes = (app) => {
     router.get("/", homepageController.getHomepage);
-    router.get("/form-reserve-table", chatBotController.getReserveTable);
+    router.get("/form-reserve-table/:senderId'", chatBotController.getReserveTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);
     router.post('/setup-persistent-menu', chatBotService.setupPersistentMenu);
-    router.post('/reserve-table-ajax/:senderId', chatBotController.handleReserveTableAjax)
+    router.post('/reserve-table-ajax', chatBotController.handleReserveTableAjax)
     router.get("/test", async (req, res) => {
         let user = await chatBotService.getFacebookUsername(3350311028355090);
     });
