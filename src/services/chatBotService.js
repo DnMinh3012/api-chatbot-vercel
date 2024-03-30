@@ -249,7 +249,7 @@ let handleSendLunchMenu = (sender_psid) => {
                                         "payload": "BACK_TO_MAIN_MENU",
                                     },
                                     {
-                                        "type": "web_url",//
+                                        "type": "web_url",
                                         "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderId}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
