@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đặt bàn nhà hàng</title>
+    <script>
+        let facebookAppId = "<%= senderId %>"
+    </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -62,20 +65,20 @@
         </div>
     </footer>
     <script>
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'Messenger'));
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'Messenger'));
 
         window.extAsyncInit = function () {
             // the Messenger Extensions JS SDK is done loading 
 
             MessengerExtensions.getContext('1170374183946016',
                 function success(thread_context) {
-                    // success
+                    // success 
                     //set psid to input
                     $("#psid").val(thread_context.psid);
                     handleClickButtonReserveTable();
@@ -83,6 +86,10 @@
                 function error(err) {
                     // error
                     console.log('Lỗi đặt bàn bot', err);
+
+
+                    $("#psid").val(senderId);
+                    handleClickButtonReserveTable();
                 }
             );
         };
