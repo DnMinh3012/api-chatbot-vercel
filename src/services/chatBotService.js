@@ -75,7 +75,7 @@ let handleGetStartedResponding = (username, sender_psid) => {
                                     },
                                     {
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -142,7 +142,7 @@ let handleSendMainMenu = (sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -250,7 +250,7 @@ let handleSendLunchMenu = (sender_psid) => {
                                     },
                                     {
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -342,7 +342,7 @@ let handleSendDinnerMenu = (sender_psid) => {
                                     },
                                     {
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -443,7 +443,7 @@ let handleShowRooms = (sender_psid) => {
                                     {
 
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -692,7 +692,7 @@ let handleShowDetailRooms = (sender_psid) => {
                             },
                             {
                                 "type": "web_url",
-                                "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                 "title": "Đặt bàn",
                                 "webview_height_ratio": "tall",
                                 "messenger_extensions": true
@@ -740,7 +740,7 @@ let handleDetailSalad = (sender_psid) => {
                             {
 
                                 "type": "web_url",
-                                "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                 "title": "Đặt bàn",
                                 "webview_height_ratio": "tall",
                                 "messenger_extensions": true
@@ -806,7 +806,7 @@ let handleDetailAppetizer = (sender_psid) => {
                                     {
 
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -868,7 +868,7 @@ let handleDetailFish = (sender_psid) => {
                                     },
                                     {
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
@@ -932,7 +932,7 @@ let handleDetailClassic = (sender_psid) => {
                                     {
 
                                         "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}?senderID=${sender_psid}`,
+                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                         "title": "Đặt bàn",
                                         "webview_height_ratio": "tall",
                                         "messenger_extensions": true
