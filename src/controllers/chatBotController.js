@@ -268,13 +268,12 @@ let getReserveTable = (req, res) => {
 let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
-        // let data = {
-        //     username: username,
-        //     email: req.body.email,
-        //     phoneNumber: req.body.phoneNumber,
-        // }
-        let data = {};
-        await chatBotService.writeDateToGoogleSheet();
+        let data = {
+            username: username,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber
+        }
+        await chatBotService.writeDateToGoogleSheet(data);
 
         let customerName = "";
         if (req.body.customerName === "") {
@@ -292,7 +291,6 @@ let handleReserveTableAjax = async (req, res) => {
             message: 'ok',
             psid: req.body.psid,
         })
-        console.log("psid laf: ", req.body.psid)
     } catch (e) {
         console.log("Loi Reserve table: ", e);
         return res.status(500).json({
