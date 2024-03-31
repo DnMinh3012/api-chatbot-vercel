@@ -53,17 +53,17 @@ const writeDataToGoogleSheet = async (data) => {
     const sheets = google.sheets({ version: 'v4', auth });
 
     try {
-        await sheets.spreadsheets.values.append({
-            spreadsheetId: SPEADSHEET_ID,
-            range: 'Sheet1', // Thay Sheet1 bằng tên của sheet bạn muốn ghi dữ liệu vào
-            valueInputOption: 'USER_ENTERED',
-            requestBody: {
-                values: [
-                    [data.username, data.email, data.phoneNumber, formatDate]
-                ],
-            },
-        });
-        console.log('Data appended successfully.');
+        try {
+            await sheet.addRow({
+                "Tên": data.username,
+                "Email": data.email,
+                "Số điện thoại": data.phoneNumber,
+                "Thời gian": formatDate,
+            });
+            console.log('Data appended successfully.');
+        } catch (error) {
+            console.error('Error appending data:', error.message);
+        }
     } catch (error) {
         console.error('Error appending data:', error.message);
     }
