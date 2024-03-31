@@ -54,7 +54,7 @@ const writeDataToGoogleSheet = async (data) => {
 
     try {
         try {
-            await sheet.addRow({
+            await sheets.addRow({
                 "Tên": data.username,
                 "Email": data.email,
                 "Số điện thoại": data.phoneNumber,
