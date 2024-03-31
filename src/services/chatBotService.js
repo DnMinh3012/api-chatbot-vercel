@@ -38,7 +38,7 @@ const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
 
 
 
-let writeDateToGoogleSheet = async (data) => {
+let writeDataToGoogleSheet = async (data) => {
     let currentDate = new Date();
     const format = "HH:mm DD/MM/YYYY";
     let formatDate = moment(currentDate).format(format);
@@ -1028,5 +1028,5 @@ module.exports = {
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage,
     setupPersistentMenu: setupPersistentMenu,
-    writeDateToGoogleSheet: writeDateToGoogleSheet
+    writeDataToGoogleSheet: writeDataToGoogleSheet
 };
