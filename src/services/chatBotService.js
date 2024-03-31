@@ -38,7 +38,6 @@ const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
 
 
 
-
 const writeDataToGoogleSheet = async (data) => {
     const currentDate = new Date();
     const format = "HH:mm DD/MM/YYYY";
@@ -50,17 +49,18 @@ const writeDataToGoogleSheet = async (data) => {
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
-    const sheets = google.sheets({ version: 'v4', auth });
+    const doc = new GoogleSpreadsheet(SPEADSHEET_ID);
+    await doc.useServiceAccountAuth(auth);
+    await doc.loadInfo(); // loads document properties and worksheets
+    const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
 
-    await sheets.addRow({
+    await sheet.addRow({
         "Tên": data.username,
         "Email": data.email,
         "Số điện thoại": data.phoneNumber,
         "Thời gian": formatDate,
     });
     console.log('Data appended successfully.');
-
-
 }
 
 let getFacebookUsername = (sender_psid) => {
