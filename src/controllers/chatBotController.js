@@ -273,7 +273,7 @@ let handleReserveTableAjax = async (req, res) => {
             email: req.body.email,
             phoneNumber: req.body.phoneNumber
         }
-        await chatBotService.writeDateToGoogleSheet(data);
+        await chatBotService.writeDataToGoogleSheet(data);
 
         let customerName = "";
         if (req.body.customerName === "") {

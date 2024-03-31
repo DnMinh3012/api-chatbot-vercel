@@ -1030,5 +1030,5 @@ module.exports = {
     sendTypingOn: sendTypingOn,
     sendMessage: sendMessage,
     setupPersistentMenu: setupPersistentMenu,
-    writeDateToGoogleSheet: writeDateToGoogleSheet
+    writeDataToGoogleSheet: writeDataToGoogleSheet
 };
