@@ -49,8 +49,7 @@ const writeDataToGoogleSheet = async (data) => {
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
-    const doc = new GoogleSpreadsheet(SPEADSHEET_ID);
-    await doc.useServiceAccountAuth(auth);
+    const doc = new GoogleSpreadsheet(SPEADSHEET_ID, auth);
     await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0]; // or use `doc.sheetsById[id]` or `doc.sheetsByTitle[title]`
 
