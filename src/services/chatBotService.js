@@ -34,7 +34,7 @@ const IMAGE_ROOMS3 = "https://bit.ly/49lULBf";
 
 const SPEADSHEET_ID = process.env.SPEADSHEET_ID;
 const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
 
 
 
@@ -44,8 +44,8 @@ const writeDataToGoogleSheet = async (data) => {
     const formatDate = moment(currentDate).format(format);
 
     const auth = new JWT({
-        email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        key: GOOGLE_PRIVATE_KEY,
+        email: JSON.parse(`"${GOOGLE_SERVICE_ACCOUNT_EMAIL}"`),
+        key: JSON.parse(`"${GOOGLE_PRIVATE_KEY}"`),
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
