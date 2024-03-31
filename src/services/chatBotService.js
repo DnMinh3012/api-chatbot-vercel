@@ -53,17 +53,14 @@ const writeDataToGoogleSheet = async (data) => {
     const sheets = google.sheets({ version: 'v4', auth });
 
     try {
-        try {
-            await sheets.addRow({
-                "Tên": data.username,
-                "Email": data.email,
-                "Số điện thoại": data.phoneNumber,
-                "Thời gian": formatDate,
-            });
-            console.log('Data appended successfully.');
-        } catch (error) {
-            console.error('Error appending data:', error.message);
-        }
+        await sheets.addRow({
+            "Tên": data.username,
+            "Email": data.email,
+            "Số điện thoại": data.phoneNumber,
+            "Thời gian": formatDate,
+        });
+        console.log('Data appended successfully.');
+
     } catch (error) {
         console.error('Error appending data:', error.message);
     }
