@@ -980,7 +980,14 @@ let setupPersistentMenu = async (req, res) => {
                         "title": "Truy cập FanPage",
                         "url": "https://www.facebook.com/profile.php?id=61556806597524",
                         "webview_height_ratio": "full"
-                    }
+                    },
+                    {
+                        "type": "web_url",
+                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                        "title": "Đặt bàn",
+                        "webview_height_ratio": "tall",
+                        "messenger_extensions": true
+                    },
                 ]
             }
         ]

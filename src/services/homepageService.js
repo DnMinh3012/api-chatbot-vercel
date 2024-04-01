@@ -270,9 +270,11 @@ let handleSendGuideToUseBot = (sender_psid) => {
                                 "payload": "MAIN_MENU"
                             },
                             {
-                                "type": "postback",
+                                "type": "web_url",
+                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                 "title": "Đặt bàn",
-                                "payload": "RESERVE_TABLE",
+                                "webview_height_ratio": "tall",
+                                "messenger_extensions": true
                             }
                         ]
                     }

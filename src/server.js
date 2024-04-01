@@ -1,10 +1,10 @@
 require("dotenv").config();
-import  express from "express";
+import express from "express";
 import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import bodyParser from "body-parser";
 import initCronJob from "./config/cronJob";
-
+import connectDB from "./config/connectDB"
 let app = express();
 
 //use body-parser to post data
@@ -22,7 +22,7 @@ initCronJob();
 
 let port = process.env.PORT || 8080;
 
-app.listen(port, ()=>{
+app.listen(port, () => {
    console.log(`App is running at the port ${port}`);
 });
 
