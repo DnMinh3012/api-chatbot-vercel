@@ -58,6 +58,7 @@ const writeDataToGoogleSheet = async (data) => {
         "Email": data.email,
         "Số điện thoại": data.phoneNumber,
         "Thời gian": formatDate,
+        "note": "tádasdasds"
     });
     console.log('Data appended successfully.');
 }
