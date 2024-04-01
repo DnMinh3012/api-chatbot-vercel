@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     User.init({
+        menuName: DataTypes.STRING,
         description: DataTypes.STRING,
     }, {
         sequelize,
