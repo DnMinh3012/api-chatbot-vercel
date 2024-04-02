@@ -83,3 +83,64 @@ function handleClickButtonReserveTable() {
         }
     });
 }
+
+let handleSendDinnerMenu = (sender_psid, menuItems) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let elements = [];
+
+            // Duyệt qua mảng menuItems và tạo các phần tử cho menu
+            menuItems.forEach(item => {
+                let element = {
+                    "title": item.title,
+                    "subtitle": item.subtitle,
+                    "image_url": item.image_url,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Xem chi tiết",
+                            "payload": item.payload,
+                        }
+                    ],
+                };
+                elements.push(element);
+            });
+
+            // Thêm phần tử "Quay lại MENU chính"
+            elements.push({
+                "title": "Quay lại MENU chính",
+                "image_url": IMAGE_MAIN_MENU4,
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title": "Quay lại",
+                        "payload": "BACK_TO_MAIN_MENU",
+                    },
+                    {
+                        "type": "web_url",
+                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                        "title": "Đặt bàn",
+                        "webview_height_ratio": "tall",
+                        "messenger_extensions": true
+                    }
+                ],
+            });
+
+            let response = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elements
+                    }
+                }
+            };
+
+            await sendTypingOn(sender_psid);
+            await sendMessage(sender_psid, response);
+            resolve("done");
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
