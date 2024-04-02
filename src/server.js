@@ -4,20 +4,24 @@ import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import bodyParser from "body-parser";
 import initCronJob from "./config/cronJob";
-import connectDB from "./config/connectDB.js"
+import connectDB from "./config/connectDB.js";
+
 let app = express();
 
-//use body-parser to post data
+// Use body-parser to parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-connectDB.connectDB();
-//config view engine
+
+// Connect to the database
+connectDB();
+
+// Configure view engine
 configViewEngine(app);
 
-// init all web routes
+// Initialize all web routes
 initWebRoutes(app);
 
-//init cron job
+// Initialize cron job
 initCronJob();
 
 let port = process.env.PORT || 8080;
@@ -25,5 +29,3 @@ let port = process.env.PORT || 8080;
 app.listen(port, () => {
    console.log(`App is running at the port ${port}`);
 });
-
-
