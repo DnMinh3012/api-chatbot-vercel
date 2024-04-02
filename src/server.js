@@ -4,7 +4,7 @@ import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import bodyParser from "body-parser";
 import initCronJob from "./config/cronJob";
-import connectDB from "./config/connectDB"
+import connectDB from "./config/connectDB.js"
 let app = express();
 
 //use body-parser to post data
