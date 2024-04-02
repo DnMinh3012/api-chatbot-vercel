@@ -4,7 +4,7 @@ import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import bodyParser from "body-parser";
 import initCronJob from "./config/cronJob";
-import connectDB from "./config/connectDB.js";
+import connectDb from "./config/connectDB.js";
 
 let app = express();
 
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to the database
-connectDB();
+connectDb();
 
 // Configure view engine
 configViewEngine(app);

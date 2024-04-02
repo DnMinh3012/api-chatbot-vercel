@@ -4,7 +4,7 @@ const sequelize = new Sequelize('chatbot', 'root', null, {
     host: 'localhost',
     dialect: 'mysql',
 });
-let connectDB = async () => {
+let connectDb = async () => {
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');
@@ -12,4 +12,4 @@ let connectDB = async () => {
         console.error('Unable to connect to the database:', error);
     }
 }
-module.exports = connectDB()
+module.exports = connectDb;
