@@ -15,6 +15,9 @@ module.exports = {
             tableid: {
                 type: Sequelize.STRING
             },
+            customerid: {
+                type: Sequelize.STRING
+            },
             date: {
                 type: Sequelize.DATE
             },
