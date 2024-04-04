@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "sql6696672",
-    "password": "JKWByPJCeQ",
-    "database": "sql6696672",
-    "host": "sql6.freesqldatabase.com",
+    "username": "root",
+    "password": null,
+    "database": "chatbot",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
