@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 // Option 2: Passing parameters separately (sqlite)
-const sequelize = new Sequelize('chatbot', 'root', null, {
-    host: 'localhost',
+const sequelize = new Sequelize('sql6696668', 'sql6696668', 'v8HEGa8veYS', {
+    host: 'sql6.freesqldatabase.com',
     dialect: 'mysql',
 });
 let connectDb = async () => {
