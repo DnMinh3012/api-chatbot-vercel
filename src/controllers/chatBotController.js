@@ -269,7 +269,7 @@ let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
-            senderId: psid,
+            senderId: req.body.psid,
             username: username,
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
