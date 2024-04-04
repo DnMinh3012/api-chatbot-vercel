@@ -61,5 +61,5 @@ let postBookAppointment = (data) => {
     })
 }
 module.exports = {
-
+    postBookAppointment: postBookAppointment
 };
