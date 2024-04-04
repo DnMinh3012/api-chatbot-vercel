@@ -42,6 +42,19 @@
                     <input type="email" id="email" class="form-control" placeholder="Địa chỉ email...">
                     <div class="invalid-feedback">Địa chỉ email không hợp lệ.</div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="email">Số người (<span style="color: red">*</span>):</label>
+                        <input type="text" id="currentNumber" class="form-control" placeholder="Địa chỉ email...">
+                        <div class="invalid-feedback">Nhạp số người hợp lệ</div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="email">Ngày đặt bàn(<span style="color: red">*</span>):</label>
+                        <input type="datetime-local" id="reserveDate" class="form-control"
+                            placeholder="Địa chỉ email...">
+                        <div class="invalid-feedback">Nhạp ngày hợp lệ</div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="phoneNumber">Số điện thoại (<span style="color: red">*</span>):</label>
                     <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
@@ -91,6 +104,8 @@
 
             let email = $("#email");
             let phoneNumber = $("#phoneNumber");
+            let currentNumber = $("#currentNumber")
+            let reserveDate = $("#reserveDate")
 
             if (!email.val().match(EMAIL_REG)) {
                 email.addClass("is-invalid");
@@ -106,6 +121,21 @@
                 phoneNumber.removeClass("is-invalid");
             }
 
+            if (currentNumber.val() === "") {
+                currentNumber.addClass("is-invalid");
+                return true;
+            } else {
+                currentNumber.removeClass("is-invalid");
+            }
+
+            if (reserveDate.val() === "") {
+                reserveDate.addClass("is-invalid");
+                return true;
+            } else {
+                reserveDate.removeClass("is-invalid");
+            }
+
+
             return false;
         }
 
@@ -118,7 +148,9 @@
                     psid: $("#psid").val(),
                     customerName: $("#customerName").val(),
                     email: $("#email").val(),
-                    phoneNumber: $("#phoneNumber").val()
+                    phoneNumber: $("#phoneNumber").val(),
+                    currentNumber: $("#currentNumber").val(),
+                    reserveDate: $("#reserveDate").val()
                 };
 
                 if (!check) {
