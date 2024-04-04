@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 // Option 2: Passing parameters separately (sqlite)
-const sequelize = new Sequelize('sql6696668', 'sql6696668', 'v8HEGa8veYS', {
+const sequelize = new Sequelize('sql6696672', 'sql6696672', 'JKWByPJCeQ', {
     host: 'sql6.freesqldatabase.com',
     dialect: 'mysql',
 });
