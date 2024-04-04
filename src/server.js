@@ -20,10 +20,14 @@ app.use(morgan("common"));
 // Connect to the database
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-mongoose.connect("mongodb+srv://dnhatminh1230:4iFQCp8mYqYGsAFv@chatbot.reg36mk.mongodb.net/?retryWrites=true&w=majority&appName=chatbot")
+mongoose.connect("mongodb+srv://dnhatminh1230:4iFQCp8mYqYGsAFv@chatbot.reg36mk.mongodb.net/?retryWrites=true&w=majority&appName=chatbot", {
+   useNewUrlParser: true,
+   useUnifiedTopology: true
+})
    .then(async () => {
       console.log("Connected to MongoDB");
-   }).catch(error => {
+   })
+   .catch(error => {
       console.error("Error connecting to MongoDB:", error);
    });
 
