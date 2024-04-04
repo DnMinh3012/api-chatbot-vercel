@@ -16,16 +16,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
     },
-    roleid: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Allcode"
-        }
-    ],
-    services: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking"
-    }]
+
 });
 
 const allcodeSchema = new mongoose.Schema({
