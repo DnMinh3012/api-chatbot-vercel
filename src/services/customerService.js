@@ -4,7 +4,7 @@ import _ from 'lodash'
 // import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { User, Allcode, Services } from "../model/model"
+import { User, Allcode, Booking } from "../model/model"
 let postBookAppointment = (data) => {
     console.log(data)
     return new Promise(async (resolve, reject) => {
@@ -24,12 +24,11 @@ let postBookAppointment = (data) => {
                 //     doctorName: data.doctorName,
                 //     redirectLink: buildUrlEmaill(data.doctorId, token)
                 // })
-                let newUser = await User.findOne({
-                    phoneNumber: data.phoneNumber
-                });
+                let newUser = await User.findOne({ phoneNumber: data.phoneNumber }, { maxTimeMS: 60000 });
+
                 if (!newUser) {
-                    const allcodeR3 = await Allcode.findOne({ type: 'R3' });
-                    const allcodeS1 = await Allcode.findOne({ type: 'S1' });
+                    const allcodeR3 = await Allcode.findOne({ type: 'R3' }, { maxTimeMS: 60000 });
+                    const allcodeS1 = await Allcode.findOne({ type: 'S1' }, { maxTimeMS: 60000 });
                     let newUser = new User({
                         email: data.email,
                         roleId: allcodeR3._id,
@@ -37,13 +36,13 @@ let postBookAppointment = (data) => {
                         address: data.address,
                         phoneNumber: data.phoneNumber
                     })
-                    let newServices = new Services({
+                    let newBooking = new Booking({
                         date: data.reserveDate,
                         user: newUser._id,
                         allcode: allcodeS1._id
                     })
                     await newUser.save();
-                    await newServices.save();
+                    await newBooking.save();
                 } else {
                     resolve({
                         message: "useasd"

@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     ],
     services: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Services"
+        ref: "Booking"
     }]
 });
 
@@ -46,7 +46,7 @@ const allcodeSchema = new mongoose.Schema({
         required: true
     },
 });
-const servicesSchema = new mongoose.Schema({
+const bookingSchema = new mongoose.Schema({
     tableid: {
         type: String,
     },
@@ -64,6 +64,6 @@ const servicesSchema = new mongoose.Schema({
 })
 const User = mongoose.model("User", userSchema);
 const Allcode = mongoose.model("Allcode", allcodeSchema);
-const Services = mongoose.model("Services", servicesSchema);
+const Booking = mongoose.model("Booking", servicesSchema);
 
-module.exports = { User, Allcode, Services };
+module.exports = { User, Allcode, Booking };
