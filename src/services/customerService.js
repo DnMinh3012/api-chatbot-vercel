@@ -26,7 +26,6 @@ let postBookAppointment = (data) => {
                 // })
                 let newUser = await User.findOne({
                     $or: [
-                        { email: data.email },
                         { phoneNumber: data.phoneNumber }
                     ]
                 });
@@ -47,6 +46,10 @@ let postBookAppointment = (data) => {
                     })
                     await newUser.save();
                     await newServices.save();
+                } else {
+                    resolve({
+                        message: "useasd"
+                    })
                 }
                 console.log("check user", newUser);
                 resolve({
