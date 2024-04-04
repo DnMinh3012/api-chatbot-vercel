@@ -11,12 +11,13 @@ let postBookAppointment = (data) => {
     console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.senderId || !data.date
+            if (!data.email || !data.senderId || !data.reserveDate
                 || !data.fullName) {
                 resolve({
                     errCode: 1,
                     message: "Missing required parameters"
                 })
+                console.log("Missing required parameters")
             } else {
                 // let token = uuidv4();
                 // await emailServices.senSimpleEmail({
@@ -34,7 +35,7 @@ let postBookAppointment = (data) => {
                         roleId: 'R3',
                         firstName: data.username,
                         address: data.address,
-                        phone: data.phoneNumber
+                        phoneNumber: data.phoneNumber
                     },
                 });
                 console.log("check user", user[0])
@@ -61,3 +62,6 @@ let postBookAppointment = (data) => {
         }
     })
 }
+module.exports = {
+    postBookAppointment: postBookAppointment,
+};
