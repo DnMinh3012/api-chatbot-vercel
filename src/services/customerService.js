@@ -1,12 +1,10 @@
 import { raw } from "body-parser";
-import db from "../models";
 require('dotenv').config();
 import _ from 'lodash'
 // import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-
-
+import { User, Allcode, Services } from "../model/model"
 let postBookAppointment = (data) => {
     console.log(data)
     return new Promise(async (resolve, reject) => {
@@ -26,32 +24,34 @@ let postBookAppointment = (data) => {
                 //     doctorName: data.doctorName,
                 //     redirectLink: buildUrlEmaill(data.doctorId, token)
                 // })
-
-                let user = await db.User.findOrCreate({
-                    where: { email: data.email },
-                    defaults: {
-                        email: data.email,
-                        roleid: 'R3',
-                        username: data.username,
-                        phoneNumber: data.phoneNumber
-                    },
+                let newUser = await User.findOne({
+                    $or: [
+                        { email: data.email },
+                        { phoneNumber: data.phoneNumber }
+                    ]
                 });
-                console.log("check user", user[0])
-
-                if (!user) user = {};
-                if (user && user[0]) {
-                    await db.services.findOrCreate({
-                        where: { customerid: data.id },
-                        defaults: {
-                            statusID: 'S1',
-                            customerid: data.customerid,
-                            date: data.reserveDate,
-                        }
+                if (!newUser) {
+                    const allcodeR3 = await Allcode.findOne({ type: 'R3' });
+                    const allcodeS1 = await Allcode.findOne({ type: 'S1' });
+                    let newUser = new User({
+                        email: data.email,
+                        roleId: allcodeR3._id,
+                        username: data.username,
+                        address: data.address,
+                        phoneNumber: data.phoneNumber
                     })
+                    let newServices = new Services({
+                        date: data.reserveDate,
+                        user: newUser._id,
+                        allcode: allcodeS1._id
+                    })
+                    await newUser.save();
+                    await newServices.save();
                 }
+                console.log("check user", newUser);
                 resolve({
                     errCode: 0,
-                    user: user
+                    user: newUser
                 })
             }
 
@@ -61,5 +61,5 @@ let postBookAppointment = (data) => {
     })
 }
 module.exports = {
-    postBookAppointment: postBookAppointment,
+
 };
