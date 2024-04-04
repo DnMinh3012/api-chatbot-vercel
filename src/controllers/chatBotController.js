@@ -269,6 +269,7 @@ let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
+            senderId: psid,
             username: username,
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
@@ -276,7 +277,7 @@ let handleReserveTableAjax = async (req, res) => {
             reserveDate: req.body.reserveDate
         }
         await chatBotService.writeDataToGoogleSheet(data);
-        await cutommerService.postBookAppointment(data)
+        await cutommerService.postBookAppointment(data);
         let customerName = "";
         if (req.body.customerName === "") {
             customerName = username;
