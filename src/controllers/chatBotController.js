@@ -271,7 +271,9 @@ let handleReserveTableAjax = async (req, res) => {
         let data = {
             username: username,
             email: req.body.email,
-            phoneNumber: req.body.phoneNumber
+            phoneNumber: req.body.phoneNumber,
+            currentNumber: req.body.currentNumber,
+            reserveDate: req.body.reserveDate
         }
         await chatBotService.writeDataToGoogleSheet(data);
 
@@ -284,7 +286,9 @@ let handleReserveTableAjax = async (req, res) => {
             "text": `Thong tin khach dat ban
             \nHo va ten: ${customerName}
             \nEmail: ${req.body.email}
-            \nSo Dien Thoai: ${req.body.phoneNumber}`
+            \nSo Dien Thoai: ${req.body.phoneNumber}
+            \nso nguoi: ${req.body.currentNumber}
+            \nNgay Dat Ban :${req.body.reserveDate}`
         }
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
