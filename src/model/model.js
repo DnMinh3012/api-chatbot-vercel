@@ -49,11 +49,9 @@ const allcodeSchema = new mongoose.Schema({
 const servicesSchema = new mongoose.Schema({
     tableid: {
         type: String,
-        required: true
     },
     date: {
         type: Date, // Sử dụng kiểu dữ liệu Date
-        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
