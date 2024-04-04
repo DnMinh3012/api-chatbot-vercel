@@ -3,7 +3,7 @@ import request from "request";
 import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
-
+import cutommerService from "../services/customerService"
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -276,7 +276,7 @@ let handleReserveTableAjax = async (req, res) => {
             reserveDate: req.body.reserveDate
         }
         await chatBotService.writeDataToGoogleSheet(data);
-
+        await cutommerService.postBookAppointment(data)
         let customerName = "";
         if (req.body.customerName === "") {
             customerName = username;
