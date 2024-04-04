@@ -58,7 +58,7 @@ const writeDataToGoogleSheet = async (data) => {
         "Tên": data.username,
         "Email": data.email,
         "Số điện thoại": data.phoneNumber,
-        "So Nguoi": data.currentDate,
+        "So Nguoi": data.currentNumber,
         "Ngay Dat ban": data.reserveDate
     });
     console.log('Data appended successfully.');
