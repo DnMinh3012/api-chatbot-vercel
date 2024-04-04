@@ -25,9 +25,7 @@ let postBookAppointment = (data) => {
                 //     redirectLink: buildUrlEmaill(data.doctorId, token)
                 // })
                 let newUser = await User.findOne({
-                    $or: [
-                        { phoneNumber: data.phoneNumber }
-                    ]
+                    phoneNumber: data.phoneNumber
                 });
                 if (!newUser) {
                     const allcodeR3 = await Allcode.findOne({ type: 'R3' });
