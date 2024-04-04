@@ -2,7 +2,7 @@ import { raw } from "body-parser";
 import db from "../models";
 require('dotenv').config();
 import _ from 'lodash'
-import emailServices from './emailServices'
+// import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
 
