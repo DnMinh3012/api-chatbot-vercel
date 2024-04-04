@@ -42,7 +42,7 @@ let postBookAppointment = (data) => {
                 if (!user) user = {};
                 if (user && user[0]) {
                     await db.services.findOrCreate({
-                        where: { customerid: user[0].id },
+                        where: { customerid: data.id },
                         defaults: {
                             statusID: 'S1',
                             customerid: data.customerid,
