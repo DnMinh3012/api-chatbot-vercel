@@ -4,7 +4,7 @@ import _ from 'lodash'
 // import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { User, Allcode, Booking } from "../model/model"
+import { User, Booking } from "../model/model"
 let postBookAppointment = (data) => {
     console.log(data)
     return new Promise(async (resolve, reject) => {

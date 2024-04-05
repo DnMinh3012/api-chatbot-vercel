@@ -41,4 +41,4 @@ const bookingSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
 
-module.exports = { User, Allcode, Booking };
+module.exports = { User, Booking };
