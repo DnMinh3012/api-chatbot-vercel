@@ -15,45 +15,41 @@ const postBookAppointment = (data) => {
                     message: "Missing required parameters"
                 });
             } else {
-                // Tạo một người dùng mới
-                const newUser = new User({
-                    email: data.email,
-                    role: "R3",
-                    username: data.username,
-                    address: data.address,
-                    phoneNumber: data.phoneNumber
-                });
-
-                // Lưu ID của người dùng mới
-                const userId = newUser._id;
-
-                // Tạo một đặt bàn mới
-                const newBooking = new Booking({
-                    date: data.reserveDate,
-                    user: userId,
-                    currentNumber: data.currentNumber,
-                    status: 's1'
-                });
-
-                // Tìm lịch sử đặt bàn của người dùng
-                let userBookingHistory = await History.findOne({ user: userId });
-
-                if (userBookingHistory) {
-                    // Nếu có lịch sử đặt bàn của người dùng, tăng số lượng lên 1
-                    userBookingHistory.number += 1;
+                let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
+                if (newUser) {
+                    // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
+                    await History.updateOne(
+                        { user: newUser._id },
+                        { $inc: { number: 1 } }
+                    );
                 } else {
-                    // Nếu không có lịch sử đặt bàn của người dùng, tạo mới và đặt số lượng là 1
-                    userBookingHistory = new History({
-                        user: userId,
+                    // Không tìm thấy người dùng, tạo mới người dùng
+                    newUser = new User({
+                        email: data.email,
+                        role: "R3",
+                        username: data.username,
+                        address: data.address,
+                        phoneNumber: data.phoneNumber
+                    });
+
+                    // Tạo mới đặt bàn và lịch sử đặt bàn
+                    const newBooking = new Booking({
+                        date: data.reserveDate,
+                        user: newUser._id,
+                        currentNumber: data.currentNumber,
+                        status: 's1'
+                    });
+                    const userBookingHistory = new History({
+                        user: newUser._id,
                         booking: newBooking._id,
                         number: 1
                     });
-                }
 
-                // Lưu thông tin người dùng và đặt bàn mới vào cơ sở dữ liệu
-                await newUser.save();
-                await newBooking.save();
-                await userBookingHistory.save();
+                    // Lưu thông tin vào cơ sở dữ liệu
+                    await newUser.save();
+                    await newBooking.save();
+                    await userBookingHistory.save();
+                }
 
                 console.log("check user", newUser);
                 resolve({
@@ -67,6 +63,7 @@ const postBookAppointment = (data) => {
         }
     });
 };
+
 
 module.exports = postBookAppointment;
 
