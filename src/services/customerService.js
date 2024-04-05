@@ -15,53 +15,46 @@ const postBookAppointment = (data) => {
                     message: "Missing required parameters"
                 });
             } else {
-                let newUser = User.findOne({ phoneNumber: data.phoneNumber })
-                if (newUser) {
-                    await History.updateOne(
-                        { user: userId },
-                        { $inc: { number: 1 } } // Tăng trường 'number' lên 1
-                    );
-                    const newUser = new User({
-                        email: data.email,
-                        role: "R3",
-                        username: data.username,
-                        address: data.address,
-                        phoneNumber: data.phoneNumber
-                    });
+                // Tạo một người dùng mới
+                const newUser = new User({
+                    email: data.email,
+                    role: "R3",
+                    username: data.username,
+                    address: data.address,
+                    phoneNumber: data.phoneNumber
+                });
 
-                    const newBooking = new Booking({
-                        date: data.reserveDate,
-                        user: userId,
-                        currentNumber: data.currentNumber,
-                        status: 's1'
-                    });
-                    await newUser.save();
-                    await newBooking.save();
-                    await userBookingHistory.save();
+                // Lưu ID của người dùng mới
+                const userId = newUser._id;
+
+                // Tạo một đặt bàn mới
+                const newBooking = new Booking({
+                    date: data.reserveDate,
+                    user: userId,
+                    currentNumber: data.currentNumber,
+                    status: 's1'
+                });
+
+                // Tìm lịch sử đặt bàn của người dùng
+                let userBookingHistory = await History.findOne({ user: userId });
+
+                if (userBookingHistory) {
+                    // Nếu có lịch sử đặt bàn của người dùng, tăng số lượng lên 1
+                    userBookingHistory.number += 1;
                 } else {
-                    const newUser = new User({
-                        email: data.email,
-                        role: "R3",
-                        username: data.username,
-                        address: data.address,
-                        phoneNumber: data.phoneNumber
-                    });
-
-                    const newBooking = new Booking({
-                        date: data.reserveDate,
-                        user: userId,
-                        currentNumber: data.currentNumber,
-                        status: 's1'
-                    });
+                    // Nếu không có lịch sử đặt bàn của người dùng, tạo mới và đặt số lượng là 1
                     userBookingHistory = new History({
                         user: userId,
                         booking: newBooking._id,
                         number: 1
                     });
-                    await newUser.save();
-                    await newBooking.save();
-                    await userBookingHistory.save();
                 }
+
+                // Lưu thông tin người dùng và đặt bàn mới vào cơ sở dữ liệu
+                await newUser.save();
+                await newBooking.save();
+                await userBookingHistory.save();
+
                 console.log("check user", newUser);
                 resolve({
                     errCode: 0,
