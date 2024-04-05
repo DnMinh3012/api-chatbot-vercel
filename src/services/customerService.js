@@ -27,11 +27,10 @@ let postBookAppointment = (data) => {
                 let newUser = await User.findOne({ phoneNumber: data.phoneNumber }, { maxTimeMS: 60000 });
 
                 if (!newUser) {
-                    const allcodeR3 = await Allcode.findOne({ type: 'R3' }, { maxTimeMS: 60000 });
-                    const allcodeS1 = await Allcode.findOne({ type: 'S1' }, { maxTimeMS: 60000 });
+
                     let newUser = new User({
                         email: data.email,
-                        roleId: allcodeR3._id,
+                        role: "R3",
                         username: data.username,
                         address: data.address,
                         phoneNumber: data.phoneNumber
@@ -39,7 +38,7 @@ let postBookAppointment = (data) => {
                     let newBooking = new Booking({
                         date: data.reserveDate,
                         user: newUser._id,
-                        allcode: allcodeS1._id
+                        status: 's1'
                     })
                     await newUser.save();
                     await newBooking.save();

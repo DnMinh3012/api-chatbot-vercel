@@ -16,27 +16,13 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
     },
+    role: {
+        type: String,
+    }
 
 });
 
-const allcodeSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    valueEn: {
-        type: String,
-        required: true
-    },
-    valueVi: {
-        type: String,
-        required: true
-    },
-});
+
 const bookingSchema = new mongoose.Schema({
     tableid: {
         type: String,
@@ -48,13 +34,11 @@ const bookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    allcode: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Allcode"
+    status: {
+        type: String,
     }
 })
 const User = mongoose.model("User", userSchema);
-const Allcode = mongoose.model("Allcode", allcodeSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
 
 module.exports = { User, Allcode, Booking };
