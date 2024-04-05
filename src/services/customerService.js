@@ -38,6 +38,7 @@ let postBookAppointment = (data) => {
                     let newBooking = new Booking({
                         date: data.reserveDate,
                         user: newUser._id,
+                        currentNumber: data.currentNumber,
                         status: 's1'
                     })
                     await newUser.save();
@@ -59,6 +60,39 @@ let postBookAppointment = (data) => {
         }
     })
 }
+let getUsers = (userId) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (userId === "ALL") {
+                const users = await User.find({ role: 'R3' }).select('-password');
+                console.log(users); // Log ra danh sách users
+                const bookings = await Booking.find({ user: { $in: users.map(user => user._id) } });
+                // Sử dụng $in để tìm các booking có user nằm trong danh sách users tìm được
+                const data = users.map(user => {
+                    const userBooking = bookings.find(booking => booking.user.equals(user._id));
+                    return {
+                        email: user.email,
+                        username: user.username,
+                        phoneNumber: user.phoneNumber,
+                        date: userBooking.date,
+                        currentNumber: userBooking ? userBooking.currentNumber : null,
+                        status: userBooking ? userBooking.status : null,
+                    };
+                });
+                resolve(data);
+            }
+            if (userId && userId !== "ALL") {
+                const user = await User.findOne({ _id: userId }).select('-password');
+                resolve(user);
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+
+}
 module.exports = {
-    postBookAppointment: postBookAppointment
+    postBookAppointment: postBookAppointment,
+    getUsers: getUsers
 };

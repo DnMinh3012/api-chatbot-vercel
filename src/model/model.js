@@ -30,6 +30,9 @@ const bookingSchema = new mongoose.Schema({
     date: {
         type: Date, // Sử dụng kiểu dữ liệu Date
     },
+    currentNumber: {
+        type: String, // Sử dụng kiểu dữ liệu Date
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
