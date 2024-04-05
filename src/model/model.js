@@ -19,29 +19,45 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
     }
-
 });
-
 
 const bookingSchema = new mongoose.Schema({
     tableid: {
         type: String,
     },
     date: {
-        type: Date, // Sử dụng kiểu dữ liệu Date
+        type: Date,
     },
     currentNumber: {
-        type: String, // Sử dụng kiểu dữ liệu Date
+        type: String,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    history: {  // Thêm trường history để liên kết với lịch sử
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "History"
+    },
     status: {
         type: String,
     }
-})
+});
+
+const historySchema = new mongoose.Schema({
+    booking: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking"
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    number: {
+        type: String,
+    },
+});
 const User = mongoose.model("User", userSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
-
-module.exports = { User, Booking };
+const History = mongoose.model("History", historySchema);
+module.exports = { User, Booking, History };

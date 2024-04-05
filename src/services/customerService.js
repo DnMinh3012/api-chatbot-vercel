@@ -4,62 +4,70 @@ import _ from 'lodash'
 // import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { User, Booking } from "../model/model"
-let postBookAppointment = (data) => {
-    console.log(data)
+import { User, Booking, History } from "../model/model"
+const postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.senderId || !data.reserveDate) {
+            if (!data.email || !data.reserveDate) {
+                console.log("Missing required parameters");
                 resolve({
                     errCode: 1,
                     message: "Missing required parameters"
-                })
-                console.log("Missing required parameters")
+                });
             } else {
-                // let token = uuidv4();
-                // await emailServices.senSimpleEmail({
-                //     reciverEmail: data.email,
-                //     patienName: data.fullName,
-                //     time: data.timeString,
-                //     doctorName: data.doctorName,
-                //     redirectLink: buildUrlEmaill(data.doctorId, token)
-                // })
-                let newUser = await User.findOne({ phoneNumber: data.phoneNumber }, { maxTimeMS: 60000 });
+                // Tạo một người dùng mới
+                const newUser = new User({
+                    email: data.email,
+                    role: "R3",
+                    username: data.username,
+                    address: data.address,
+                    phoneNumber: data.phoneNumber
+                });
 
-                if (!newUser) {
+                // Tạo một đặt bàn mới
+                const newBooking = new Booking({
+                    date: data.reserveDate,
+                    user: newUser._id,
+                    currentNumber: data.currentNumber,
+                    status: 's1'
+                });
+                await newUser.save();
+                await newBooking.save();
+                // Tìm lịch sử đặt bàn của người dùng
+                let userBookingHistory = await History.findOne({ user: newUser._id });
 
-                    let newUser = new User({
-                        email: data.email,
-                        role: "R3",
-                        username: data.username,
-                        address: data.address,
-                        phoneNumber: data.phoneNumber
-                    })
-                    let newBooking = new Booking({
-                        date: data.reserveDate,
-                        user: newUser._id,
-                        currentNumber: data.currentNumber,
-                        status: 's1'
-                    })
-                    await newUser.save();
-                    await newBooking.save();
+                if (userBookingHistory) {
+                    // Nếu có lịch sử đặt bàn của người dùng, tăng số lượng lên 1
+                    userBookingHistory.number += 1;
+                    await userBookingHistory.save();
                 } else {
-                    resolve({
-                        message: "useasd"
-                    })
+                    // Nếu không có lịch sử đặt bàn của người dùng, tạo mới và đặt số lượng là 1
+                    userBookingHistory = new History({
+                        user: newUser._id,
+                        booking: newBooking._id,
+                        number: 1
+                    });
+                    await userBookingHistory.save();
                 }
+
+                // Lưu thông tin người dùng và đặt bàn mới vào cơ sở dữ liệu
+
+
                 console.log("check user", newUser);
                 resolve({
                     errCode: 0,
                     user: newUser
-                })
+                });
             }
-
-        } catch (e) {
-            reject(e)
+        } catch (error) {
+            console.error("Error in postBookAppointment:", error);
+            reject(error);
         }
-    })
-}
+    });
+};
+
+module.exports = postBookAppointment;
+
 let getUsers = (userId) => {
 
     return new Promise(async (resolve, reject) => {
