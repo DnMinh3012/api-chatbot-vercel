@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
         type: String,
     }
 });
-
 const bookingSchema = new mongoose.Schema({
     tableid: {
         type: String,
@@ -35,10 +34,10 @@ const bookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    history: {  // Thêm trường history để liên kết với lịch sử
+    histories: [{  // Sử dụng mảng để liên kết với nhiều lịch sử
         type: mongoose.Schema.Types.ObjectId,
         ref: "History"
-    },
+    }],
     status: {
         type: String,
     }
@@ -54,9 +53,10 @@ const historySchema = new mongoose.Schema({
         ref: "User"
     },
     number: {
-        type: String,
+        type: Number,
     },
 });
+
 const User = mongoose.model("User", userSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
 const History = mongoose.model("History", historySchema);
