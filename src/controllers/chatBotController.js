@@ -3,7 +3,7 @@ import request from "request";
 import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
-
+import customerService from "../services/customerService"
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -276,16 +276,12 @@ let handleReserveTableAjax = async (req, res) => {
             note: req.body.note,
             currentNumber: req.body.currentNumber,
         }
+        await customerService.postBookAppointment(data);
         await chatBotService.writeDataToGoogleSheet(data);
-
-        let customerName = "";
-        if (req.body.customerName === "") {
-            customerName = username;
-        } else customerName = req.body.customerName;
 
         let response1 = {
             "text": `Thong tin khach dat ban
-            \nHo va ten: ${customerName}
+            \nHo va ten: ${username}
             \nEmail: ${req.body.email}
             \nSo Dien Thoai: ${req.body.phoneNumber}
             \nSố người: ${req.body.currentNumber},

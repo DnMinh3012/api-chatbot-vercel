@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
 import { User, Booking, History } from "../model/model"
-const postBookAppointment = (data) => {
+const postBookAppointment = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.email || !data.reserveDate) {
@@ -16,20 +16,13 @@ const postBookAppointment = (data) => {
                 });
             } else {
                 let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
-                let checkBooking = await User.findOne({ user: newUser.id });
+                let checkBooking = await Booking.findOne({ user: newUser._id });
                 if (checkBooking) {
                     // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
                     await History.updateOne(
                         { user: newUser._id },
                         { $inc: { number: 1 } }
                     );
-                    const newBooking = new Booking({
-                        date: data.reserveDate,
-                        user: newUser._id,
-                        currentNumber: data.currentNumber,
-                        status: 's1'
-                    });
-                    await newBooking.save();
                 } else {
                     // Không tìm thấy người dùng, tạo mới người dùng
                     newUser = new User({
@@ -40,24 +33,26 @@ const postBookAppointment = (data) => {
                         phoneNumber: data.phoneNumber
                     });
 
-                    // Tạo mới đặt bàn và lịch sử đặt bàn
-                    const newBooking = new Booking({
-                        date: data.reserveDate,
-                        user: newUser._id,
-                        currentNumber: data.currentNumber,
-                        status: 's1'
-                    });
-                    const userBookingHistory = new History({
-                        user: newUser._id,
-                        booking: newBooking._id,
-                        number: 1
-                    });
-
-                    // Lưu thông tin vào cơ sở dữ liệu
+                    // Lưu thông tin người dùng mới vào cơ sở dữ liệu
                     await newUser.save();
-                    await newBooking.save();
-                    await userBookingHistory.save();
                 }
+
+                // Tạo mới đặt bàn và lịch sử đặt bàn
+                const newBooking = new Booking({
+                    date: data.reserveDate,
+                    user: newUser._id,
+                    currentNumber: data.currentNumber,
+                    status: 's1'
+                });
+                const userBookingHistory = new History({
+                    user: newUser._id,
+                    booking: newBooking._id,
+                    number: 1
+                });
+
+                // Lưu thông tin đặt bàn và lịch sử đặt bàn vào cơ sở dữ liệu
+                await newBooking.save();
+                await userBookingHistory.save();
 
                 console.log("check user", newUser);
                 resolve({
