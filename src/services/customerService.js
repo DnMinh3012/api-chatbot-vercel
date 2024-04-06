@@ -16,56 +16,47 @@ const postBookAppointment = async (data) => {
                 });
             } else {
                 let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
-                if (newUser && newUser._id) { // Kiểm tra newUser có tồn tại và có thuộc tính '_id'
+                if (newUser && newUser._id) {
                     let checkBooking = await Booking.findOne({ user: newUser._id });
-                    if (checkBooking && checkBooking._id) { // Kiểm tra checkBooking có tồn tại và có thuộc tính '_id'
-                        // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
+                    if (checkBooking && checkBooking._id) {
                         await History.updateOne(
                             { user: newUser._id },
                             { $inc: { number: 1 } }
                         );
-                    } else {
-                        // Không tìm thấy người dùng, tạo mới người dùng
-                        newUser = new User({
-                            email: data.email,
-                            role: "R3",
-                            username: data.username,
-                            address: data.address,
-                            phoneNumber: data.phoneNumber
-                        });
-
-                        // Lưu thông tin người dùng mới vào cơ sở dữ liệu
-                        await newUser.save();
                     }
-                    // Tạo mới đặt bàn và lịch sử đặt bàn
-                    let newBooking = new Booking({
-                        date: data.reserveDate,
-                        user: newUser._id,
-                        currentNumber: data.currentNumber,
-                        status: 's1'
-                    });
-                    let userBookingHistory = new History({
-                        user: newUser._id,
-                        booking: newBooking._id,
-                        number: 1
-                    });
-
-                    // Lưu thông tin đặt bàn và lịch sử đặt bàn vào cơ sở dữ liệu
-                    await newBooking.save();
-                    await userBookingHistory.save();
-
                     console.log("check newBooking", newBooking);
                     resolve({
                         errCode: 0,
                         user: newUser
                     });
                 } else {
-                    // Xử lý khi không tìm thấy người dùng
-                    resolve({
-                        errCode: 2,
-                        message: "User not found"
+                    newUser = new User({
+                        email: data.email,
+                        role: "R3",
+                        username: data.username,
+                        address: data.address,
+                        phoneNumber: data.phoneNumber
                     });
+
+                    await newUser.save();
                 }
+                let newBooking = new Booking({
+                    date: data.reserveDate,
+                    user: newUser._id,
+                    currentNumber: data.currentNumber,
+                    status: 's1'
+                });
+                let userBookingHistory = new History({
+                    user: newUser._id,
+                    booking: newBooking._id,
+                    number: 1
+                });
+                await newBooking.save();
+                await userBookingHistory.save();
+                resolve({
+                    errCode: 0,
+                    user: newUser
+                });
             }
         } catch (error) {
             console.error("Error in postBookAppointment:", error);
