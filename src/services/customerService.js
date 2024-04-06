@@ -16,35 +16,36 @@ const postBookAppointment = async (data) => {
                 });
             } else {
                 let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
-                let checkBooking = await Booking.findOne({ user: newUser._id });
-                if (checkBooking) {
-                    // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
-                    await History.updateOne(
-                        { user: newUser._id },
-                        { $inc: { number: 1 } }
-                    );
-                } else {
-                    // Không tìm thấy người dùng, tạo mới người dùng
-                    newUser = new User({
-                        email: data.email,
-                        role: "R3",
-                        username: data.username,
-                        address: data.address,
-                        phoneNumber: data.phoneNumber
-                    });
+                if (newUser) {
+                    let checkBooking = await Booking.findOne({ user: newUser._id });
+                    if (checkBooking) {
+                        // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
+                        await History.updateOne(
+                            { user: newUser._id },
+                            { $inc: { number: 1 } }
+                        );
+                    } else {
+                        // Không tìm thấy người dùng, tạo mới người dùng
+                        newUser = new User({
+                            email: data.email,
+                            role: "R3",
+                            username: data.username,
+                            address: data.address,
+                            phoneNumber: data.phoneNumber
+                        });
 
-                    // Lưu thông tin người dùng mới vào cơ sở dữ liệu
-                    await newUser.save();
+                        // Lưu thông tin người dùng mới vào cơ sở dữ liệu
+                        await newUser.save();
+                    }
                 }
-
                 // Tạo mới đặt bàn và lịch sử đặt bàn
-                const newBooking = new Booking({
+                let newBooking = new Booking({
                     date: data.reserveDate,
                     user: newUser._id,
                     currentNumber: data.currentNumber,
                     status: 's1'
                 });
-                const userBookingHistory = new History({
+                let userBookingHistory = new History({
                     user: newUser._id,
                     booking: newBooking._id,
                     number: 1
@@ -54,7 +55,7 @@ const postBookAppointment = async (data) => {
                 await newBooking.save();
                 await userBookingHistory.save();
 
-                console.log("check user", newUser);
+                console.log("check newBooking", newBooking);
                 resolve({
                     errCode: 0,
                     user: newUser
