@@ -16,12 +16,20 @@ const postBookAppointment = (data) => {
                 });
             } else {
                 let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
-                if (newUser) {
+                let checkBooking = await User.findOne({ user: newUser.id });
+                if (checkBooking) {
                     // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
                     await History.updateOne(
                         { user: newUser._id },
                         { $inc: { number: 1 } }
                     );
+                    const newBooking = new Booking({
+                        date: data.reserveDate,
+                        user: newUser._id,
+                        currentNumber: data.currentNumber,
+                        status: 's1'
+                    });
+                    await newBooking.save();
                 } else {
                     // Không tìm thấy người dùng, tạo mới người dùng
                     newUser = new User({
