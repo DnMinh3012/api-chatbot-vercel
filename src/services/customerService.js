@@ -16,9 +16,9 @@ const postBookAppointment = async (data) => {
                 });
             } else {
                 let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
-                if (newUser) {
+                if (newUser && newUser._id) {
                     let checkBooking = await Booking.findOne({ user: newUser._id });
-                    if (checkBooking) {
+                    if (checkBooking && checkBooking._id) {
                         // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
                         await History.updateOne(
                             { user: newUser._id },
