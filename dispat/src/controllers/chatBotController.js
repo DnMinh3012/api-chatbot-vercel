@@ -3,7 +3,7 @@ import request from "request";
 import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
-
+import cutommerService from "../services/customerService"
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -269,15 +269,15 @@ let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
+            senderId: req.body.psid,
             username: username,
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
-            reserveDate: req.body.reserveDate,
-            note: req.body.note,
             currentNumber: req.body.currentNumber,
+            reserveDate: req.body.reserveDate
         }
         await chatBotService.writeDataToGoogleSheet(data);
-
+        await cutommerService.postBookAppointment(data);
         let customerName = "";
         if (req.body.customerName === "") {
             customerName = username;
@@ -288,11 +288,8 @@ let handleReserveTableAjax = async (req, res) => {
             \nHo va ten: ${customerName}
             \nEmail: ${req.body.email}
             \nSo Dien Thoai: ${req.body.phoneNumber}
-            \nSố người: ${req.body.currentNumber},
-            \nNgày đặt bàn: ${req.body.reserveDate},
-            \nGhi chú: ${req.body.note},
-            ,
-            `
+            \nso nguoi: ${req.body.currentNumber}
+            \nNgay Dat Ban :${req.body.reserveDate}`
         }
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({

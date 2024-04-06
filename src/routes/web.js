@@ -2,7 +2,7 @@ import express from "express";
 import homepageController from "../controllers/homepageController";
 import chatBotController from "../controllers/chatBotController";
 import chatBotService from "../services/chatBotService";
-
+import userController from "../controllers/userController";
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -12,6 +12,7 @@ let initWebRoutes = (app) => {
     router.post("/webhook", chatBotController.postWebhook);
     router.post('/setup-persistent-menu', chatBotService.setupPersistentMenu);
     router.post('/reserve-table-ajax', chatBotController.handleReserveTableAjax)
+    router.get('/api/get-users', userController.handleGetUsers);
     router.get("/test", async (req, res) => {
         let user = await chatBotService.getFacebookUsername(3350311028355090);
     });
