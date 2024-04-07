@@ -17,7 +17,7 @@ let senSimpleEmail = async (dataSend) => {
             let info = await transporter.sendMail({
                 from: '"Do Nhat Minh" <minh88216@st.vimaru.edu.vn>', // sender address
                 to: dataSend.reciverEmail, // list of receivers
-                subject: "Thông Tin Lịch Khám bệnh",
+                subject: "Thông Tin Đặt bàn",
                 html: getBodyHTMLEmail(dataSend)
             });
             resolve(true)
@@ -28,53 +28,25 @@ let senSimpleEmail = async (dataSend) => {
     })
 }
 let getBodyHTMLEmail = (dataSend) => {
-    let result = '';
-    if (dataSend.language === 'vi') {
-        result = `
-        <h3>Xin Chào ${dataSend.patienName}!</h3>
-        <p>Bạn nhận được email này vì đã đặt lịch khám bệnh online trên BookingCare</p>
-        <p>Thông tin đặt lịch khám bệnh</p>
-        <div><b>Thời gian ${dataSend.time}</b></div>
-        <div><b>Bác sĩ ${dataSend.doctorName}</b></div>
-        <p>Vui lòng click vào đường link dưới đây để xác nhận thủ tục đặt lịch khám bệnh</p>
-        <div><a href=  ${dataSend.redirectLink} target = "_blank" >Click here </a></div>
-        <div><b>Xin cảm ơn</b></div>
-        `;
-    }
-    else {
-        result = `
-        <h3>Hello ${dataSend.patienName}!</h3>
-        <p>You received this email because you booked an online medical appointment on BookingCare</p>
-        <p>Information to book a medical appointment</p>
-        <div><b>Time ${dataSend.time}</b></div>
-        <div><b>Doctor ${dataSend.doctorName}</b></div>
-        <p>Please click on the link below to confirm the procedure for making an appointment</p>
-        <div><a href=  ${dataSend.redirectLink} target = "_blank" >Click here </a></div>
-        <div><b>Thank you</b></div>
-        `;
-    }
+    let result = `
+    <h3>Xin Chào ${dataSend.patienName}!</h3>
+    <p>Bạn nhận được email này vì đã đặt bàn online trên Vimaru Restaurant</p>
+    <p>Thông tin đặt bàn</p>
+    <div><b>Thời gian ${dataSend.time}</b></div>
+    <p>Vui lòng click vào đường link dưới đây để xác nhận thủ tục đặt lịch khám bệnh</p>
+    <div><a href=  ${dataSend.redirectLink} target = "_blank" >Click here </a></div>
+    <div><b>Xin cảm ơn</b></div>`;
     return result;
 }
 let getBodyHTMLEmailRemedy = (dataSend) => {
-    let result = '';
-    if (dataSend.language === 'vi') {
-        result =
-            `
-        <h3>Xin Chào ${dataSend.firstName}!</h3>
-        <p>Bạn nhận được email này vì đã đặt lịch khám bệnh online trên BookingCare</p>
-        <p>Thông tin Hoá đơn được gửi trong file đính kèm</p>
-        <div><b>Xin cảm ơn</b></div>
-        `
-    }
-    if (dataSend.language === 'en') {
-        result =
-            `
-        <h3>Dear ${dataSend.firstName}!</h3>
-        <p>You received this email because you booked an online medical appointment on BookingCare</p>
-        <p>Invoice information sent in attachment</p>
-        <div><b>Thank you</b></div>
-        `
-    }
+    let result = `
+    <h3>Xin Chào ${dataSend.patienName}!</h3>
+    <p>Bạn nhận được email này vì đã đặt bàn online trên Vimaru Restaurant</p>
+    <p>Thông tin đặt bàn</p>
+    <div><b>Thời gian ${dataSend.time}</b></div>
+    <p>Vui lòng click vào đường link dưới đây để xác nhận thủ tục đặt lịch khám bệnh</p>
+    <div><a href=  ${dataSend.redirectLink} target = "_blank" >Click here </a></div>
+    <div><b>Xin cảm ơn</b></div>`;
     return result;
 }
 let sendAttachment = async (dataSend) => {
