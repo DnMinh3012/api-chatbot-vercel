@@ -18,7 +18,13 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-    }
+    },
+    booking: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Booking"
+        }
+    ]
 });
 const bookingSchema = new mongoose.Schema({
     tableid: {

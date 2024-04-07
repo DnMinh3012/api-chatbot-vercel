@@ -5,6 +5,13 @@ import _ from 'lodash'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
 import { User, Booking, History } from "../model/model"
+import emailServices from './emailServices'
+
+
+let buildUrlEmaill = (customerId, token) => {
+    let result = `${process.env.URL_WEB}/verify-booking?token=${token}&doctorId=${customerId}`
+    return result
+}
 const postBookAppointment = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -53,6 +60,14 @@ const postBookAppointment = async (data) => {
                 });
                 await newBooking.save();
                 await userBookingHistory.save();
+                await emailServices.senSimpleEmail({
+                    reciverEmail: data.email,
+                    patienName: data.username,
+                    time: data.reserveDate,
+                    doctorName: data.username,
+                    redirectLink:
+                        (data.newUser._id, token)
+                })
                 resolve({
                     errCode: 0,
                     user: newUser
@@ -68,38 +83,58 @@ const postBookAppointment = async (data) => {
 
 module.exports = postBookAppointment;
 
-let getUsers = (userId) => {
+const getUsers = async (userId) => {
+    try {
+        let data = [];
 
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (userId === "ALL") {
-                const users = await User.find({ role: 'R3' }).select('-password');
-                console.log(users); // Log ra danh sách users
-                const bookings = await Booking.find({ user: { $in: users.map(user => user._id) } });
-                // Sử dụng $in để tìm các booking có user nằm trong danh sách users tìm được
-                const data = users.map(user => {
-                    const userBooking = bookings.find(booking => booking.user.equals(user._id));
-                    return {
-                        email: user.email,
-                        username: user.username,
-                        phoneNumber: user.phoneNumber,
-                        date: userBooking.date,
-                        currentNumber: userBooking ? userBooking.currentNumber : null,
-                        status: userBooking ? userBooking.status : null,
-                    };
-                });
-                resolve(data);
+        if (userId === "ALL") {
+            const bookings = await Booking.find();
+
+            // Lặp qua mỗi booking và lấy thông tin user tương ứng
+            const userPromises = bookings.map(async (booking) => {
+                const user = await User.findOne({ _id: booking.user }).select('-password');
+
+                return {
+                    email: user.email,
+                    username: user.username,
+                    phoneNumber: user.phoneNumber,
+                    date: booking.date,
+                    currentNumber: booking.currentNumber,
+                    status: booking.status,
+                };
+            });
+
+            // Chờ tất cả các promise hoàn thành và thêm kết quả vào mảng data
+            const userData = await Promise.all(userPromises);
+            data = userData.reverse(); // Đảo ngược thứ tự của mảng kết quả
+        } else if (userId) {
+            const user = await User.findOne({ _id: userId }).select('-password');
+            if (!user) {
+                return null;
             }
-            if (userId && userId !== "ALL") {
-                const user = await User.findOne({ _id: userId }).select('-password');
-                resolve(user);
-            }
-        } catch (e) {
-            reject(e);
+
+            const bookings = await Booking.find({ user: userId });
+
+            const userData = {
+                email: user.email,
+                username: user.username,
+                phoneNumber: user.phoneNumber,
+                bookings: bookings.map((booking) => ({
+                    date: booking.date,
+                    currentNumber: booking.currentNumber,
+                    status: booking.status,
+                })),
+            };
+
+            data.push(userData);
         }
-    });
 
-}
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     postBookAppointment: postBookAppointment,
     getUsers: getUsers
