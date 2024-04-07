@@ -13,6 +13,9 @@ let initWebRoutes = (app) => {
     router.post('/setup-persistent-menu', chatBotService.setupPersistentMenu);
     router.post('/reserve-table-ajax', chatBotController.handleReserveTableAjax)
     router.get('/api/get-users', userController.handleGetUsers);
+    router.delete('/api/delete-user', userController.handleDeleteUser)
+    router.delete('/api/complete-user', userController.handleCompleteUser)
+
     router.get("/test", async (req, res) => {
         let user = await chatBotService.getFacebookUsername(3350311028355090);
     });

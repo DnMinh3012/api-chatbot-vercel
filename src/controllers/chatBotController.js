@@ -14,7 +14,6 @@ let user = {
     quantity: "",
     createdAt: ""
 };
-
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
@@ -276,6 +275,7 @@ let handleReserveTableAjax = async (req, res) => {
             note: req.body.note,
             currentNumber: req.body.currentNumber,
         }
+        await customerService.getPsid(req.body.psid)
         await customerService.postBookAppointment(data);
         await chatBotService.writeDataToGoogleSheet(data);
 
@@ -307,4 +307,5 @@ module.exports = {
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     handleReserveTableAjax: handleReserveTableAjax,
+
 };

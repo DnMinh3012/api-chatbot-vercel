@@ -20,6 +20,31 @@ let handleGetUsers = async (req, res) => {
         })
     }
 }
+let handleDeleteUser = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(500).json({
+            errCode: 1,
+            message: 'Missing inputs parameter!'
+        });
+
+    }
+    let message = await customerService.deleteUser(req.body.id);
+    return res.status(200).json(message);
+}
+let handleCompleteUser = async (req, res) => {
+    if (!req.body.id) {
+        return res.status(500).json({
+            errCode: 1,
+            message: 'Missing inputs parameter!'
+        });
+
+    }
+    let message = await customerService.CompleteUser(req.body.id);
+    return res.status(200).json(message);
+}
+
 module.exports = {
     handleGetUsers: handleGetUsers,
+    handleDeleteUser: handleDeleteUser,
+    handleCompleteUser: handleCompleteUser
 }

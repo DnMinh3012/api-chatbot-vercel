@@ -6,10 +6,11 @@ import { v4 as uuidv4 } from "uuid";
 import e from "express";
 import { User, Booking, History } from "../model/model"
 import emailServices from './emailServices'
+import chatBotService from "./chatBotService";
 
 
-let buildUrlEmaill = (customerId, token) => {
-    let result = `${process.env.URL_WEB}/verify-booking?token=${token}&doctorId=${customerId}`
+let buildUrlEmaill = (token) => {
+    let result = `${process.env.URL_WEB}/verify-booking?token=${token}`
     return result
 }
 const postBookAppointment = async (data) => {
@@ -66,7 +67,7 @@ const postBookAppointment = async (data) => {
                     time: data.reserveDate,
                     doctorName: data.username,
                     redirectLink:
-                        (data.newUser._id, token)
+                        (token)
                 })
                 resolve({
                     errCode: 0,
@@ -95,6 +96,7 @@ const getUsers = async (userId) => {
                 const user = await User.findOne({ _id: booking.user }).select('-password');
 
                 return {
+                    id: booking._id,
                     email: user.email,
                     username: user.username,
                     phoneNumber: user.phoneNumber,
@@ -103,8 +105,6 @@ const getUsers = async (userId) => {
                     status: booking.status,
                 };
             });
-
-            // Chờ tất cả các promise hoàn thành và thêm kết quả vào mảng data
             const userData = await Promise.all(userPromises);
             data = userData.reverse(); // Đảo ngược thứ tự của mảng kết quả
         } else if (userId) {
@@ -134,8 +134,89 @@ const getUsers = async (userId) => {
         throw error;
     }
 };
+const deleteUser = (userID) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await Booking.findOne({ _id: userID });
+            if (user) {
+                await Booking.deleteOne({ _id: userID });
+                resolve({
+                    errCode: 0,
+                    message: 'Delete Success!'
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: 'User is not exist!'
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+const CompleteUser = (userID) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await Booking.findOne({ _id: userID });
+            if (user) {
+                await Booking.updateOne({ _id: userID }, { status: "S3" });
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": "Vimaru restaurant",
+                                    "subtitle": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi, xin hãy để lại đánh giá để bọn tôi có thể phục vụ bạn tốt hơn trong lần sau",
+                                    "image_url": "https://bit.ly/imageToSend",
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đánh giá",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        },
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                }]
+                        }
+                    }
+                };
+                let psid = getPsid();
+                await chatBotService.sendMessage(psid, response)
+                resolve({
+                    errCode: 0,
+                    message: 'Complete Success!'
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: 'User is not exist!'
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+let getPsid = () => {
+    return psid;
+}
 
 module.exports = {
     postBookAppointment: postBookAppointment,
-    getUsers: getUsers
+    getUsers: getUsers,
+    deleteUser: deleteUser,
+    CompleteUser: CompleteUser,
+    getPsid: getPsid
 };
