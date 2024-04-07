@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import e from "express";
 import { User, Booking, History } from "../model/model"
 import emailServices from './emailServices'
-import chatBotService from "./chatBotService";
 
+import chatBotService from './chatBotService'
 
 let buildUrlEmaill = (token) => {
     let result = `${process.env.URL_WEB}/verify-booking?token=${token}`
@@ -160,8 +160,6 @@ const CompleteUser = (userID) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await Booking.findOne({ _id: userID });
-
-            console.log("check psid:", psid)
             if (user) {
                 let psid = user.psid;
                 await Booking.updateOne({ _id: userID }, { status: "S3" });
