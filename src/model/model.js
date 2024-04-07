@@ -46,6 +46,9 @@ const bookingSchema = new mongoose.Schema({
     }],
     status: {
         type: String,
+    },
+    psid: {
+        type: String,
     }
 });
 

@@ -268,6 +268,7 @@ let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
+            psid: req.body.psid,
             username: username,
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
@@ -286,8 +287,7 @@ let handleReserveTableAjax = async (req, res) => {
             \nSo Dien Thoai: ${req.body.phoneNumber}
             \nSố người: ${req.body.currentNumber},
             \nNgày đặt bàn: ${req.body.reserveDate},
-            \nGhi chú: ${req.body.note},
-            ,
+            \nGhi chú: ${req.body.note}
             `
         }
         await chatBotService.sendMessage(req.body.psid, response1)
@@ -307,5 +307,4 @@ module.exports = {
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     handleReserveTableAjax: handleReserveTableAjax,
-
 };

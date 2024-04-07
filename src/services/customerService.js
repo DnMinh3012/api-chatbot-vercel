@@ -49,6 +49,7 @@ const postBookAppointment = async (data) => {
                     await newUser.save();
                 }
                 let newBooking = new Booking({
+                    psid: data.psid,
                     date: data.reserveDate,
                     user: newUser._id,
                     currentNumber: data.currentNumber,
@@ -159,7 +160,10 @@ const CompleteUser = (userID) => {
     return new Promise(async (resolve, reject) => {
         try {
             const user = await Booking.findOne({ _id: userID });
+
+            console.log("check psid:", psid)
             if (user) {
+                let psid = user.psid;
                 await Booking.updateOne({ _id: userID }, { status: "S3" });
                 let response = {
                     "attachment": {
@@ -174,14 +178,14 @@ const CompleteUser = (userID) => {
                                     "buttons": [
                                         {
                                             "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
                                             "title": "Đánh giá",
                                             "webview_height_ratio": "tall",
                                             "messenger_extensions": true
                                         },
                                         {
                                             "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
                                             "title": "Đặt bàn",
                                             "webview_height_ratio": "tall",
                                             "messenger_extensions": true
@@ -191,7 +195,6 @@ const CompleteUser = (userID) => {
                         }
                     }
                 };
-                let psid = getPsid();
                 await chatBotService.sendMessage(psid, response)
                 resolve({
                     errCode: 0,
@@ -209,14 +212,9 @@ const CompleteUser = (userID) => {
     });
 };
 
-let getPsid = () => {
-    return psid;
-}
-
 module.exports = {
     postBookAppointment: postBookAppointment,
     getUsers: getUsers,
     deleteUser: deleteUser,
     CompleteUser: CompleteUser,
-    getPsid: getPsid
 };
