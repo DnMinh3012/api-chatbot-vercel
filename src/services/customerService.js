@@ -62,14 +62,14 @@ const postBookAppointment = async (data) => {
                 });
                 await newBooking.save();
                 await userBookingHistory.save();
-                await emailServices.senSimpleEmail({
-                    reciverEmail: data.email,
-                    patienName: data.username,
-                    time: data.reserveDate,
-                    doctorName: data.username,
-                    redirectLink:
-                        (token)
-                })
+                // await emailServices.senSimpleEmail({
+                //     reciverEmail: data.email,
+                //     patienName: data.username,
+                //     time: data.reserveDate,
+                //     doctorName: data.username,
+                //     redirectLink:
+                //         (token)
+                // })
                 resolve({
                     errCode: 0,
                     user: newUser
@@ -162,6 +162,7 @@ const CompleteUser = (userID) => {
             const user = await Booking.findOne({ _id: userID });
             if (user) {
                 let psid = user.psid;
+                console.log("psid:", psid)
                 await Booking.updateOne({ _id: userID }, { status: "S3" });
                 let response = {
                     "attachment": {
