@@ -211,9 +211,46 @@ const CompleteUser = (userID) => {
     });
 };
 
+const feedbackAppointment = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.email || !data.phoneNumber) {
+                console.log("Missing required parameters");
+                resolve({
+                    errCode: 1,
+                    message: "Missing required parameters"
+                });
+            } else {
+                let booking = Booking.find({ date: data.reserveDate })
+                const userPromises = bookings.map(async (booking) => {
+                    const user = await User.findOne({ _id: booking.user }).select('-password');
+                    return {
+                        user
+                    };
+                });
+                console.log("Check new promises", userPromises)
+                let newFeedback = new Feedback({
+                    user: userPromises._id,
+                    booking: newBooking._id,
+                    description: data.description
+                });
+                resolve({
+                    errCode: 0,
+                    user: newUser
+                });
+            }
+        } catch (error) {
+            console.error("Error in postBookAppointment:", error);
+            reject(error);
+        }
+    });
+};
+
+
 module.exports = {
     postBookAppointment: postBookAppointment,
     getUsers: getUsers,
     deleteUser: deleteUser,
     CompleteUser: CompleteUser,
+    feedbackAppointment: feedbackAppointment
 };
