@@ -232,7 +232,8 @@ const CompleteUser = (userID) => {
                 await chatBotService.sendMessage(psid, response)
                 resolve({
                     errCode: 0,
-                    message: 'Complete Success!'
+                    message: 'Complete Success!',
+                    psid: psid
                 });
             } else {
                 resolve({
