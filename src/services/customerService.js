@@ -177,7 +177,7 @@ const CompleteUser = (userID) => {
                                     "buttons": [
                                         {
                                             "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
+                                            "url": `${process.env.URL_WEB_VIEW_FEEDBACK}/${psid}`,
                                             "title": "Đánh giá",
                                             "webview_height_ratio": "tall",
                                             "messenger_extensions": true

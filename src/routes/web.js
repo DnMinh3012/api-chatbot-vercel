@@ -8,7 +8,7 @@ let router = express.Router();
 let initWebRoutes = (app) => {
     router.get("/", homepageController.getHomepage);
     router.get("/form-reserve-table/:senderId", chatBotController.getReserveTable);
-    router.get("/form-feedback-table/:senderId", chatBotController.getReserveTable);
+    router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);
     router.post('/setup-persistent-menu', chatBotService.setupPersistentMenu);
