@@ -65,8 +65,22 @@ const historySchema = new mongoose.Schema({
         type: Number,
     },
 });
+const feedbackSchema = new mongoose.Schema({
+    booking: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking"
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    description: {
+        type: String
+    },
+});
 
 const User = mongoose.model("User", userSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
 const History = mongoose.model("History", historySchema);
-module.exports = { User, Booking, History };
+const Feedback = mongoose.model("Feedback", feedbackSchema);
+module.exports = { User, Booking, History, Feedback };
