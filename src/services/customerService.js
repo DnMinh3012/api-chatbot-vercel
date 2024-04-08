@@ -4,7 +4,7 @@ import _ from 'lodash'
 // import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { User, Booking, History, Feedback } from "../model/model"
+import { User, Booking, History } from "../model/model"
 import emailServices from './emailServices'
 
 import chatBotService from './chatBotService'
@@ -70,41 +70,6 @@ const postBookAppointment = async (data) => {
                 //     redirectLink:
                 //         (token)
                 // })
-                resolve({
-                    errCode: 0,
-                    user: newUser
-                });
-            }
-        } catch (error) {
-            console.error("Error in postBookAppointment:", error);
-            reject(error);
-        }
-    });
-};
-
-const feedbackAppointment = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (!data.email || !data.phoneNumber) {
-                console.log("Missing required parameters");
-                resolve({
-                    errCode: 1,
-                    message: "Missing required parameters"
-                });
-            } else {
-                let booking = Booking.find({ date: data.reserveDate })
-                const userPromises = bookings.map(async (booking) => {
-                    const user = await User.findOne({ _id: booking.user }).select('-password');
-                    return {
-                        user
-                    };
-                });
-                console.log("Check new promises", userPromises)
-                let newFeedback = new Feedback({
-                    user: userPromises._id,
-                    booking: newBooking._id,
-                    description: data.description
-                });
                 resolve({
                     errCode: 0,
                     user: newUser
@@ -212,7 +177,7 @@ const CompleteUser = (userID) => {
                                     "buttons": [
                                         {
                                             "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_FEEDBACK}/${psid}`,
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
                                             "title": "Đánh giá",
                                             "webview_height_ratio": "tall",
                                             "messenger_extensions": true
@@ -232,8 +197,7 @@ const CompleteUser = (userID) => {
                 await chatBotService.sendMessage(psid, response)
                 resolve({
                     errCode: 0,
-                    message: 'Complete Success!',
-                    psid: psid
+                    message: 'Complete Success!'
                 });
             } else {
                 resolve({
@@ -252,5 +216,4 @@ module.exports = {
     getUsers: getUsers,
     deleteUser: deleteUser,
     CompleteUser: CompleteUser,
-    feedbackAppointment, feedbackAppointment
 };
