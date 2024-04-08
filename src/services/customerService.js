@@ -222,7 +222,6 @@ const feedbackAppointment = async (data) => {
                 });
             } else {
                 const user = await User.findOne({ phoneNumber: data.phoneNumber });
-
                 const newFeedback = new Feedback({
                     user: user._id,
                     description: data.description

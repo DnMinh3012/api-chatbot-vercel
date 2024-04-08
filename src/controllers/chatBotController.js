@@ -319,14 +319,14 @@ let handleFeedbackTableAjax = async (req, res) => {
             reserveDate: req.body.reserveDate,
             feedback: req.body.feedback
         }
-        await customerService.postBookAppointment(data);
+        await customerService.feedbackAppointment(data);
         let response1 = {
             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
         }
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
             message: 'ok',
-            psid: req.body.psid,
+            data: data
         })
     } catch (e) {
         console.log("Loi Reserve table: ", e);
