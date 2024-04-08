@@ -52,7 +52,7 @@
                     <label for="phoneNumber">Phản hồi của bạn</label>
                     <input type="textarea" id="feedback" class="form-control" placeholder="Ghi chú...">
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> ĐẶT BÀN
+                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> Gửi
                 </button>
             </div>
 
@@ -131,6 +131,7 @@
                     email: $("#email").val(),
                     feedback: $("#feedback").val(),
                     reserveDate: $("#reserveDate").val(),
+                    phoneNumber: $("#phoneNumber").val()
                 };
 
                 if (!check) {

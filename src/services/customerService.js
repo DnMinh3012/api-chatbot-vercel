@@ -156,6 +156,7 @@ const deleteUser = (userID) => {
         }
     });
 };
+
 const CompleteUser = (userID) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -210,7 +211,6 @@ const CompleteUser = (userID) => {
         }
     });
 };
-
 const feedbackAppointment = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -221,31 +221,31 @@ const feedbackAppointment = async (data) => {
                     message: "Missing required parameters"
                 });
             } else {
-                let booking = Booking.find({ date: data.reserveDate })
+                const bookings = await Booking.find({ date: data.reserveDate });
                 const userPromises = bookings.map(async (booking) => {
                     const user = await User.findOne({ _id: booking.user }).select('-password');
-                    return {
-                        user
-                    };
+                    return user;
                 });
-                console.log("Check new promises", userPromises)
-                let newFeedback = new Feedback({
-                    user: userPromises._id,
+                console.log("Check new promises", userPromises);
+                const users = await Promise.all(userPromises);
+                // const newBooking = /* tạo mới một booking ở đây */;
+                const newFeedback = new Feedback({
+                    user: users.map(user => user._id),
                     booking: newBooking._id,
                     description: data.description
                 });
+                await newFeedback.save();
                 resolve({
                     errCode: 0,
-                    user: newUser
+                    feedback: newFeedback
                 });
             }
         } catch (error) {
-            console.error("Error in postBookAppointment:", error);
+            console.error("Error in feedbackAppointment:", error);
             reject(error);
         }
     });
 };
-
 
 module.exports = {
     postBookAppointment: postBookAppointment,
