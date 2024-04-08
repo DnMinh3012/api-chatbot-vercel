@@ -4,7 +4,7 @@ import _ from 'lodash'
 // import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { User, Booking, History } from "../model/model"
+import { User, Booking, History, Feedback } from "../model/model"
 import emailServices from './emailServices'
 
 import chatBotService from './chatBotService'
@@ -221,19 +221,13 @@ const feedbackAppointment = async (data) => {
                     message: "Missing required parameters"
                 });
             } else {
-                const bookings = await Booking.find({ date: data.reserveDate });
-                const userPromises = bookings.map(async (booking) => {
-                    const user = await User.findOne({ _id: booking.user }).select('-password');
-                    return user;
-                });
-                console.log("Check new promises", userPromises);
-                const users = await Promise.all(userPromises);
-                // const newBooking = /* tạo mới một booking ở đây */;
+                const user = await User.findOne({ phoneNumber: data.phoneNumber });
+
                 const newFeedback = new Feedback({
-                    user: users.map(user => user._id),
-                    booking: newBooking._id,
+                    user: user._id,
                     description: data.description
                 });
+
                 await newFeedback.save();
                 resolve({
                     errCode: 0,
@@ -246,6 +240,7 @@ const feedbackAppointment = async (data) => {
         }
     });
 };
+
 
 module.exports = {
     postBookAppointment: postBookAppointment,
