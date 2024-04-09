@@ -224,7 +224,7 @@ const feedbackAppointment = async (data) => {
                 const user = await User.findOne({ phoneNumber: data.phoneNumber });
                 const newFeedback = new Feedback({
                     user: user._id,
-                    description: data.description
+                    feedback: data.feedback
                 });
 
                 await newFeedback.save();
@@ -240,11 +240,57 @@ const feedbackAppointment = async (data) => {
     });
 };
 
+let getAllFeedback = async (id) => {
+    try {
+        let data = [];
 
+        if (id === "ALL") {
+            const feedback = await Feedback.find();
+
+            // Lặp qua mỗi booking và lấy thông tin user tương ứng
+            const userPromises = feedback.map(async (feedback) => {
+                const user = await User.findOne({ _id: feedback.user }).select('-password');
+
+                return {
+                    id: feedback._id,
+                    email: user.email,
+                    username: user.username,
+                    phoneNumber: user.phoneNumber,
+                    feedback: feedback.feedback,
+                };
+            });
+            const userData = await Promise.all(userPromises);
+            data = userData.reverse(); // Đảo ngược thứ tự của mảng kết quả
+        } else if (userId) {
+            const user = await User.findOne({ _id: userId }).select('-password');
+            if (!user) {
+                return null;
+            }
+
+            const feedback = await Feedback.find({ user: userId });
+
+            const userData = {
+                email: user.email,
+                username: user.username,
+                phoneNumber: user.phoneNumber,
+                feedback: feedback.map((feedback) => ({
+                    feedback: feedback.feedback,
+                })),
+            };
+
+            data.push(userData);
+        }
+
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = {
     postBookAppointment: postBookAppointment,
     getUsers: getUsers,
     deleteUser: deleteUser,
     CompleteUser: CompleteUser,
-    feedbackAppointment: feedbackAppointment
+    feedbackAppointment: feedbackAppointment,
+    getAllFeedback: getAllFeedback
 };

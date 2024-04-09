@@ -42,9 +42,27 @@ let handleCompleteUser = async (req, res) => {
     let message = await customerService.CompleteUser(req.body.id);
     return res.status(200).json(message);
 }
+let handleGetFeedback = async (req, res) => {
+    let id = req.query.id; //all,id
+    if (id) {
+        let users = await customerService.getAllFeedback(id);
+        return res.status(200).json({
+            errCode: 0,
+            message: 'ok',
+            users
+        })
+    } else {
+        return res.status(500).json({
+            errCode: 1,
+            message: 'Missing inputs parameter!',
+            users: []
+        })
+    }
+}
 
 module.exports = {
     handleGetUsers: handleGetUsers,
     handleDeleteUser: handleDeleteUser,
-    handleCompleteUser: handleCompleteUser
+    handleCompleteUser: handleCompleteUser,
+    handleGetFeedback: handleGetFeedback,
 }

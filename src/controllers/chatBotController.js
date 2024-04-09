@@ -319,6 +319,7 @@ let handleFeedbackTableAjax = async (req, res) => {
             reserveDate: req.body.reserveDate,
             feedback: req.body.feedback
         }
+        console.log("check data", data)
         await customerService.feedbackAppointment(data);
         let response1 = {
             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
