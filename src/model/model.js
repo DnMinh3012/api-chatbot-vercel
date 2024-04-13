@@ -78,9 +78,33 @@ const feedbackSchema = new mongoose.Schema({
         type: String
     },
 });
+const tableSchema = new mongoose.Schema({
+    booking: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking"
+    },
+    tableName: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    image: {
+        type: String
+    },
+    status: {
+        type: String
+    },
+    bookingNumber: {
+        type: String
+    },
+    maxNumber: {
+        type: String
+    },
+});
 
 const User = mongoose.model("User", userSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
 const History = mongoose.model("History", historySchema);
 const Feedback = mongoose.model("Feedback", feedbackSchema);
+const table = mongoose.model("Feedback", tableSchema);
+
 module.exports = { User, Booking, History, Feedback };
