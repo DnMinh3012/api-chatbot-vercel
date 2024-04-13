@@ -101,10 +101,62 @@ const tableSchema = new mongoose.Schema({
     },
 });
 
+const menuSchema = new mongoose.Schema({
+    menuName: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    menutype: {
+        type: String
+    },
+});
+
+const dishSchema = new mongoose.Schema({
+    dishName: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    image: {
+        type: String
+    },
+    menu: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Menu"
+    },
+    price: {
+        type: String
+    },
+});
+const specialSchema = new mongoose.Schema({
+    nameSpecial: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    date: {
+        type: Date
+    },
+    toDate: {
+        type: Date
+    },
+});
+
+
+
+
 const User = mongoose.model("User", userSchema);
 const Booking = mongoose.model("Booking", bookingSchema);
 const History = mongoose.model("History", historySchema);
 const Feedback = mongoose.model("Feedback", feedbackSchema);
-const table = mongoose.model("Feedback", tableSchema);
+const Table = mongoose.model("Table", tableSchema);
+const Menu = mongoose.model("Menu", menuSchema);
+const Dish = mongoose.model("Dish", dishSchema);
+const Special = mongoose.model("Special", specialSchema);
+
 
 module.exports = { User, Booking, History, Feedback };
