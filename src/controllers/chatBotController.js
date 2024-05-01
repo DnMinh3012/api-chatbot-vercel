@@ -78,7 +78,7 @@ let getWebhook = (req, res) => {
         }
     }
 };
-
+let timeouts = {};
 // Handles messages events
 let handleMessage = async (sender_psid, message) => {
     let response;
@@ -124,44 +124,22 @@ let handleMessage = async (sender_psid, message) => {
         }
     }
     // Send the response message
-    callSendAPI(sender_psid, response);
+    clearTimeout(timeouts[sender_psid]);
+
+    // Set a new timeout to send a follow-up message after 10 seconds if no response
+    timeouts[sender_psid] = setTimeout(() => {
+        let followUpResponse = {
+            "text": "Hello! It's been a while since we talked. Is there anything else I can help you with?"
+        };
+        callSendAPI(sender_psid, followUpResponse);
+    }, 10000); // 10 seconds in milliseconds
 };
 
-let handleMessageWithEntities = (message) => {
-    let entitiesArr = ["wit$datetime:datetime", "wit$phone_number:phone_number", "wit$greetings", "wit$thanks", "wit$bye"];
-    let entityChosen = "";
-    let data = {}; // data is an object saving value and name of the entity.
-    entitiesArr.forEach((name) => {
-        let entity = firstTrait(message.nlp, name.trim());
-        if (entity && entity.confidence > 0.8) {
-            entityChosen = name;
-            data.value = entity.value;
-        }
-    });
 
-    data.name = entityChosen;
-
-    // checking language
-    if (message && message.nlp && message.nlp.detected_locales) {
-        if (message.nlp.detected_locales[0]) {
-            let locale = message.nlp.detected_locales[0].locale;
-            data.locale = locale.substring(0, 2)
-        }
-
-    }
-    return data;
-};
-
-// function firstEntity(nlp, name) {
-//     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-// }
-
-function firstTrait(nlp, name) {
-    return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
-}
 
 // Handles messaging_postbacks events
 let handlePostback = async (sender_psid, received_postback) => {
+    clearTimeout(timeouts[sender_psid]);
     let response;
     // Get the payload for the postback
     let payload = received_postback.payload;
