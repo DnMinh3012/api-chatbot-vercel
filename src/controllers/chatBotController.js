@@ -210,6 +210,15 @@ let handlePostback = async (sender_psid, received_postback) => {
     }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
+    clearTimeout(timeouts[sender_psid]);
+
+    // Set a new timeout to send a follow-up message after 10 seconds if no response
+    timeouts[sender_psid] = setTimeout(() => {
+        let followUpResponse = {
+            "text": "Hello! It's been a while since we talked. Is there anything else I can help you with?"
+        };
+        callSendAPI(sender_psid, followUpResponse);
+    }, 10000); // 10 seconds in milliseconds
 };
 
 // Sends response messages via the Send API
