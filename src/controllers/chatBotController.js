@@ -210,7 +210,49 @@ let handlePostback = async (sender_psid, received_postback) => {
     }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
-    chatBotService.timeOutChatbot(sender_psid);
+    clearTimeout(timeouts[sender_psid]);
+
+    // Set a new timeout to send a follow-up message after 10 seconds if no response
+    timeouts[sender_psid] = setTimeout(() => {
+        let response1 = {
+            "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi,Tôi có thể giúp bạn gì nữa không!"
+        };
+        let response = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                        {
+                            "title": "Vimaru restaurant",
+                            "subtitle": "nếu bạn còn thắc mắc về menu hôm nay hoặc muốn đặt bàn xin hãy nhấn vào đây",
+                            "image_url": "https://bit.ly/imageToSend",
+                            "buttons": [
+                                {
+                                    "type": "postback",
+                                    "title": "MENU",
+                                    "payload": "MAIN_MENU",
+                                },
+                                {
+                                    "type": "web_url",
+                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
+                                    "title": "Đặt bàn",
+                                    "webview_height_ratio": "tall",
+                                    "messenger_extensions": true
+                                },
+                                {
+                                    "type": "postback",
+                                    "title": "Kết thúc cuộc trò chuyện",
+                                    "payload": "END_CHAT",
+                                },
+                            ],
+                        }]
+                }
+            }
+        };
+        callSendAPI(sender_psid, response1);
+        callSendAPI(sender_psid, response2);
+    }, 10000); // 10 seconds in milliseconds
 };
 
 // Sends response messages via the Send API
