@@ -1011,7 +1011,7 @@ let setupPersistentMenu = async (req, res) => {
     return res.send("setup PersistentMenu succeeds")
 }
 let timeouts = {};
-let timeOutChatbot = (sender_psid,) => {
+let timeOutChatbot = (sender_psid) => {
     clearTimeout(timeouts[sender_psid]);
 
     // Set a new timeout to send a follow-up message after 10 seconds if no response
@@ -1037,7 +1037,7 @@ let timeOutChatbot = (sender_psid,) => {
                                 },
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
+                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
                                     "title": "Đặt bàn",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
@@ -1052,7 +1052,8 @@ let timeOutChatbot = (sender_psid,) => {
                 }
             }
         };
-        callSendAPI(sender_psid, followUpResponse);
+        callSendAPI(sender_psid, response1);
+        callSendAPI(sender_psid, response1);
     }, 10000); // 10 seconds in milliseconds
 }
 module.exports = {
