@@ -1019,7 +1019,7 @@ let timeOutChatbot = (sender_psid) => {
         let response1 = {
             "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi,Tôi có thể giúp bạn gì nữa không!"
         };
-        let response = {
+        let response2 = {
             "attachment": {
                 "type": "template",
                 "payload": {
@@ -1053,7 +1053,7 @@ let timeOutChatbot = (sender_psid) => {
             }
         };
         sendMessage(sender_psid, response1);
-        sendMessage(sender_psid, response1);
+        sendMessage(sender_psid, response2);
     }, 10000); // 10 seconds in milliseconds
 }
 module.exports = {
