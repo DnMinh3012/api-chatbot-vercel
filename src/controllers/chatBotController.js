@@ -80,60 +80,58 @@ let getWebhook = (req, res) => {
 };
 let timeouts = {};
 // Handles messages events
-let handleMessage = async (sender_psid, message) => {
+function handleMessage(sender_psid, received_message) {
     let response;
 
     // Checks if the message contains text
-    if (message.text) {
+    if (received_message.text) {
         // Create the payload for a basic text message, which
         // will be added to the body of our request to the Send API
         response = {
-            "text": `You sent the message: "${message.text}". Now send me an attachment!`
+            "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
-    } else if (message.attachments) {
+    } else if (received_message.attachments) {
         // Get the URL of the message attachment
-        let attachment_url = message.attachments[
-            0
-        ].payload.url;
+        let attachment_url = received_message.attachments[0].payload.url;
         response = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": "Is this the right picture?",
-                            "subtitle": "Tap a button to answer.",
-                            "image_url": attachment_url,
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Yes!",
-                                    "payload": "yes",
-                                },
-                                {
-                                    "type": "postback",
-                                    "title": "No!",
-                                    "payload": "no",
-                                }
-                            ],
-                        }
-                    ]
+                    "elements": [{
+                        "title": "Is this the right picture?",
+                        "subtitle": "Tap a button to answer.",
+                        "image_url": attachment_url,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Yes!",
+                                "payload": "yes",
+                            },
+                            {
+                                "type": "postback",
+                                "title": "No!",
+                                "payload": "no",
+                            }
+                        ],
+                    }]
                 }
             }
         }
     }
+
     // Send the response message
+    callSendAPI(sender_psid, response);
     clearTimeout(timeouts[sender_psid]);
 
     // Set a new timeout to send a follow-up message after 10 seconds if no response
     timeouts[sender_psid] = setTimeout(() => {
-        let followUpResponse = {
-            "text": "Hello! It's been a while since we talked. Is there anything else I can help you with?"
+        let response1 = {
+            "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi,Tôi có thể giúp bạn gì nữa không!"
         };
-        callSendAPI(sender_psid, followUpResponse);
+        callSendAPI(sender_psid, response1);
     }, 10000); // 10 seconds in milliseconds
-};
+}
 
 
 
