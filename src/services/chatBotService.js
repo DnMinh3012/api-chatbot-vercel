@@ -1052,8 +1052,8 @@ let timeOutChatbot = (sender_psid) => {
                 }
             }
         };
-        callSendAPI(sender_psid, response1);
-        callSendAPI(sender_psid, response1);
+        sendMessage(sender_psid, response1);
+        sendMessage(sender_psid, response1);
     }, 10000); // 10 seconds in milliseconds
 }
 module.exports = {
