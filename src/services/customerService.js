@@ -1,86 +1,67 @@
 import { raw } from "body-parser";
+import db from "../models";
 require('dotenv').config();
 import _ from 'lodash'
-// import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { User, Booking, History, Feedback } from "../model/model"
-import emailServices from './emailServices'
-
-import chatBotService from './chatBotService'
 
 let buildUrlEmaill = (token) => {
     let result = `${process.env.URL_WEB}/verify-booking?token=${token}`
     return result
 }
-const postBookAppointment = async (data) => {
+let postBookAppointment = (data) => {
+    console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.reserveDate) {
-                console.log("Missing required parameters");
+            if (!data.email || !data.phone || !data.date
+                || !data.fullName) {
                 resolve({
                     errCode: 1,
                     message: "Missing required parameters"
-                });
+                })
             } else {
-                let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
-                if (newUser && newUser._id) {
-                    let checkBooking = await Booking.findOne({ user: newUser._id });
-                    if (checkBooking && checkBooking._id) {
-                        await History.updateOne(
-                            { user: newUser._id },
-                            { $inc: { number: 1 } }
-                        );
-                    }
-                    console.log("check newBooking", newBooking);
-                    resolve({
-                        errCode: 0,
-                        user: newUser
-                    });
-                } else {
-                    newUser = new User({
-                        email: data.email,
-                        role: "R3",
-                        username: data.username,
-                        address: data.address,
-                        phoneNumber: data.phoneNumber
-                    });
-
-                    await newUser.save();
-                }
-                let newBooking = new Booking({
-                    psid: data.psid,
-                    date: data.reserveDate,
-                    user: newUser._id,
-                    currentNumber: data.currentNumber,
-                    status: 's1'
-                });
-                let userBookingHistory = new History({
-                    user: newUser._id,
-                    booking: newBooking._id,
-                    number: 1
-                });
-                await newBooking.save();
-                await userBookingHistory.save();
+                let token = uuidv4();
                 // await emailServices.senSimpleEmail({
                 //     reciverEmail: data.email,
-                //     patienName: data.username,
-                //     time: data.reserveDate,
-                //     doctorName: data.username,
-                //     redirectLink:
-                //         (token)
+                //     patienName: data.fullName,
+                //     time: data.timeString,
+                //     doctorName: data.doctorName,
+                //     redirectLink: 
+                //     (data.doctorId, token)
                 // })
+
+                let user = await db.Customer.findOrCreate({
+                    where: { email: data.email },
+                    defaults: {
+                        email: data.email,
+                        name: data.name,
+                        phone: data.phoneNumber
+                    },
+                });
+                console.log("check user", user[0])
+
+                if (!user) user = {};
+                if (user && user[0]) {
+                    await db.ReservationRequest.findOrCreate({
+                        where: { patientid: Customer[0].id },
+                        defaults: {
+                            statusID: 'S1',
+                            customer_id: Customer.id,
+                            timestamps: Customer.timestamps,
+                        }
+                    })
+                }
                 resolve({
                     errCode: 0,
-                    user: newUser
-                });
+                    user: user
+                })
             }
-        } catch (error) {
-            console.error("Error in postBookAppointment:", error);
-            reject(error);
+
+        } catch (e) {
+            reject(e)
         }
-    });
-};
+    })
+}
 
 
 module.exports = postBookAppointment;

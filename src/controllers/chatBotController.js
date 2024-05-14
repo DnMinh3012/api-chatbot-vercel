@@ -4,7 +4,6 @@ import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
 import customerService from "../services/customerService"
-import { Feedback } from "../model/model";
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -241,24 +240,24 @@ let getReserveTable = (req, res) => {
         senderId: senderId
     });
 }
-let getFeedbackTable = (req, res) => {
-    let senderId = req.params.senderId;
-    return res.render('feedback-table.ejs', {
-        senderId: senderId
-    });
-}
+// let getFeedbackTable = (req, res) => {
+//     let senderId = req.params.senderId;
+//     return res.render('feedback-table.ejs', {
+//         senderId: senderId
+//     });
+// }
 
 let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
             psid: req.body.psid,
-            username: username,
+            name: username,
             email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            reserveDate: req.body.reserveDate,
+            phone: req.body.phoneNumber,
+            timestamps: req.body.reserveDate,
             note: req.body.note,
-            currentNumber: req.body.currentNumber,
+            number_of_seats: req.body.currentNumber,
         }
         await customerService.postBookAppointment(data);
         await chatBotService.writeDataToGoogleSheet(data);
@@ -285,39 +284,39 @@ let handleReserveTableAjax = async (req, res) => {
         })
     }
 }
-let handleFeedbackTableAjax = async (req, res) => {
-    try {
-        let username = await chatBotService.getFacebookUsername(req.body.psid);
-        let data = {
-            psid: req.body.psid,
-            username: username,
-            email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            reserveDate: req.body.reserveDate,
-            feedback: req.body.feedback
-        }
-        console.log("check data", data)
-        await customerService.feedbackAppointment(data);
-        let response1 = {
-            "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
-        }
-        await chatBotService.sendMessage(req.body.psid, response1)
-        return res.status(200).json({
-            message: 'ok',
-            data: data
-        })
-    } catch (e) {
-        console.log("Loi Reserve table: ", e);
-        return res.status(500).json({
-            message: e
-        })
-    }
-}
+// let handleFeedbackTableAjax = async (req, res) => {
+//     try {
+//         let username = await chatBotService.getFacebookUsername(req.body.psid);
+//         let data = {
+//             psid: req.body.psid,
+//             username: username,
+//             email: req.body.email,
+//             phoneNumber: req.body.phoneNumber,
+//             reserveDate: req.body.reserveDate,
+//             feedback: req.body.feedback
+//         }
+//         console.log("check data", data)
+//         await customerService.feedbackAppointment(data);
+//         let response1 = {
+//             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
+//         }
+//         await chatBotService.sendMessage(req.body.psid, response1)
+//         return res.status(200).json({
+//             message: 'ok',
+//             data: data
+//         })
+//     } catch (e) {
+//         console.log("Loi Reserve table: ", e);
+//         return res.status(500).json({
+//             message: e
+//         })
+//     }
+// }
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     handleReserveTableAjax: handleReserveTableAjax,
-    getFeedbackTable: getFeedbackTable,
-    handleFeedbackTableAjax, handleFeedbackTableAjax
+    // getFeedbackTable: getFeedbackTable,
+    // handleFeedbackTableAjax, handleFeedbackTableAjax
 };

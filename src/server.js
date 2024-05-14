@@ -1,18 +1,13 @@
-require("dotenv").config();
 import express from "express";
-import configViewEngine from "./config/viewEngine";
-import initWebRoutes from "./routes/web";
-import bodyParser from "body-parser";
-import initCronJob from "./config/cronJob";
-const cors = require("cors");
-const mongoose = require("mongoose");
-const morgan = require("morgan");
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://chatbot:<V6i.@pvnCvL6x!h>@cluster0.ifq81wh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-let app = express();
-import { User, Allcode } from "./model/model";
-// Use body-parser to parse incoming requests
+import bodyParser from "body-parser";//thư viện lấy tham số client sử dụng
+import viewEngine from "./config/viewEnine";
+import initWebRouter from "./routes/web";
+import connectDB from "./config/conFigdb";
+// import cors from "cors";
 
+require('dotenv').config();
+var cors = require('cors')
+let app = express();
 app.use(function (req, res, next) {
 
    // Website you wish to allow to connect
@@ -31,34 +26,22 @@ app.use(function (req, res, next) {
    // Pass to next layer of middleware
    next();
 });
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+//config app
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
-app.use(morgan("common"));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+viewEngine(app);
+initWebRouter(app);
+connectDB(app);
 
-// Connect to the database
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const connectMG = async () => {
-   await mongoose.connect("mongodb+srv://dnhatminh1230:4iFQCp8mYqYGsAFv@chatbot.reg36mk.mongodb.net/?retryWrites=true&w=majority&appName=chatbot")
-      .then(async () => {
-         console.log("Connected to MongoDB");
-      }).catch(error => {
-         console.error("Error connecting to MongoDB:", error);
-      });
-}
-connectMG();
-// Configure view engine
-configViewEngine(app);
-
-// Initialize all web routes
-initWebRoutes(app);
-
-// Initialize cron job
-initCronJob();
-
-let port = process.env.PORT || 8080;
-
+let port = process.env.PORT || 3000;
+//port  === undefined => port = 3000
 app.listen(port, () => {
-   console.log(`App is running at the port ${port}`);
-});
+   //callback
+   console.log("Do Minh dep trai on the port: " + port);
+})

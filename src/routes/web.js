@@ -8,15 +8,15 @@ let router = express.Router();
 let initWebRoutes = (app) => {
     router.get("/", homepageController.getHomepage);
     router.get("/form-reserve-table/:senderId", chatBotController.getReserveTable);
-    router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
+    // router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);
     router.post('/setup-persistent-menu', chatBotService.setupPersistentMenu);
     router.post('/reserve-table-ajax', chatBotController.handleReserveTableAjax)
-    router.post('/feedback-table-ajax', chatBotController.handleFeedbackTableAjax)
+    // router.post('/feedback-table-ajax', chatBotController.handleFeedbackTableAjax)
 
     router.get('/api/get-users', userController.handleGetUsers);
-    router.get('/api/get-feedback', userController.handleGetFeedback);
+    // router.get('/api/get-feedback', userController.handleGetFeedback);
     router.delete('/api/delete-user', userController.handleDeleteUser)
     router.delete('/api/complete-user', userController.handleCompleteUser)
 
