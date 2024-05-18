@@ -1,12 +1,22 @@
 
 // Option 3: Passing parameters separately (other dialects)
+// const Sequelize = require("sequelize");
+// const sequelize = new Sequelize(
+//   'vmu',
+//   'minh',
+//   '123456',
+//   {
+//     host: '127.0.0.1',
+//     dialect: 'mysql'
+//   }
+// );
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
-  'vmu',
-  'minh',
-  '123456',
+  'heroku_5329a39999b2108',
+  'b38f802097bb1a',
+  'afc2b8b0',
   {
-    host: '127.0.0.1',
+    host: 'us-cluster-east-01.k8s.cleardb.net',
     dialect: 'mysql'
   }
 );

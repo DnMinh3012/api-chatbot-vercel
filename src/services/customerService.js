@@ -38,12 +38,12 @@ let postBookAppointment = (data) => {
                         phone: data.phoneNumber
                     },
                 });
-                console.log("check user", user[0])
+                console.log("check user", user)
 
                 if (!user) user = {};
-                if (user && user[0]) {
+                if (user && user) {
                     await db.ReservationRequest.findOrCreate({
-                        where: { patientid: Customer[0].id },
+                        where: { patientid: Customer.id },
                         defaults: {
                             statusID: 'S1',
                             customer_id: Customer.id,
