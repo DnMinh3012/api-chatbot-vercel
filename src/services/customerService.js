@@ -44,7 +44,7 @@ let postBookAppointment = (data) => {
                     },
                 });
                 console.log("check user", user)
-                let findCustomer = customer(data.email);
+                let findCustomer = findCustomer(data.email);
                 if (!findCustomer) findCustomer = {};
                 if (findCustomer && findCustomer) {
                     await db.ReservationRequest.findOrCreate({
