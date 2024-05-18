@@ -4,10 +4,15 @@ require('dotenv').config();
 import _ from 'lodash'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
+import { where } from "sequelize";
 
 let buildUrlEmaill = (token) => {
     let result = `${process.env.URL_WEB}/verify-booking?token=${token}`
     return result
+}
+let findCustomer = async (email) => {
+    let customer = db.Customer.findOne({ where: { email: email } });
+    return customer;
 }
 let postBookAppointment = (data) => {
     console.log(data)
@@ -39,14 +44,15 @@ let postBookAppointment = (data) => {
                     },
                 });
                 console.log("check user", user)
-
-                if (!user) user = {};
-                if (user && user) {
+                let findCustomer = customer(data.email);
+                if (!findCustomer) findCustomer = {};
+                if (findCustomer && findCustomer) {
                     await db.ReservationRequest.findOrCreate({
+                        where: { customer_id: findCustomer.id },
                         defaults: {
                             statusID: 'S1',
-                            customer_id: Customer.id,
-                            timestamps: Customer.timestamps,
+                            customer_id: findCustomer.id,
+                            timestamps: data.timestamps,
                         }
                     })
                 }
