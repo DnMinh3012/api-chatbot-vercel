@@ -1,10 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";//thư viện lấy tham số client sử dụng
 import viewEngine from "./config/viewEnine";
-import initWebRouter from "./routes/web";
+import initWebRouter from "./route/web";
 import connectDB from "./config/conFigdb";
 // import cors from "cors";
-
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const mongoose = require("mongoose");
 require('dotenv').config();
 var cors = require('cors')
 let app = express();
@@ -26,7 +27,14 @@ app.use(function (req, res, next) {
    // Pass to next layer of middleware
    next();
 });
-
+const connectMG = async () => {
+   await mongoose.connect("mongodb+srv://dnhatminh1230:4iFQCp8mYqYGsAFv@chatbot.reg36mk.mongodb.net/?retryWrites=true&w=majority&appName=chatbot")
+      .then(async () => {
+         console.log("Connected to MongoDB");
+      }).catch(error => {
+         console.error("Error connecting to MongoDB:", error);
+      });
+}
 //config app
 
 // app.use(bodyParser.json());

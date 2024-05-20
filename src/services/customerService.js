@@ -1,281 +1,105 @@
 import { raw } from "body-parser";
-import db from "../models";
 require('dotenv').config();
 import _ from 'lodash'
+// import emailServices from './emailServices'
 import { v4 as uuidv4 } from "uuid";
 import e from "express";
-import { where } from "sequelize";
-
-let buildUrlEmaill = (token) => {
-    let result = `${process.env.URL_WEB}/verify-booking?token=${token}`
-    return result
-}
-let findCustomer = async (email) => {
-    let customer = db.Customer.findOne({ where: { email: email } });
-    return customer;
-}
-let postBookAppointment = (data) => {
-    console.log(data)
+import { User, Booking, History } from "../model/model"
+const postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.phone || !data.date
-                || !data.fullName) {
-                resolve({
-                    errCode: 1,
-                    message: "Missing required parameters"
-                })
-            } else {
-                let token = uuidv4();
-                // await emailServices.senSimpleEmail({
-                //     reciverEmail: data.email,
-                //     patienName: data.fullName,
-                //     time: data.timeString,
-                //     doctorName: data.doctorName,
-                //     redirectLink: 
-                //     (data.doctorId, token)
-                // })
-
-                let user = await db.Customer.findOrCreate({
-                    where: { email: data.email },
-                    defaults: {
-                        email: data.email,
-                        name: data.name,
-                        phone: data.phoneNumber
-                    },
-                });
-                console.log("check user", user)
-                let findCustomer = findCustomer(data.email);
-                if (findCustomer && findCustomer) {
-                    await db.ReservationRequest.findOrCreate({
-                        where: { customer_id: findCustomer.id },
-                        defaults: {
-                            statusID: 'S1',
-                            customer_id: findCustomer.id,
-                            timestamps: data.timestamps,
-                        }
-                    })
-                }
-                resolve({
-                    errCode: 0,
-                    user: user
-                })
-            }
-
-        } catch (e) {
-            reject(e)
-        }
-    })
-}
-
-
-module.exports = postBookAppointment;
-
-const getUsers = async (userId) => {
-    try {
-        let data = [];
-
-        if (userId === "ALL") {
-            const bookings = await Booking.find();
-
-            // Lặp qua mỗi booking và lấy thông tin user tương ứng
-            const userPromises = bookings.map(async (booking) => {
-                const user = await User.findOne({ _id: booking.user }).select('-password');
-
-                return {
-                    id: booking._id,
-                    email: user.email,
-                    username: user.username,
-                    phoneNumber: user.phoneNumber,
-                    date: booking.date,
-                    currentNumber: booking.currentNumber,
-                    status: booking.status,
-                };
-            });
-            const userData = await Promise.all(userPromises);
-            data = userData.reverse(); // Đảo ngược thứ tự của mảng kết quả
-        } else if (userId) {
-            const user = await User.findOne({ _id: userId }).select('-password');
-            if (!user) {
-                return null;
-            }
-
-            const bookings = await Booking.find({ user: userId });
-
-            const userData = {
-                email: user.email,
-                username: user.username,
-                phoneNumber: user.phoneNumber,
-                bookings: bookings.map((booking) => ({
-                    date: booking.date,
-                    currentNumber: booking.currentNumber,
-                    status: booking.status,
-                })),
-            };
-
-            data.push(userData);
-        }
-
-        return data;
-    } catch (error) {
-        throw error;
-    }
-};
-const deleteUser = (userID) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const user = await Booking.findOne({ _id: userID });
-            if (user) {
-                await Booking.deleteOne({ _id: userID });
-                resolve({
-                    errCode: 0,
-                    message: 'Delete Success!'
-                });
-            } else {
-                resolve({
-                    errCode: 2,
-                    message: 'User is not exist!'
-                });
-            }
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
-
-const CompleteUser = (userID) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const user = await Booking.findOne({ _id: userID });
-            if (user) {
-                let psid = user.psid;
-                console.log("psid:", psid)
-                await Booking.updateOne({ _id: userID }, { status: "S3" });
-                let response = {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [
-                                {
-                                    "title": "Vimaru restaurant",
-                                    "subtitle": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi, xin hãy để lại đánh giá để bọn tôi có thể phục vụ bạn tốt hơn trong lần sau",
-                                    "image_url": "https://bit.ly/imageToSend",
-                                    "buttons": [
-                                        {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_FEEDBACK}/${psid}`,
-                                            "title": "Đánh giá",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        },
-                                        {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
-                                            "title": "Đặt bàn",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        }
-                                    ],
-                                }]
-                        }
-                    }
-                };
-                await chatBotService.sendMessage(psid, response)
-                resolve({
-                    errCode: 0,
-                    message: 'Complete Success!'
-                });
-            } else {
-                resolve({
-                    errCode: 2,
-                    message: 'User is not exist!'
-                });
-            }
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
-const feedbackAppointment = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (!data.email || !data.phoneNumber) {
+            if (!data.email || !data.reserveDate) {
                 console.log("Missing required parameters");
                 resolve({
                     errCode: 1,
                     message: "Missing required parameters"
                 });
             } else {
-                const user = await User.findOne({ phoneNumber: data.phoneNumber });
-                const newFeedback = new Feedback({
-                    user: user._id,
-                    feedback: data.feedback
-                });
+                let newUser = await User.findOne({ phoneNumber: data.phoneNumber });
+                if (newUser) {
+                    // Tìm thấy người dùng có số điện thoại trong cơ sở dữ liệu
+                    await History.updateOne(
+                        { user: newUser._id },
+                        { $inc: { number: 1 } }
+                    );
+                } else {
+                    // Không tìm thấy người dùng, tạo mới người dùng
+                    newUser = new User({
+                        email: data.email,
+                        role: "R3",
+                        username: data.username,
+                        address: data.address,
+                        phoneNumber: data.phoneNumber
+                    });
 
-                await newFeedback.save();
+                    // Tạo mới đặt bàn và lịch sử đặt bàn
+                    const newBooking = new Booking({
+                        date: data.reserveDate,
+                        user: newUser._id,
+                        currentNumber: data.currentNumber,
+                        status: 's1'
+                    });
+                    const userBookingHistory = new History({
+                        user: newUser._id,
+                        booking: newBooking._id,
+                        number: 1
+                    });
+
+                    // Lưu thông tin vào cơ sở dữ liệu
+                    await newUser.save();
+                    await newBooking.save();
+                    await userBookingHistory.save();
+                }
+
+                console.log("check user", newUser);
                 resolve({
                     errCode: 0,
-                    feedback: newFeedback
+                    user: newUser
                 });
             }
         } catch (error) {
-            console.error("Error in feedbackAppointment:", error);
+            console.error("Error in postBookAppointment:", error);
             reject(error);
         }
     });
 };
 
-let getAllFeedback = async (id) => {
-    try {
-        let data = [];
 
-        if (id === "ALL") {
-            const feedback = await Feedback.find();
+module.exports = postBookAppointment;
 
-            // Lặp qua mỗi booking và lấy thông tin user tương ứng
-            const userPromises = feedback.map(async (feedback) => {
-                const user = await User.findOne({ _id: feedback.user }).select('-password');
+let getUsers = (userId) => {
 
-                return {
-                    id: feedback._id,
-                    email: user.email,
-                    username: user.username,
-                    phoneNumber: user.phoneNumber,
-                    feedback: feedback.feedback,
-                };
-            });
-            const userData = await Promise.all(userPromises);
-            data = userData.reverse(); // Đảo ngược thứ tự của mảng kết quả
-        } else if (userId) {
-            const user = await User.findOne({ _id: userId }).select('-password');
-            if (!user) {
-                return null;
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (userId === "ALL") {
+                const users = await User.find({ role: 'R3' }).select('-password');
+                console.log(users); // Log ra danh sách users
+                const bookings = await Booking.find({ user: { $in: users.map(user => user._id) } });
+                // Sử dụng $in để tìm các booking có user nằm trong danh sách users tìm được
+                const data = users.map(user => {
+                    const userBooking = bookings.find(booking => booking.user.equals(user._id));
+                    return {
+                        email: user.email,
+                        username: user.username,
+                        phoneNumber: user.phoneNumber,
+                        date: userBooking.date,
+                        currentNumber: userBooking ? userBooking.currentNumber : null,
+                        status: userBooking ? userBooking.status : null,
+                    };
+                });
+                resolve(data);
             }
-
-            const feedback = await Feedback.find({ user: userId });
-
-            const userData = {
-                email: user.email,
-                username: user.username,
-                phoneNumber: user.phoneNumber,
-                feedback: feedback.map((feedback) => ({
-                    feedback: feedback.feedback,
-                })),
-            };
-
-            data.push(userData);
+            if (userId && userId !== "ALL") {
+                const user = await User.findOne({ _id: userId }).select('-password');
+                resolve(user);
+            }
+        } catch (e) {
+            reject(e);
         }
+    });
 
-        return data;
-    } catch (error) {
-        throw error;
-    }
 }
 module.exports = {
     postBookAppointment: postBookAppointment,
-    getUsers: getUsers,
-    deleteUser: deleteUser,
-    CompleteUser: CompleteUser,
-    feedbackAppointment: feedbackAppointment,
-    getAllFeedback: getAllFeedback
+    getUsers: getUsers
 };
