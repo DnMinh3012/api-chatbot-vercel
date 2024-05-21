@@ -18,8 +18,7 @@ let postBookAppointment = (data) => {
     console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.phone || !data.date
-                || !data.fullName) {
+            if (!data.email || !data.phone) {
                 resolve({
                     errCode: 1,
                     message: "Missing required parameters"
