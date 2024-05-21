@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     table.init({
-        tableName: DataTypes.STRING,
+        name: DataTypes.STRING,
         image: DataTypes.STRING,
         description: DataTypes.STRING,
-        statusid: DataTypes.STRING,
-        currentNumber: DataTypes.INTEGER,
-        maxNumber: DataTypes.INTEGER,
+        status: DataTypes.STRING,
+        number_of_seats: DataTypes.INTEGER,
+        table_type_id: DataTypes.INTEGER,
     }, {
         sequelize,
         modelName: 'table',

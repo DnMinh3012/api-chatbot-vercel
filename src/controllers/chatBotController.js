@@ -3,7 +3,7 @@ import request from "request";
 import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
-import cutommerService from "../services/customerService"
+import customerService from "../services/customerService"
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -14,7 +14,6 @@ let user = {
     quantity: "",
     createdAt: ""
 };
-
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
@@ -78,9 +77,9 @@ let getWebhook = (req, res) => {
         }
     }
 };
-
+let timeouts = {};
 // Handles messages events
-let handleMessage = async (sender_psid, message) => {
+function handleMessage(sender_psid, received_message) {
     let response;
 
     // Checks if the message contains text
@@ -92,76 +91,52 @@ let handleMessage = async (sender_psid, message) => {
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
-        let attachment_url = received_message.attachments[
-            0
-        ].payload.url;
+        let attachment_url = received_message.attachments[0].payload.url;
         response = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": "Is this the right picture?",
-                            "subtitle": "Tap a button to answer.",
-                            "image_url": attachment_url,
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Yes!",
-                                    "payload": "yes",
-                                },
-                                {
-                                    "type": "postback",
-                                    "title": "No!",
-                                    "payload": "no",
-                                }
-                            ],
-                        }
-                    ]
+                    "elements": [{
+                        "title": "Is this the right picture?",
+                        "subtitle": "Tap a button to answer.",
+                        "image_url": attachment_url,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Yes!",
+                                "payload": "yes",
+                            },
+                            {
+                                "type": "postback",
+                                "title": "No!",
+                                "payload": "no",
+                            }
+                        ],
+                    }]
                 }
             }
         }
     }
+
     // Send the response message
     callSendAPI(sender_psid, response);
-};
+    clearTimeout(timeouts[sender_psid]);
 
-let handleMessageWithEntities = (message) => {
-    let entitiesArr = ["wit$datetime:datetime", "wit$phone_number:phone_number", "wit$greetings", "wit$thanks", "wit$bye"];
-    let entityChosen = "";
-    let data = {}; // data is an object saving value and name of the entity.
-    entitiesArr.forEach((name) => {
-        let entity = firstTrait(message.nlp, name.trim());
-        if (entity && entity.confidence > 0.8) {
-            entityChosen = name;
-            data.value = entity.value;
-        }
-    });
-
-    data.name = entityChosen;
-
-    // checking language
-    if (message && message.nlp && message.nlp.detected_locales) {
-        if (message.nlp.detected_locales[0]) {
-            let locale = message.nlp.detected_locales[0].locale;
-            data.locale = locale.substring(0, 2)
-        }
-
-    }
-    return data;
-};
-
-// function firstEntity(nlp, name) {
-//     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-// }
-
-function firstTrait(nlp, name) {
-    return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
+    // Set a new timeout to send a follow-up message after 10 seconds if no response
+    timeouts[sender_psid] = setTimeout(() => {
+        let response1 = {
+            "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi,Tôi có thể giúp bạn gì nữa không!"
+        };
+        callSendAPI(sender_psid, response1);
+    }, 10000); // 10 seconds in milliseconds
 }
+
+
 
 // Handles messaging_postbacks events
 let handlePostback = async (sender_psid, received_postback) => {
+    clearTimeout(timeouts[sender_psid]);
     let response;
     // Get the payload for the postback
     let payload = received_postback.payload;
@@ -232,6 +207,7 @@ let handlePostback = async (sender_psid, received_postback) => {
     }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
+    chatBotService.timeOutChatbot(sender_psid);
 };
 
 // Sends response messages via the Send API
@@ -264,32 +240,37 @@ let getReserveTable = (req, res) => {
         senderId: senderId
     });
 }
+// let getFeedbackTable = (req, res) => {
+//     let senderId = req.params.senderId;
+//     return res.render('feedback-table.ejs', {
+//         senderId: senderId
+//     });
+// }
 
 let handleReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
-            senderId: req.body.psid,
-            username: username,
+            psid: req.body.psid,
+            name: username,
             email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            currentNumber: req.body.currentNumber,
-            reserveDate: req.body.reserveDate
+            phone: req.body.phoneNumber,
+            timestamps: req.body.reserveDate,
+            note: req.body.note,
+            number_of_seats: req.body.currentNumber,
         }
+        await customerService.postBookAppointment(data);
         await chatBotService.writeDataToGoogleSheet(data);
-        await cutommerService.postBookAppointment(data);
-        let customerName = "";
-        if (req.body.customerName === "") {
-            customerName = username;
-        } else customerName = req.body.customerName;
 
         let response1 = {
             "text": `Thong tin khach dat ban
-            \nHo va ten: ${customerName}
+            \nHo va ten: ${username}
             \nEmail: ${req.body.email}
             \nSo Dien Thoai: ${req.body.phoneNumber}
-            \nso nguoi: ${req.body.currentNumber}
-            \nNgay Dat Ban :${req.body.reserveDate}`
+            \nSố người: ${req.body.currentNumber},
+            \nNgày đặt bàn: ${req.body.reserveDate},
+            \nGhi chú: ${req.body.note}
+            `
         }
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
@@ -303,9 +284,39 @@ let handleReserveTableAjax = async (req, res) => {
         })
     }
 }
+// let handleFeedbackTableAjax = async (req, res) => {
+//     try {
+//         let username = await chatBotService.getFacebookUsername(req.body.psid);
+//         let data = {
+//             psid: req.body.psid,
+//             username: username,
+//             email: req.body.email,
+//             phoneNumber: req.body.phoneNumber,
+//             reserveDate: req.body.reserveDate,
+//             feedback: req.body.feedback
+//         }
+//         console.log("check data", data)
+//         await customerService.feedbackAppointment(data);
+//         let response1 = {
+//             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
+//         }
+//         await chatBotService.sendMessage(req.body.psid, response1)
+//         return res.status(200).json({
+//             message: 'ok',
+//             data: data
+//         })
+//     } catch (e) {
+//         console.log("Loi Reserve table: ", e);
+//         return res.status(500).json({
+//             message: e
+//         })
+//     }
+// }
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     handleReserveTableAjax: handleReserveTableAjax,
+    // getFeedbackTable: getFeedbackTable,
+    // handleFeedbackTableAjax, handleFeedbackTableAjax
 };
