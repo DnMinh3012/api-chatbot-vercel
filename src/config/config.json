@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "minh",
-    "password": "123456",
-    "database": "development",
-    "host": "127.0.0.1",
+    "username": "b38f802097bb1a",
+    "password": "afc2b8b0",
+    "database": "heroku_5329a39999b2108",
+    "host": "us-cluster-east-01.k8s.cleardb.net",
     "dialect": "mysql",
     "query": {
       "raw": true

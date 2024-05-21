@@ -16,6 +16,7 @@ let initWebRoutes = (app) => {
     // router.post('/feedback-table-ajax', chatBotController.handleFeedbackTableAjax)
 
     router.get('/api/get-users', userController.handleGetUsers);
+    router.get('/api/get-dishes', userController.handleGetDishes);
     // router.get('/api/get-feedback', userController.handleGetFeedback);
     router.delete('/api/delete-user', userController.handleDeleteUser)
     router.delete('/api/complete-user', userController.handleCompleteUser)

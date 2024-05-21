@@ -22,20 +22,21 @@ let handleGetUsers = async (req, res) => {
 }
 let handleGetDishes = async (req, res) => {
     let id = req.query.id; //all,id
-    if (id) {
-        let users = await customerService.getDishes(id);
-        return res.status(200).json({
-            errCode: 0,
-            message: 'ok',
-            users
-        })
-    } else {
-        return res.status(500).json({
-            errCode: 1,
-            message: 'Missing inputs parameter!',
-            users: []
-        })
-    }
+    let users = await customerService.getDishes('ALL');
+    // if (id) {
+    //     let users = await customerService.getDishes('ALL');
+    //     return res.status(200).json({
+    //         errCode: 0,
+    //         message: 'ok',
+    //         users
+    //     })
+    // } else {
+    //     return res.status(500).json({
+    //         errCode: 1,
+    //         message: 'Missing inputs parameter!',
+    //         users: []
+    //     })
+    // }
 }
 
 

@@ -125,11 +125,22 @@ let getDishes = (dishId) => {
         try {
             let dishes = '';
             if (dishId === "ALL") {
-                dishes = await db.dishes.findAll()
+                dishes = await db.dish.findAll(
+                    {
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt']
+                        }
+                    }
+                )
             }
             if (dishId && dishId !== "ALL") {
-                dishes = await db.dishes.findOne({
+                dishes = await db.dish.findOne({
                     where: { id: dishId },
+
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    }
+
                 })
             }
             resolve(dishes)
@@ -294,6 +305,7 @@ let getAllFeedback = async (id) => {
 module.exports = {
     postBookAppointment: postBookAppointment,
     getUsers: getUsers,
+    getDishes: getDishes,
     deleteUser: deleteUser,
     CompleteUser: CompleteUser,
     feedbackAppointment: feedbackAppointment,
