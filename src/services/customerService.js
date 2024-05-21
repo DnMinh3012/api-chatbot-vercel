@@ -59,7 +59,7 @@ let postBookAppointment = (data) => {
             //         user: user
             //     })
             // }
-            let user = await db.Customer.findOrCreate({
+            let user = await db.customers.findOrCreate({
                 where: { email: data.email },
                 defaults: {
                     email: data.email,
