@@ -119,6 +119,27 @@ const getUsers = async (userId) => {
         throw error;
     }
 };
+
+let getDishes = (dishId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let dishes = '';
+            if (dishId === "ALL") {
+                dishes = await db.dishes.findAll()
+            }
+            if (dishId && dishId !== "ALL") {
+                dishes = await db.dishes.findOne({
+                    where: { id: dishId },
+                })
+            }
+            resolve(dishes)
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+
 const deleteUser = (userID) => {
     return new Promise(async (resolve, reject) => {
         try {
