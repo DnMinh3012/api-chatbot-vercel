@@ -34,7 +34,7 @@ let postBookAppointment = (data) => {
                 //     (data.doctorId, token)
                 // })
 
-                let user = await db.customer.findOrCreate({
+                let user = await db.customers.findOrCreate({
                     where: { email: data.email },
                     defaults: {
                         email: data.email,
@@ -45,7 +45,7 @@ let postBookAppointment = (data) => {
                 console.log("check user", user)
                 let findCustomer = findCustomer(data.email);
                 if (findCustomer && findCustomer) {
-                    await db.reservation_request.findOrCreate({
+                    await db.reservation_requests.findOrCreate({
                         where: { customer_id: findCustomer.id },
                         defaults: {
                             statusID: 'S1',
