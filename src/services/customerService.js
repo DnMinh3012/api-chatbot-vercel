@@ -18,55 +18,47 @@ let postBookAppointment = (data) => {
     console.log(data)
     return new Promise(async (resolve, reject) => {
         try {
-            // if (!data.email || !data.phone) {
-            //     resolve({
-            //         errCode: 1,
-            //         message: "Missing required parameters"
-            //     })
-            // } else {
-            //     let token = uuidv4();
-            //     // await emailServices.senSimpleEmail({
-            //     //     reciverEmail: data.email,
-            //     //     patienName: data.fullName,
-            //     //     time: data.timeString,
-            //     //     doctorName: data.doctorName,
-            //     //     redirectLink: 
-            //     //     (data.doctorId, token)
-            //     // })
+            if (!data.email || !data.phone) {
+                resolve({
+                    errCode: 1,
+                    message: "Missing required parameters"
+                })
+            } else {
+                let token = uuidv4();
+                // await emailServices.senSimpleEmail({
+                //     reciverEmail: data.email,
+                //     patienName: data.fullName,
+                //     time: data.timeString,
+                //     doctorName: data.doctorName,
+                //     redirectLink: 
+                //     (data.doctorId, token)
+                // })
 
-            //     let user = await db.Customer.findOrCreate({
-            //         where: { email: data.email },
-            //         defaults: {
-            //             email: data.email,
-            //             name: data.name,
-            //             phone: data.phoneNumber
-            //         },
-            //     });
-            //     console.log("check user", user)
-            //     let findCustomer = findCustomer(data.email);
-            //     if (findCustomer && findCustomer) {
-            //         await db.ReservationRequest.findOrCreate({
-            //             where: { customer_id: findCustomer.id },
-            //             defaults: {
-            //                 statusID: 'S1',
-            //                 customer_id: findCustomer.id,
-            //                 timestamps: data.timestamps,
-            //             }
-            //         })
-            //     }
-            //     resolve({
-            //         errCode: 0,
-            //         user: user
-            //     })
-            // }
-            let user = await db.customers.findOrCreate({
-                where: { email: data.email },
-                defaults: {
-                    email: data.email,
-                    name: data.name,
-                    phone: data.phoneNumber
-                },
-            });
+                let user = await db.customers.findOrCreate({
+                    where: { email: data.email },
+                    defaults: {
+                        email: data.email,
+                        name: data.name,
+                        phone: data.phoneNumber
+                    },
+                });
+                console.log("check user", user)
+                let findCustomer = findCustomer(data.email);
+                if (findCustomer && findCustomer) {
+                    await db.reservation_requests.findOrCreate({
+                        where: { customer_id: findCustomer.id },
+                        defaults: {
+                            statusID: 'S1',
+                            customer_id: findCustomer.id,
+                            timestamps: data.timestamps,
+                        }
+                    })
+                }
+                resolve({
+                    errCode: 0,
+                    user: user
+                })
+            }
 
         } catch (e) {
             reject(e)
