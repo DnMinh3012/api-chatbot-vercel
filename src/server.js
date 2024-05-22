@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";//thư viện lấy tham số client sử dụng
 import viewEngine from "./config/viewEnine";
 import initWebRouter from "./routes/web";
-import connectDB from "./config/conFigdb";
+import connectDB from "./config/database.js";
 // import cors from "cors";
 
 require('dotenv').config();
