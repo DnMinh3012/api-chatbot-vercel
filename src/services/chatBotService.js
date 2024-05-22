@@ -142,13 +142,14 @@ let handleSendMainMenu = (sender_psid) => {
         try {
             let menus = await MenuModel.findAll();
             if (menus) {
-                // Limit the number of menu items to 5
+                // Giới hạn số lượng mục menu là 5
                 let limitedMenus = menus.slice(0, 5);
 
-                let elements = limitedMenus.map(menu => ({
+                // Tạo các phần tử nút cho menu chính
+                let mainMenuButtons = limitedMenus.map(menu => ({
                     type: "postback",
                     title: menu.name,
-                    payload: "LOAD_MENU_MORE",
+                    payload: "SHOW_MENU_MORE"
                 }));
 
                 let response = {
@@ -161,7 +162,7 @@ let handleSendMainMenu = (sender_psid) => {
                                     "title": "Menu chính",
                                     "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại menu sau",
                                     "image_url": IMAGE_MAIN_MENU,
-                                    "buttons": elements
+                                    "buttons": mainMenuButtons
                                 },
                                 {
                                     "title": "Giờ mở cửa",
@@ -175,7 +176,7 @@ let handleSendMainMenu = (sender_psid) => {
                                             "webview_height_ratio": "tall",
                                             "messenger_extensions": true
                                         }
-                                    ],
+                                    ]
                                 },
                                 {
                                     "title": "Không gian nhà hàng",
@@ -185,9 +186,9 @@ let handleSendMainMenu = (sender_psid) => {
                                         {
                                             "type": "postback",
                                             "title": "Xem chi tiết",
-                                            "payload": "SHOW_ROOMS",
+                                            "payload": "SHOW_ROOMS"
                                         }
-                                    ],
+                                    ]
                                 }
                             ]
                         }
@@ -197,12 +198,15 @@ let handleSendMainMenu = (sender_psid) => {
                 await sendTypingOn(sender_psid);
                 await sendMessage(sender_psid, response);
                 resolve("done");
+            } else {
+                resolve("no menus found");
             }
         } catch (e) {
             reject(e);
         }
     });
 };
+
 
 
 let handleSendLunchMenu = (sender_psid) => {
