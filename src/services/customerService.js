@@ -125,16 +125,12 @@ let postBookAppointment = async (data) => {
 
         let customerId = customer[0].id;
 
-        // Tìm bàn trống
         let tableId = await findAvailableTable();
 
-        // Tạo yêu cầu đặt chỗ
         let reservationRequest = await makeReservationRequest(data.timeOrder, tableId, customerId);
 
-        // Xác nhận yêu cầu đặt chỗ
         let confirmedRequest = await confirmReservationRequest(reservationRequest.id);
 
-        // Trả về yêu cầu đặt chỗ đã xác nhận
         return {
             errCode: 0,
             message: "Booking successful",
@@ -150,11 +146,11 @@ let postBookAppointment = async (data) => {
 };
 
 
-export {
-    findRequestWithCustomerAndTable,
-    makeReservationRequest,
-    confirmReservationRequest,
-    freeReservationRequest,
-    findAvailableTable,
-    postBookAppointment
+module.exports = {
+    findRequestWithCustomerAndTable: findRequestWithCustomerAndTable,
+    makeReservationRequest: makeReservationRequest,
+    confirmReservationRequest: confirmReservationRequest,
+    freeReservationRequest: freeReservationRequest,
+    findAvailableTable: findAvailableTable,
+    postBookAppointment: postBookAppointment,
 }
