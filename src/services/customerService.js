@@ -155,5 +155,6 @@ export {
     makeReservationRequest,
     confirmReservationRequest,
     freeReservationRequest,
-    findAvailableTable
+    findAvailableTable,
+    postBookAppointment
 }
