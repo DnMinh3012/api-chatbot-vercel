@@ -142,7 +142,7 @@ let handleSendMainMenu = (sender_psid) => {
         try {
             let menus = await MenuModel.findAll();
             if (menus) {
-                let elements = menus.slice(0, 5).map(menu => ({
+                let elements = menus.slice(0, 3).map(menu => ({
                     type: "postback",
                     title: menu.name,
                     payload: "SHOW_MENU_MORE"
