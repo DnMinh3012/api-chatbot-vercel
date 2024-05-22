@@ -18,6 +18,7 @@ Menu.belongsToMany(Dish, {
     as: "dishes",
     foreignKey: "menu_id",
 });
+Dish.belongsToMany(Menu, { through: DishMenu });
 
 Table.belongsTo(TableType, {
     foreignKey: "table_type_id",
