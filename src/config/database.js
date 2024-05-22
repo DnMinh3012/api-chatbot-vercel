@@ -17,13 +17,14 @@ const sequelize = new Sequelize(
   }
 );
 
-let connectDB = async () => { //async ham bat dong bo: can thoi gian de tra ket qua
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}
+// check connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
 
-module.exports = connectDB;
+export default sequelize;

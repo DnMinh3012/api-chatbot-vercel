@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";//thư viện lấy tham số client sử dụng
 import viewEngine from "./config/viewEnine";
 import initWebRouter from "./routes/web";
-import connectDB from "./config/database.js";
 // import cors from "cors";
 
 require('dotenv').config();
@@ -37,7 +36,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 viewEngine(app);
 initWebRouter(app);
-connectDB(app);
 
 let port = process.env.PORT || 3000;
 //port  === undefined => port = 3000
