@@ -140,8 +140,8 @@ let handleGetStartedResponding = (username, sender_psid) => {
 let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let menu = await MenuModel.findAll();
-            if (menu) {
+            let menus = await MenuModel.findAll();
+            if (menus) {
                 let elements = menus.map(menu => ({
                     type: "postback",
                     title: menu.name,
