@@ -1141,4 +1141,5 @@ module.exports = {
     setupPersistentMenu: setupPersistentMenu,
     writeDataToGoogleSheet: writeDataToGoogleSheet,
     timeOutChatbot: timeOutChatbot,
+    handleSendMenuDetail: handleSendMenuDetail
 };
