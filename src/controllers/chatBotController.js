@@ -207,7 +207,7 @@ let handlePostback = async (sender_psid, received_postback) => {
     }
     if (payload.includes('SHOW_MENU_')) {
         let menuId = payload.split('_')[2];
-        await handleSendMenuDetail(sender_psid, menuId);
+        await chatBotService.handleSendMenuDetail(sender_psid, menuId);
     }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
