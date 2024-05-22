@@ -205,6 +205,10 @@ let handlePostback = async (sender_psid, received_postback) => {
         default:
             console.log("Something wrong with switch case payload");
     }
+    if (payload.includes('SHOW_MENU_')) {
+        let menuId = payload.split('_')[2];
+        await handleSendMenuDetail(sender_psid, menuId);
+    }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
     chatBotService.timeOutChatbot(sender_psid);

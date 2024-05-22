@@ -4,6 +4,7 @@ import { JWT } from 'google-auth-library';
 import moment from "moment"
 import { google } from 'googleapis';
 import { TableModel, TableTypeModel, DishModel, DishTypeModel, MenuModel } from "../model/index.js";
+import { where } from "sequelize";
 require("dotenv").config();
 const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
 
@@ -145,7 +146,7 @@ let handleSendMainMenu = (sender_psid) => {
                 let elements = menus.slice(0, 3).map(menu => ({
                     type: "postback",
                     title: menu.name,
-                    payload: "SHOW_MENU_${menu.id}"
+                    payload: `SHOW_MENU_${menu.id}`
                 }));
                 let response = {
                     "attachment": {
@@ -204,6 +205,69 @@ let handleSendMainMenu = (sender_psid) => {
     });
 
 };
+
+let handleSendMenuDetail = (sender_psid, menuId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let dishes = await DishModel.findAll({
+                include: [
+                    {
+                        model: Menu,
+                        as: "dishes",
+                        through: {
+                            where: {
+                                menu_id: menuId
+                            }
+                        }
+                    }
+                ]
+            });
+            if (dishes) {
+                let elements = dishes.slice(0, 7).map(dishes => ({
+                    title: dishes.name,
+                    subtitle: dishes.description,
+                    image_url: dishes.image
+                }));
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                elements,
+
+                                {
+                                    "title": "Quay lại MENU chính",
+                                    "image_url": IMAGE_MAIN_MENU4,
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Quay lại",
+                                            "payload": "BACK_TO_MAIN_MENU",
+                                        },
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                }
+                            ]
+                        }
+                    }
+                };
+                await sendTypingOn(sender_psid);
+                await sendMessage(sender_psid, response);
+                resolve("done");
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 
 let handleSendLunchMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
