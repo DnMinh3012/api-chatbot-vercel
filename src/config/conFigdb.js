@@ -1,23 +1,19 @@
+import { Sequelize } from "sequelize";
 
-// Option 3: Passing parameters separately (other dialects)
-// const Sequelize = require("sequelize");
-// const sequelize = new Sequelize(
-//   'vmu',
-//   'minh',
-//   '123456',
-//   {
-//     host: '127.0.0.1',
-//     dialect: 'mysql'
-//   }
-// );
-const Sequelize = require("sequelize");
+// import from .env file
+import dotenv from "dotenv";
+
+dotenv.config();
+const { DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_HOST } = process.env;
+
 const sequelize = new Sequelize(
-  'heroku_5329a39999b2108',
-  'b38f802097bb1a',
-  'afc2b8b0',
+  DB_DATABASE,
+  DB_USERNAME,
+  DB_PASSWORD,
   {
-    host: 'us-cluster-east-01.k8s.cleardb.net',
-    dialect: 'mysql'
+    host: DB_HOST,
+    dialect: "mysql",
+    logging: false
   }
 );
 

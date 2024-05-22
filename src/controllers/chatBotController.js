@@ -255,7 +255,7 @@ let handleReserveTableAjax = async (req, res) => {
             name: username,
             email: req.body.email,
             phone: req.body.phoneNumber,
-            timestamps: req.body.reserveDate,
+            timeOrder: req.body.reserveDate,
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
         }
