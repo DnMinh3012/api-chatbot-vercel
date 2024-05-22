@@ -214,13 +214,12 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     {
                         model: MenuModel,
                         as: "dishes",
-                        through: {
-                            where: {
-                                menu_id: menuId
-                            }
-                        }
+                        attributes: ['menu_id'],
                     }
-                ]
+                ],
+                where: {
+                    menu_id: menuId
+                }
             });
             if (dishes) {
                 let elements = dishes.slice(0, 7).map(dishes => ({
