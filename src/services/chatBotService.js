@@ -142,11 +142,15 @@ let handleSendMainMenu = (sender_psid) => {
         try {
             let menus = await MenuModel.findAll();
             if (menus) {
-                let elements = menus.map(menu => ({
+                // Limit the number of menu items to 5
+                let limitedMenus = menus.slice(0, 5);
+
+                let elements = limitedMenus.map(menu => ({
                     type: "postback",
                     title: menu.name,
                     payload: "LOAD_MENU_MORE",
                 }));
+
                 let response = {
                     "attachment": {
                         "type": "template",
@@ -159,10 +163,9 @@ let handleSendMainMenu = (sender_psid) => {
                                     "image_url": IMAGE_MAIN_MENU,
                                     "buttons": elements
                                 },
-
                                 {
-                                    "title": "Giờ mở của",
-                                    "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
+                                    "title": "Giờ mở cửa",
+                                    "subtitle": "T2-T6 10AM - 11PM | T7 5PM - 10PM | CN 5PM - 9PM",
                                     "image_url": IMAGE_MAIN_MENU2,
                                     "buttons": [
                                         {
@@ -174,7 +177,6 @@ let handleSendMainMenu = (sender_psid) => {
                                         }
                                     ],
                                 },
-
                                 {
                                     "title": "Không gian nhà hàng",
                                     "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
@@ -187,23 +189,21 @@ let handleSendMainMenu = (sender_psid) => {
                                         }
                                     ],
                                 }
-
-
                             ]
                         }
                     }
                 };
+
                 await sendTypingOn(sender_psid);
                 await sendMessage(sender_psid, response);
                 resolve("done");
             }
-
         } catch (e) {
             reject(e);
         }
     });
-
 };
+
 
 let handleSendLunchMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
