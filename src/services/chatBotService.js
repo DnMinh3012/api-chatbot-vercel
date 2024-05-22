@@ -212,7 +212,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
             let dishes = await DishModel.findAll({
                 include: [
                     {
-                        model: Menu,
+                        model: MenuModel,
                         as: "dishes",
                         through: {
                             where: {
