@@ -142,16 +142,11 @@ let handleSendMainMenu = (sender_psid) => {
         try {
             let menus = await MenuModel.findAll();
             if (menus) {
-                // Giới hạn số lượng mục menu là 5
-                let limitedMenus = menus.slice(0, 5);
-
-                // Tạo các phần tử nút cho menu chính
-                let mainMenuButtons = limitedMenus.map(menu => ({
+                let elements = menus.map(menu => ({
                     type: "postback",
                     title: menu.name,
-                    payload: "SHOW_MENU_MORE"
+                    payload: "LOAD_MENU_MORE",
                 }));
-
                 let response = {
                     "attachment": {
                         "type": "template",
@@ -162,11 +157,12 @@ let handleSendMainMenu = (sender_psid) => {
                                     "title": "Menu chính",
                                     "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại menu sau",
                                     "image_url": IMAGE_MAIN_MENU,
-                                    "buttons": mainMenuButtons
+                                    "buttons": elements
                                 },
+
                                 {
-                                    "title": "Giờ mở cửa",
-                                    "subtitle": "T2-T6 10AM - 11PM | T7 5PM - 10PM | CN 5PM - 9PM",
+                                    "title": "Giờ mở của",
+                                    "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
                                     "image_url": IMAGE_MAIN_MENU2,
                                     "buttons": [
                                         {
@@ -176,8 +172,9 @@ let handleSendMainMenu = (sender_psid) => {
                                             "webview_height_ratio": "tall",
                                             "messenger_extensions": true
                                         }
-                                    ]
+                                    ],
                                 },
+
                                 {
                                     "title": "Không gian nhà hàng",
                                     "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
@@ -186,28 +183,27 @@ let handleSendMainMenu = (sender_psid) => {
                                         {
                                             "type": "postback",
                                             "title": "Xem chi tiết",
-                                            "payload": "SHOW_ROOMS"
+                                            "payload": "SHOW_ROOMS",
                                         }
-                                    ]
+                                    ],
                                 }
+
+
                             ]
                         }
                     }
                 };
-
                 await sendTypingOn(sender_psid);
                 await sendMessage(sender_psid, response);
                 resolve("done");
-            } else {
-                resolve("no menus found");
             }
+
         } catch (e) {
             reject(e);
         }
     });
+
 };
-
-
 
 let handleSendLunchMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
