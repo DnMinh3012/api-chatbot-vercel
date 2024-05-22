@@ -3,6 +3,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import moment from "moment"
 import { google } from 'googleapis';
+import { TableModel, TableTypeModel, DishModel, DishTypeModel, MenuModel } from "../model/index.js";
 require("dotenv").config();
 const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
 
@@ -139,67 +140,65 @@ let handleGetStartedResponding = (username, sender_psid) => {
 let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Menu chính",
-                                "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ 2 loại menu sau",
-                                "image_url": IMAGE_MAIN_MENU,
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Buổi trưa",
-                                        "payload": "LUNCH_MENU",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Buổi tối",
-                                        "payload": "DINNER_MENU",
-                                    },
+            let menu = await MenuModel.findAll();
+            if (menu) {
+                let elements = menus.map(menu => ({
+                    type: "postback",
+                    title: menu.name,
+                    image_url: menu.image,
+                    payload: "LOAD_MENU_MORE",
+                }));
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": "Menu chính",
+                                    "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại menu sau",
+                                    "image_url": IMAGE_MAIN_MENU,
+                                    "buttons": elements
+                                },
 
-                                ],
-                            },
+                                {
+                                    "title": "Giờ mở của",
+                                    "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
+                                    "image_url": IMAGE_MAIN_MENU2,
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                },
 
-                            {
-                                "title": "Giờ mở của",
-                                "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
-                                "image_url": IMAGE_MAIN_MENU2,
-                                "buttons": [
-                                    {
-                                        "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                        "title": "Đặt bàn",
-                                        "webview_height_ratio": "tall",
-                                        "messenger_extensions": true
-                                    }
-                                ],
-                            },
-
-                            {
-                                "title": "Không gian nhà hàng",
-                                "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
-                                "image_url": IMAGE_MAIN_MENU3,
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Xem chi tiết",
-                                        "payload": "SHOW_ROOMS",
-                                    }
-                                ],
-                            }
+                                {
+                                    "title": "Không gian nhà hàng",
+                                    "subtitle": "Nhà hàng có sức chứa lên đến 300 khách ngồi và tương tự tại các tiệc cocktail",
+                                    "image_url": IMAGE_MAIN_MENU3,
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Xem chi tiết",
+                                            "payload": "SHOW_ROOMS",
+                                        }
+                                    ],
+                                }
 
 
-                        ]
+                            ]
+                        }
                     }
-                }
-            };
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response);
-            resolve("done");
+                };
+                await sendTypingOn(sender_psid);
+                await sendMessage(sender_psid, response);
+                resolve("done");
+            }
+
         } catch (e) {
             reject(e);
         }
