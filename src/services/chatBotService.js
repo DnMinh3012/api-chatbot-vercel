@@ -145,7 +145,6 @@ let handleSendMainMenu = (sender_psid) => {
                 let elements = menus.map(menu => ({
                     type: "postback",
                     title: menu.name,
-                    image_url: menu.image,
                     payload: "LOAD_MENU_MORE",
                 }));
                 let response = {
