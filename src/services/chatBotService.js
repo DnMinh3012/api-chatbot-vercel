@@ -225,6 +225,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
 
             if (menu && menu.dishes) {
                 // Truy cập mảng các món ăn
+                console.log("menu:", menu)
                 let elements = menu.dishes.slice(0, 7).map(dish => ({
                     title: dish.name,
                     subtitle: dish.description,
