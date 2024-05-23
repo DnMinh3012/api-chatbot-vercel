@@ -651,71 +651,73 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
 let handleShowDetailRooms = (sender_psid, tableTypeId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Tìm TableType với các Table liên quan
-            let tableType = await TableTypeModel.findOne({
-                where: { id: tableTypeId },
-                include: [
-                    {
-                        model: TableModel,
-                        as: "tables",
-                    },
-                ],
-            });
-
-            // tableType = tableType.get({ plain: true });
-            // tableType = JSON.stringify(tableType, null, 2);
-            console.log(tableType);
-
-            if (tableType && tableType.tables) {
-                // Truy cập mảng các bàn
-                console.log("tableType:", tableType.tables)
-                let elements = tableType.tables.slice(0, 7).map(table => ({
-                    title: table.name,
-                    image_url: table.image,
-                    buttons: [
+            if (tableTypeId) {
+                console.log("table type id:", tableTypeId)
+                let tableType = await TableTypeModel.findOne({
+                    where: { id: tableTypeId },
+                    include: [
                         {
-                            type: "web_url",
-                            url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${table.id}`,
-                            title: "Đặt bàn",
-                            webview_height_ratio: "tall",
-                            messenger_extensions: true
-                        }
-                    ]
-                }));
+                            model: TableModel,
+                            as: "tables",
+                        },
+                    ],
+                });
 
-                let response = {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [
-                                elements,
-                                {
-                                    "title": "Quay lại MENU chính",
-                                    "image_url": IMAGE_MAIN_MENU4,
-                                    "buttons": [
-                                        {
-                                            "type": "postback",
-                                            "title": "Quay lại",
-                                            "payload": "BACK_TO_MAIN_MENU",
-                                        },
-                                        {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                            "title": "Đặt bàn",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        }
-                                    ],
-                                }
-                            ]
-                        }
-                    }
-                };
+                // tableType = tableType.get({ plain: true });
+                // tableType = JSON.stringify(tableType, null, 2);
+                console.log(tableType);
+                if (tableType && tableType.tables) {
+                    // Truy cập mảng các bàn
+                    console.log("tableType:", tableType.tables)
+                    let elements = tableType.tables.slice(0, 7).map(table => ({
+                        title: table.name,
+                        image_url: table.image,
+                        buttons: [
+                            {
+                                type: "web_url",
+                                url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${table.id}`,
+                                title: "Đặt bàn",
+                                webview_height_ratio: "tall",
+                                messenger_extensions: true
+                            }
+                        ]
+                    }));
 
-                await sendTypingOn(sender_psid);
-                await sendMessage(sender_psid, response);
-                resolve("done");
+                    let response = {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": [
+                                    elements,
+                                    {
+                                        "title": "Quay lại MENU chính",
+                                        "image_url": IMAGE_MAIN_MENU4,
+                                        "buttons": [
+                                            {
+                                                "type": "postback",
+                                                "title": "Quay lại",
+                                                "payload": "BACK_TO_MAIN_MENU",
+                                            },
+                                            {
+                                                "type": "web_url",
+                                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                                "title": "Đặt bàn",
+                                                "webview_height_ratio": "tall",
+                                                "messenger_extensions": true
+                                            }
+                                        ],
+                                    }
+                                ]
+                            }
+                        }
+                    };
+
+                    await sendTypingOn(sender_psid);
+                    await sendMessage(sender_psid, response);
+                    resolve("done");
+                }
+                // Tìm TableType với các Table liên quan
             } else {
                 reject("Không tìm thấy bàn.");
             }
