@@ -238,7 +238,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                         "payload": {
                             "template_type": "generic",
                             "elements": [
-                                ...elements,
+                                elements,
                                 {
                                     "title": "Quay lại MENU chính",
                                     "image_url": IMAGE_MAIN_MENU4,
@@ -651,25 +651,26 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
 let handleShowDetailRooms = (sender_psid, tableTypeId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Tìm menu với các món ăn và loại món ăn liên quan
-            let tablesTypes = await TableTypeModel.findOne({
+            // Tìm TableType với các Table liên quan
+            let tableType = await TableTypeModel.findOne({
                 where: { id: tableTypeId },
                 include: [{
                     model: TableModel,
-                    as: 'tables',
+                    as: 'tables',  // Alias should be 'tables' here if it matches the relation
                     include: [
                         {
                             model: TableTypeModel,
-                            as: 'tabletypes',
+                            as: 'tableType',  // Alias must match the one used in the association
                         }
                     ]
                 }],
             });
 
-            if (tablesTypes && tablesTypes.tables) {
-                // Truy cập mảng các món ăn
-                console.log("tablesTypes:", tablesTypes.tables)
-                let elements = tablesTypes.tables.slice(0, 7).map(table => ({
+
+            if (tableType && tableType.tables) {
+                // Truy cập mảng các bàn
+                console.log("tableType:", tableType.tables)
+                let elements = tableType.tables.slice(0, 7).map(table => ({
                     title: table.name,
                     image_url: table.image,
                     buttons: [
@@ -689,7 +690,7 @@ let handleShowDetailRooms = (sender_psid, tableTypeId) => {
                         "payload": {
                             "template_type": "generic",
                             "elements": [
-                                ...elements,
+                                elements,
                                 {
                                     "title": "Quay lại MENU chính",
                                     "image_url": IMAGE_MAIN_MENU4,
@@ -724,6 +725,7 @@ let handleShowDetailRooms = (sender_psid, tableTypeId) => {
         }
     });
 };
+
 
 let handleDetailSalad = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
