@@ -670,8 +670,8 @@ let handleShowDetailRooms = (sender_psid, tableTypeId) => {
                     // Truy cập mảng các bàn
                     console.log("tableType:", tableType.tables)
                     let elements = tableType.tables.slice(0, 7).map(table => ({
-                        title: table.name,
-                        image_url: table.image,
+                        title: table.dataValues.name,
+                        image_url: table.dataValues.image,
                         buttons: [
                             {
                                 type: "web_url",
