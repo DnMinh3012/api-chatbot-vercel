@@ -209,17 +209,18 @@ let handleSendMainMenu = (sender_psid) => {
 let handleSendMenuDetail = (sender_psid, menuId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let dishes = await DishModel.findAll({
-                include: [
-                    {
-                        model: MenuModel,
-                        as: "dishes",  // Correct alias
-                        attributes: ['menu_id'],
-                    }
-                ],
-                where: {
-                    menu_id: menuId
-                }
+            let dishes = await MenuModel.findOne({
+                where: { id: menuId },
+                include: [{
+                    model: DishModel,
+                    as: 'dishes',
+                    include: [
+                        {
+                            model: DishTypeModel,
+                            as: 'dishType',
+                        }
+                    ]
+                }],
             });
             if (dishes) {
                 let elements = dishes.slice(0, 7).map(dishes => ({
@@ -233,8 +234,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                         "payload": {
                             "template_type": "generic",
                             "elements": [
-                                elements,
-
+                                ...elements,
                                 {
                                     "title": "Quay lại MENU chính",
                                     "image_url": IMAGE_MAIN_MENU4,
