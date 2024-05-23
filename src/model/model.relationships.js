@@ -24,13 +24,10 @@ Table.belongsTo(TableType, {
     foreignKey: "table_type_id",
     as: "tableType",
 });
-
-TableType.belongsToMany(Table, {
-    through: DishMenu,
+TableType.hasMany(Table, {
+    foreignKey: "table_type_id",
     as: "tables",
-    foreignKey: "table_id",
 });
-
 
 ReservationRequest.belongsTo(Table, {
     foreignKey: "table_id",

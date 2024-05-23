@@ -654,18 +654,17 @@ let handleShowDetailRooms = (sender_psid, tableTypeId) => {
             // Tìm TableType với các Table liên quan
             let tableType = await TableTypeModel.findOne({
                 where: { id: tableTypeId },
-                include: [{
-                    model: TableModel,
-                    as: 'tables',  // Alias should be 'tables' here if it matches the relation
-                    include: [
-                        {
-                            model: TableTypeModel,
-                            as: 'tableType',  // Alias must match the one used in the association
-                        }
-                    ]
-                }],
+                include: [
+                    {
+                        model: TableModel,
+                        as: "tables",
+                    },
+                ],
             });
 
+            tableType = tableType.get({ plain: true });
+            tableType = JSON.stringify(tableType, null, 2);
+            console.log(tableType);
 
             if (tableType && tableType.tables) {
                 // Truy cập mảng các bàn
