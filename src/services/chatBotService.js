@@ -662,8 +662,8 @@ let handleShowDetailRooms = (sender_psid, tableTypeId) => {
                 ],
             });
 
-            tableType = tableType.get({ plain: true });
-            tableType = JSON.stringify(tableType, null, 2);
+            // tableType = tableType.get({ plain: true });
+            // tableType = JSON.stringify(tableType, null, 2);
             console.log(tableType);
 
             if (tableType && tableType.tables) {
