@@ -213,7 +213,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                 include: [
                     {
                         model: MenuModel,
-                        as: "dish",
+                        as: "dishes",  // Correct alias
                         attributes: ['menu_id'],
                     }
                 ],
