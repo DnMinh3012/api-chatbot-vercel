@@ -205,11 +205,11 @@ let handleSendMainMenu = (sender_psid) => {
     });
 
 };
-
 let handleSendMenuDetail = (sender_psid, menuId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let dishes = await MenuModel.findOne({
+            // Tìm menu với các món ăn và loại món ăn liên quan
+            let menu = await MenuModel.findOne({
                 where: { id: menuId },
                 include: [{
                     model: DishModel,
@@ -222,12 +222,15 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     ]
                 }],
             });
-            if (dishes) {
-                let elements = dishes.slice(0, 7).map(dishes => ({
-                    title: dishes.name,
-                    subtitle: dishes.description,
-                    image_url: dishes.image
+
+            if (menu && menu.dishes) {
+                // Truy cập mảng các món ăn
+                let elements = menu.dishes.slice(0, 7).map(dish => ({
+                    title: dish.name,
+                    subtitle: dish.description,
+                    image_url: dish.image
                 }));
+
                 let response = {
                     "attachment": {
                         "type": "template",
@@ -257,9 +260,12 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                         }
                     }
                 };
+
                 await sendTypingOn(sender_psid);
                 await sendMessage(sender_psid, response);
                 resolve("done");
+            } else {
+                reject("Không tìm thấy menu hoặc menu không có món ăn.");
             }
         } catch (e) {
             reject(e);
