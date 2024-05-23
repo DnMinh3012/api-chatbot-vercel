@@ -666,7 +666,7 @@ let handleShowDetailRooms = (sender_psid, tableTypeId) => {
                 // tableType = tableType.get({ plain: true });
                 // tableType = JSON.stringify(tableType, null, 2);
                 console.log(tableType);
-                if (tableType && tableType.tables) {
+                if (tableType && tableType.dataValues.tables) {
                     // Truy cập mảng các bàn
                     console.log("tableType:", tableType.tables)
                     let elements = tableType.tables.slice(0, 7).map(table => ({

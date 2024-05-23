@@ -215,7 +215,7 @@ let handlePostback = async (sender_psid, received_postback) => {
     }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
-    chatBotService.timeOutChatbot(sender_psid);
+    // chatBotService.timeOutChatbot(sender_psid);
 };
 
 // Sends response messages via the Send API
