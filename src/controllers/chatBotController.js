@@ -209,6 +209,10 @@ let handlePostback = async (sender_psid, received_postback) => {
         let menuId = payload.split('_')[2];
         await chatBotService.handleSendMenuDetail(sender_psid, menuId);
     }
+    if (payload.includes('SHOW_TABLE_TYPES_')) {
+        let menuId = payload.split('_')[2];
+        await chatBotService.handleShowDetailRooms(sender_psid, tableTypeId);
+    }
     // Send the message to acknowledge the postback
     // callSendAPI(sender_psid, response);
     chatBotService.timeOutChatbot(sender_psid);

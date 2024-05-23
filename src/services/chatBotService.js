@@ -648,51 +648,81 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
     });
 };
 
-let handleShowDetailRooms = (sender_psid) => {
+let handleShowDetailRooms = (sender_psid, tableTypeId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "attachment": {
-                    "type": "image",
-                    "payload": {
-                        "url": URL_SHOW_ROOM_GIF
-                    }
-                }
-            };
-            let response2 = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": `Phòng thích hợp cho tiệc tối đa 45 người.`,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem Menu",
-                                "payload": "MAIN_MENU"
-                            },
-                            {
-                                "type": "web_url",
-                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                "title": "Đặt bàn",
-                                "webview_height_ratio": "tall",
-                                "messenger_extensions": true
-                            }
-                        ]
-                    }
-                }
-            };
+            // Tìm menu với các món ăn và loại món ăn liên quan
+            let tablesTypes = await TableTypeModel.findOne({
+                where: { id: tableTypeId },
+                include: [{
+                    model: TableModel,
+                    as: 'tables',
+                    include: [
+                        {
+                            model: TableTypeModel,
+                            as: 'tabletypes',
+                        }
+                    ]
+                }],
+            });
 
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response1);
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response2);
+            if (tablesTypes && tablesTypes.tables) {
+                // Truy cập mảng các món ăn
+                console.log("tablesTypes:", tablesTypes.tables)
+                let elements = tablesTypes.tables.slice(0, 7).map(table => ({
+                    title: table.name,
+                    image_url: table.image,
+                    buttons: [
+                        {
+                            type: "web_url",
+                            url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${table.id}`,
+                            title: "Đặt bàn",
+                            webview_height_ratio: "tall",
+                            messenger_extensions: true
+                        }
+                    ]
+                }));
 
-            resolve("done!");
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                ...elements,
+                                {
+                                    "title": "Quay lại MENU chính",
+                                    "image_url": IMAGE_MAIN_MENU4,
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Quay lại",
+                                            "payload": "BACK_TO_MAIN_MENU",
+                                        },
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                }
+                            ]
+                        }
+                    }
+                };
+
+                await sendTypingOn(sender_psid);
+                await sendMessage(sender_psid, response);
+                resolve("done");
+            } else {
+                reject("Không tìm thấy bàn.");
+            }
         } catch (e) {
             reject(e);
         }
-    })
+    });
 };
 
 let handleDetailSalad = (sender_psid) => {
