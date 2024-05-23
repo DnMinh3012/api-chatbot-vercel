@@ -483,78 +483,70 @@ let handleReserveTable = (sender_psid) => {
 let handleShowRooms = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Phòng gia đình",
-                                "subtitle": "Phòng thích hợp cho tiệc tối đa 25 người",
-                                "image_url": IMAGE_ROOMS1,
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Xem chi tiết",
-                                        "payload": "SHOW_ROOM_DETAIL",
-                                    }
-                                ],
-                            },
+            let roomTypes = await TableTypeModel.findAll();
+            if (roomTypes) {
+                let elements = roomTypes.slice(0, 3).map(roomType => ({
+                    type: "postback",
+                    title: roomType.name,
+                    payload: `SHOW_TABLE_TYPES_${roomType.id}`
+                }));
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": "Menu chính",
+                                    "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại bàn sau sau",
+                                    "image_url": IMAGE_MAIN_MENU,
+                                    "buttons": elements
+                                },
 
-                            {
-                                "title": "Phòng Họp",
-                                "subtitle": "Phòng phù hợp cho tiệc tối đa 35 người",
-                                "image_url": IMAGE_ROOMS2,
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Xem chi tiết",
-                                        "payload": "SHOW_ROOM_DETAIL",
-                                    }
-                                ],
-                            },
+                                {
+                                    "title": "Giờ mở của",
+                                    "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
+                                    "image_url": IMAGE_MAIN_MENU2,
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                },
 
-                            {
-                                "title": "Phòng sự kiện",
-                                "subtitle": "Phòng thích hợp cho tiệc tối đa 45 người",
-                                "image_url": IMAGE_ROOMS3,
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Xem chi tiết",
-                                        "payload": "SHOW_ROOM_DETAIL",
-                                    }
-                                ],
-                            },
+                                {
+                                    "title": "Quay lại MENU chính",
+                                    "image_url": IMAGE_MAIN_MENU4,
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Quay lại",
+                                            "payload": "BACK_TO_MAIN_MENU",
+                                        },
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "title": "Đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                }
 
-                            {
-                                "title": "Go back",
-                                "image_url": IMAGE_MAIN_MENU4,
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Quay lại Menu",
-                                        "payload": "BACK_TO_MAIN_MENU",
-                                    },
-                                    {
 
-                                        "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                        "title": "Đặt bàn",
-                                        "webview_height_ratio": "tall",
-                                        "messenger_extensions": true
-                                    }
-                                ],
-                            }
-                        ]
+                            ]
+                        }
                     }
-                }
-            };
+                };
 
-            //send a welcome message
-            await sendTypingOn(sender_psid);
-            await sendMessage(sender_psid, response);
+                //send a welcome message
+                await sendTypingOn(sender_psid);
+                await sendMessage(sender_psid, response);
+            }
         } catch (e) {
             reject(e);
         }
