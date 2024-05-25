@@ -222,8 +222,8 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     ]
                 }],
             });
-            menu = menu.get({ plain: true });
-            menu = JSON.stringify(menu, null, 2);
+            // menu = menu.get({ plain: true });
+            // menu = JSON.stringify(menu, null, 2);
             console.log(menu);
             // const base64Image = dish.image;
             // const dishImage = document.getElementById("dish-image");
@@ -236,7 +236,6 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     subtitle: dish.description,
                     image: `data:image/jpeg;base64/${dish.image}`
                 }));
-
                 elements.push(
                     {
                         "title": "Quay lại MENU chính",
