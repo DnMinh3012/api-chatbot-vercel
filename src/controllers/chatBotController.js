@@ -245,7 +245,8 @@ function callSendAPI(sender_psid, response) {
 let getReserveTable = (req, res) => {
     let senderId = req.params.senderId;
     return res.render('reserve-table.ejs', {
-        senderId: senderId
+        senderId: senderId,
+        tableTpId: tableTpId
     });
 }
 // let getFeedbackTable = (req, res) => {
@@ -264,7 +265,7 @@ let handleReserveTableAjax = async (req, res) => {
             email: req.body.email,
             phone: req.body.phoneNumber,
             timeOrder: req.body.reserveDate,
-            tableTpId: tableTpId,
+            tableTpId: req.body.tableTpId,
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
         }
