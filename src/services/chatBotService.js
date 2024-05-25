@@ -488,41 +488,35 @@ let handleShowRooms = (sender_psid) => {
             let roomTypes = await TableTypeModel.findAll();
             if (roomTypes) {
                 let elements = roomTypes.slice(0, 3).map(roomType => ({
-                    type: "web_url",
-                    url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${roomType.id}`,
                     title: roomType.name,
-                    webview_height_ratio: "tall",
-                    messenger_extensions: "true"
+                    image_url: roomType.image_url || "default_image_url",  // add an image_url if required
+                    buttons: [{
+                        type: "web_url",
+                        url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${roomType.id}`,
+                        title: "Đặt bàn",
+                        webview_height_ratio: "tall",
+                        messenger_extensions: true
+                    }]
                 }));
 
+                elements.push({
+                    title: "Quay lại MENU chính",
+                    image_url: IMAGE_MAIN_MENU4,
+                    buttons: [
+                        {
+                            type: "postback",
+                            title: "Quay lại",
+                            payload: "BACK_TO_MAIN_MENU",
+                        },
+                    ]
+                });
+
                 let response = {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [elements,
-
-                                {
-                                    "title": "Quay lại MENU chính",
-                                    "image_url": IMAGE_MAIN_MENU4,
-                                    "buttons": [
-                                        {
-                                            "type": "postback",
-                                            "title": "Quay lại",
-                                            "payload": "BACK_TO_MAIN_MENU",
-                                        },
-                                        {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                            "title": "Đặt bàn",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        }
-                                    ],
-                                }
-
-
-                            ]
+                    attachment: {
+                        type: "template",
+                        payload: {
+                            template_type: "generic",
+                            elements: elements
                         }
                     }
                 };
@@ -530,6 +524,7 @@ let handleShowRooms = (sender_psid) => {
                 //send a welcome message
                 await sendTypingOn(sender_psid);
                 await sendMessage(sender_psid, response);
+                resolve();
             }
         } catch (e) {
             reject(e);
