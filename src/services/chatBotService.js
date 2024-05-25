@@ -248,13 +248,12 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                                 "title": "Quay lại",
                                 "payload": "BACK_TO_MAIN_MENU",
                             },
+
                             {
-                                "type": "web_url",
-                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                "type": "postback",
                                 "title": "Đặt bàn",
-                                "webview_height_ratio": "tall",
-                                "messenger_extensions": true
-                            }
+                                "payload": "SHOW_ROOMS",
+                            },
                         ],
                     }
                 );
