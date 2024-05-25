@@ -488,37 +488,19 @@ let handleShowRooms = (sender_psid) => {
             let roomTypes = await TableTypeModel.findAll();
             if (roomTypes) {
                 let elements = roomTypes.slice(0, 3).map(roomType => ({
-                    type: "postback",
+                    type: "web_url",
+                    url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${roomType.id}`,
                     title: roomType.name,
-                    payload: `SHOW_TABLE_TYPES_${roomType.id}`
+                    webview_height_ratio: "tall",
+                    messenger_extensions: "true"
                 }));
+
                 let response = {
                     "attachment": {
                         "type": "template",
                         "payload": {
                             "template_type": "generic",
-                            "elements": [
-                                {
-                                    "title": "Menu chính",
-                                    "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại bàn sau sau",
-                                    "image_url": IMAGE_MAIN_MENU,
-                                    "buttons": elements
-                                },
-
-                                {
-                                    "title": "Giờ mở của",
-                                    "subtitle": "T2-T6 10AM - 11PM  | T7 5PM - 10PM | CN 5PM - 9PM",
-                                    "image_url": IMAGE_MAIN_MENU2,
-                                    "buttons": [
-                                        {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                            "title": "Đặt bàn",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        }
-                                    ],
-                                },
+                            "elements": [elements,
 
                                 {
                                     "title": "Quay lại MENU chính",
