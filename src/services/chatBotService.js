@@ -238,6 +238,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     subtitle: dish.description,
                     // image: `data:image/jpeg;base64/${dish.image}`
                 }));
+                console.table(elements);
                 elements.push(
                     {
                         "title": "Quay lại MENU chính",
