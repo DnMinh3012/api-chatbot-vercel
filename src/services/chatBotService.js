@@ -231,7 +231,6 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                 let elements = menu.dishes.slice(0, 7).map(dish => ({
                     title: dish.name,
                     subtitle: dish.description,
-                    image_url: dish.image
                 }));
 
                 let response = {
