@@ -219,7 +219,10 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                             model: DishTypeModel,
                             as: 'dishType',
                         }
-                    ]
+                    ],
+                    attributes: {
+                        exclude: ['image']
+                    }
                 }],
             });
             // menu = menu.get({ plain: true });
@@ -229,12 +232,11 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
             // const dishImage = document.getElementById("dish-image");
             // dishImage.src = 'data:image/jpeg;base64,' + base64Image;
             if (menu && menu.dishes) {
-                // Truy cập mảng các món ăn
                 console.log("menu:", menu)
                 let elements = menu.dishes.slice(0, 7).map(dish => ({
                     title: dish.name,
                     subtitle: dish.description,
-                    image: `data:image/jpeg;base64/${dish.image}`
+                    // image: `data:image/jpeg;base64/${dish.image}`
                 }));
                 elements.push(
                     {
