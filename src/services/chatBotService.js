@@ -498,8 +498,7 @@ let handleShowRooms = (sender_psid) => {
                         messenger_extensions: true
                     }]
                 }));
-                roomTypes = roomTypes.get({ plain: true });
-                roomTypes = JSON.stringify(roomTypes, null, 2);
+
                 console.log("tabletype:", tableType);
                 elements.push({
                     title: "Quay lại MENU chính",
