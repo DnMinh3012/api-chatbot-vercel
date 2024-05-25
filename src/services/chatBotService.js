@@ -486,7 +486,6 @@ let handleShowRooms = (sender_psid) => {
             if (roomTypes) {
                 let elements = roomTypes.slice(0, 7).map(roomType => ({
                     title: roomType.name,
-
                     buttons: [{
                         type: "web_url",
                         url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${roomType.id}`,
@@ -495,8 +494,6 @@ let handleShowRooms = (sender_psid) => {
                         messenger_extensions: true
                     }]
                 }));
-
-
 
                 console.log("tabletype:", elements);
                 elements.push({
