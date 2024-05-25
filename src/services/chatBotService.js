@@ -105,11 +105,9 @@ let handleGetStartedResponding = (username, sender_psid) => {
                                         "payload": "MAIN_MENU",
                                     },
                                     {
-                                        "type": "web_url",
-                                        "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                        "type": "postback",
                                         "title": "Đặt bàn",
-                                        "webview_height_ratio": "tall",
-                                        "messenger_extensions": true
+                                        "payload": "SHOW_ROOMS",
                                     },
                                     {
                                         "type": "postback",
@@ -167,12 +165,10 @@ let handleSendMainMenu = (sender_psid) => {
                                     "image_url": IMAGE_MAIN_MENU2,
                                     "buttons": [
                                         {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                            "type": "postback",
                                             "title": "Đặt bàn",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        }
+                                            "payload": "SHOW_ROOMS",
+                                        },
                                     ],
                                 },
 
