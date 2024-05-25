@@ -500,7 +500,7 @@ let handleShowRooms = (sender_psid) => {
                 }));
                 roomTypes = roomTypes.get({ plain: true });
                 roomTypes = JSON.stringify(roomTypes, null, 2);
-                console.log(tableType);
+                console.log("tabletype:", tableType);
                 elements.push({
                     title: "Quay lại MENU chính",
                     image_url: IMAGE_MAIN_MENU4,
