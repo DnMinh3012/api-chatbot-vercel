@@ -222,7 +222,9 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     ]
                 }],
             });
-
+            menu = menu.get({ plain: true });
+            menu = JSON.stringify(menu, null, 2);
+            console.log(menu);
             if (menu && menu.dishes) {
                 // Truy cập mảng các món ăn
                 console.log("menu:", menu)
