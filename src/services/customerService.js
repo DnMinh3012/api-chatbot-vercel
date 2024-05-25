@@ -124,10 +124,27 @@ let postBookAppointment = async (data) => {
         });
 
         let customerId = customer[0].id;
+        let tableType = await TableTypeModel.findOne({
+            where: { id: data.tableTpId },
+            include: [
+                {
+                    model: TableModel,
+                    as: 'table',
+                    include: [
+                        {
+                            model: TableTypeModel,
+                            as: 'tableType',
+                        }
+                    ]
+                }
+            ]
+        });
+        table = tableId.table;
+        let randomIndex = Math.floor(Math.random() * availableTables.length);
+        let selectedTable = availableTables[randomIndex];
 
-        let tableId = await findAvailableTable();
 
-        let reservationRequest = await makeReservationRequest(data.timeOrder, tableId, customerId);
+        let reservationRequest = await makeReservationRequest(data.timeOrder, selectedTable.id, customerId);
 
         let confirmedRequest = await confirmReservationRequest(reservationRequest.id);
 
