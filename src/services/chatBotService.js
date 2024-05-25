@@ -233,32 +233,32 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                     subtitle: dish.description,
                 }));
 
+                elements.push(
+                    {
+                        "title": "Quay lại MENU chính",
+                        "image_url": IMAGE_MAIN_MENU4,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Quay lại",
+                                "payload": "BACK_TO_MAIN_MENU",
+                            },
+                            {
+                                "type": "web_url",
+                                "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                "title": "Đặt bàn",
+                                "webview_height_ratio": "tall",
+                                "messenger_extensions": true
+                            }
+                        ],
+                    }
+                );
                 let response = {
                     "attachment": {
                         "type": "template",
                         "payload": {
                             "template_type": "generic",
-                            "elements": [
-                                elements,
-                                {
-                                    "title": "Quay lại MENU chính",
-                                    "image_url": IMAGE_MAIN_MENU4,
-                                    "buttons": [
-                                        {
-                                            "type": "postback",
-                                            "title": "Quay lại",
-                                            "payload": "BACK_TO_MAIN_MENU",
-                                        },
-                                        {
-                                            "type": "web_url",
-                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
-                                            "title": "Đặt bàn",
-                                            "webview_height_ratio": "tall",
-                                            "messenger_extensions": true
-                                        }
-                                    ],
-                                }
-                            ]
+                            "elements": elements,
                         }
                     }
                 };
