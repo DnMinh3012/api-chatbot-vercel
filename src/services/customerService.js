@@ -102,7 +102,7 @@ async function findAvailableTable() {
     return selectedTable.id;
 }
 let postBookAppointment = async (data) => {
-    console.log(data);
+    console.log("Customer Data:", data);
     try {
         // Kiểm tra các tham số bắt buộc
         if (!data.email || !data.phone || !data.timeOrder) {
