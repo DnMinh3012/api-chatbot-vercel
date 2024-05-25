@@ -215,10 +215,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                             model: DishTypeModel,
                             as: 'dishType',
                         }
-                    ],
-                    attributes: {
-                        exclude: ['image']
-                    }
+                    ]
                 }],
             });
             // menu = menu.get({ plain: true });
@@ -232,7 +229,7 @@ let handleSendMenuDetail = (sender_psid, menuId) => {
                 let elements = menu.dishes.slice(0, 7).map(dish => ({
                     title: dish.name,
                     subtitle: dish.description,
-                    // image: `data:image/jpeg;base64/${dish.image}`
+                    image: `petrung.id.vn/api/images/dishes/${dish.id}`
                 }));
                 console.table(elements);
                 elements.push(
