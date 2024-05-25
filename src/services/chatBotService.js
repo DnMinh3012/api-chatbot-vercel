@@ -487,7 +487,7 @@ let handleShowRooms = (sender_psid) => {
         try {
             let roomTypes = await TableTypeModel.findAll();
             if (roomTypes) {
-                let elements = roomTypes.slice(0, 3).map(roomType => ({
+                let elements = roomTypes.slice(0, 7).map(roomType => ({
                     title: roomType.name,
                     image_url: roomType.image_url || "default_image_url",  // add an image_url if required
                     buttons: [{
@@ -498,7 +498,9 @@ let handleShowRooms = (sender_psid) => {
                         messenger_extensions: true
                     }]
                 }));
-
+                roomTypes = roomTypes.get({ plain: true });
+                roomTypes = JSON.stringify(roomTypes, null, 2);
+                console.log(tableType);
                 elements.push({
                     title: "Quay lại MENU chính",
                     image_url: IMAGE_MAIN_MENU4,
