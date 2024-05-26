@@ -244,6 +244,7 @@ function callSendAPI(sender_psid, response) {
 }
 let getReserveTable = (req, res) => {
     let senderId = req.params.senderId;
+    let tableTpId = req.params.tableTpId;
     return res.render('reserve-table.ejs', {
         senderId: senderId,
         tableTpId: tableTpId
