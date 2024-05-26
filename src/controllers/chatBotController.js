@@ -269,30 +269,29 @@ let handleReserveTableAjax = async (req, res) => {
             tableTpId: req.body.tableTpId,
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
-        }
+        };
         await customerService.postBookAppointment(data);
         await chatBotService.writeDataToGoogleSheet(data);
 
         let response1 = {
-            "text": `Thong tin khach dat ban
-            \nHo va ten: ${username}
+            text: `Thông tin khách đặt bàn:
+            \nHọ và tên: ${username}
             \nEmail: ${req.body.email}
-            \nSo Dien Thoai: ${req.body.phoneNumber}
-            \nSố người: ${req.body.currentNumber},
-            \nNgày đặt bàn: ${req.body.reserveDate},
-            \nGhi chú: ${req.body.note}
-            `
-        }
-        await chatBotService.sendMessage(req.body.psid, response1)
+            \nSố điện thoại: ${req.body.phoneNumber}
+            \nSố người: ${req.body.currentNumber}
+            \nNgày đặt bàn: ${req.body.reserveDate}
+            \nGhi chú: ${req.body.note}`
+        };
+        await chatBotService.sendMessage(req.body.psid, response1);
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
-        })
+        });
     } catch (e) {
-        console.log("Loi Reserve table: ", e);
+        console.error("Lỗi đặt bàn: ", e);
         return res.status(500).json({
-            message: e
-        })
+            message: e.toString()
+        });
     }
 }
 // let handleFeedbackTableAjax = async (req, res) => {
