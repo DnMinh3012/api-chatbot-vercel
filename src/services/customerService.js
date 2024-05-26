@@ -34,7 +34,7 @@ async function makeReservationRequest(
         throw new Error("Table not found");
     }
     if (table.status !== "available") {
-        return json({ message: "Table not available" });
+        throw new Error("Table not available");
     }
     let customer = await CustomerModel.findByPk(customerId);
     if (customer === null) {
@@ -58,7 +58,7 @@ async function confirmReservationRequest(id) {
         throw new Error("Table not found");
     }
     if (table.status !== "available") {
-        return json({ message: "Table not available" });
+        throw new Error("Table not available");
     }
     table.status = "booked";
     await table.save();
@@ -77,7 +77,7 @@ async function freeReservationRequest(id) {
         throw new Error("Table not found");
     }
     if (table.status !== "booked") {
-        return json({ message: "Table not booked" });
+        throw new Error("Table not booked");
     }
     table.status = "available";
     await table.save();
@@ -86,10 +86,9 @@ async function freeReservationRequest(id) {
     return reservationRequest.get({ plain: true });
 }
 
-
-async function findAvailableTable() {
-    let availableTables = await Table.findAll({
-        where: { status: "available" }
+async function findAvailableTableByType(tableTypeId) {
+    let availableTables = await TableModel.findAll({
+        where: { status: "available", typeId: tableTypeId }
     });
 
     if (availableTables.length === 0) {
@@ -101,11 +100,12 @@ async function findAvailableTable() {
 
     return selectedTable.id;
 }
+
 let postBookAppointment = async (data) => {
     console.log("Customer Data:", data);
     try {
         // Kiểm tra các tham số bắt buộc
-        if (!data.email || !data.phone || !data.timeOrder) {
+        if (!data.email || !data.phone || !data.timeOrder || !data.TypeId) {
             return {
                 errCode: 1,
                 message: "Missing required parameters"
@@ -124,28 +124,14 @@ let postBookAppointment = async (data) => {
         });
 
         let customerId = customer[0].id;
-        let tableType = await TableTypeModel.findOne({
-            where: { id: data.TypeId },
-            include: [
-                {
-                    model: TableModel,
-                    as: 'table',
-                    include: [
-                        {
-                            model: TableTypeModel,
-                            as: 'tableType',
-                        }
-                    ]
-                }
-            ]
-        });
-        table = tableId.table;
-        let randomIndex = Math.floor(Math.random() * availableTables.length);
-        let selectedTable = availableTables[randomIndex];
 
+        // Tìm bàn khả dụng theo loại bàn
+        let selectedTableId = await findAvailableTableByType(data.TypeId);
 
-        let reservationRequest = await makeReservationRequest(data.timeOrder, selectedTable.id, customerId);
+        // Tạo yêu cầu đặt bàn
+        let reservationRequest = await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
 
+        // Xác nhận yêu cầu đặt bàn
         let confirmedRequest = await confirmReservationRequest(reservationRequest.id);
 
         return {
@@ -162,12 +148,11 @@ let postBookAppointment = async (data) => {
     }
 };
 
-
 module.exports = {
-    findRequestWithCustomerAndTable: findRequestWithCustomerAndTable,
-    makeReservationRequest: makeReservationRequest,
-    confirmReservationRequest: confirmReservationRequest,
-    freeReservationRequest: freeReservationRequest,
-    findAvailableTable: findAvailableTable,
-    postBookAppointment: postBookAppointment,
-}
+    findRequestWithCustomerAndTable,
+    makeReservationRequest,
+    confirmReservationRequest,
+    freeReservationRequest,
+    findAvailableTableByType,
+    postBookAppointment,
+};
