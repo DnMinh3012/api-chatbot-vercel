@@ -97,7 +97,7 @@ async function findAvailableTableByType(tableTypeId) {
 
     let randomIndex = Math.floor(Math.random() * availableTables.length);
     let selectedTable = availableTables[randomIndex];
-
+    console.log("Table Selected:", selectedTable.id)
     return selectedTable.id;
 }
 
