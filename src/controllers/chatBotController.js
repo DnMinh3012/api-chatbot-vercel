@@ -244,11 +244,12 @@ function callSendAPI(sender_psid, response) {
 }
 let getReserveTable = (req, res) => {
     let senderId = req.params.senderId;
-    let tableTpId = req.params.tableTpId;
+    let TypeId = req.params.tableTpId;
     return res.render('reserve-table.ejs', {
         senderId: senderId,
-        tableTpId: tableTpId
+        tableTpId: TypeId
     });
+    console.log("table Type:", TypeId)
 }
 // let getFeedbackTable = (req, res) => {
 //     let senderId = req.params.senderId;
@@ -259,14 +260,15 @@ let getReserveTable = (req, res) => {
 
 let handleReserveTableAjax = async (req, res) => {
     try {
+        console.log("Request Body:", req.body); // Kiểm tra dữ liệu đầu vào
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
-            psid: req.body.psid,
+            psid: req.body.senderId,
             name: username,
             email: req.body.email,
             phone: req.body.phoneNumber,
             timeOrder: req.body.reserveDate,
-            tableTpId: req.body.tableTpId,
+            TypeId: req.body.tableTpId,
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
         };
@@ -280,12 +282,16 @@ let handleReserveTableAjax = async (req, res) => {
             \nSố điện thoại: ${req.body.phoneNumber}
             \nSố người: ${req.body.currentNumber}
             \nNgày đặt bàn: ${req.body.reserveDate}
-            \nGhi chú: ${req.body.note}`
+            \nGhi chú: ${req.body.note}
+            \nLoại bàn: ${req.body.TypeId}`
+
+
         };
         await chatBotService.sendMessage(req.body.psid, response1);
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
+            TypeId: req.body.tableTpId,
         });
     } catch (e) {
         console.error("Lỗi đặt bàn: ", e);

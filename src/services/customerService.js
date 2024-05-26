@@ -125,7 +125,7 @@ let postBookAppointment = async (data) => {
 
         let customerId = customer[0].id;
         let tableType = await TableTypeModel.findOne({
-            where: { id: data.tableTpId },
+            where: { id: data.TypeId },
             include: [
                 {
                     model: TableModel,
