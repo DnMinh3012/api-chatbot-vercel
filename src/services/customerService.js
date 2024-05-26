@@ -45,7 +45,7 @@ async function makeReservationRequest(
         tableId: tableId,
         customerId: customerId,
     });
-    return reservationRequest.get({ plain: true });
+    await reservationRequest.save();
 }
 
 async function confirmReservationRequest(id) {
@@ -64,7 +64,6 @@ async function confirmReservationRequest(id) {
     await table.save();
     reservationRequest.status = "approved";
     await reservationRequest.save();
-    return reservationRequest.get({ plain: true });
 }
 
 async function freeReservationRequest(id) {
@@ -125,14 +124,11 @@ let postBookAppointment = async (data) => {
 
         let customerId = customer[0].id;
 
-        // Tìm bàn khả dụng theo loại bàn
         let selectedTableId = await findAvailableTableByType(data.TypeId);
+        console.log("selectedTableId:", selectedTableId)
+        reservationRequest = await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
 
-        // Tạo yêu cầu đặt bàn
-        let reservationRequest = await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
-
-        // Xác nhận yêu cầu đặt bàn
-        let confirmedRequest = await confirmReservationRequest(reservationRequest.id);
+        confirmedRequest = await confirmReservationRequest(reservationRequest.id);
 
         return {
             errCode: 0,
