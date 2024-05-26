@@ -125,6 +125,26 @@ let postBookAppointment = async (data) => {
 
         let selectedTableId = await findAvailableTableByType(data.TypeId);
         console.log("selectedTableId:", selectedTableId)
+        if (selectedTableId) {
+            let table = await TableModel.findOne({
+                where: { id: selectedTableId },
+            });
+            if (table === null) {
+                throw new Error("Table not found");
+            }
+
+            let customer = await CustomerModel.findOne({
+                where: { id: customerId },
+            });;
+            if (customer === null) {
+                throw new Error("Customer not found");
+            }
+            let reservationRequest = await ReservationRequestModel.create({
+                timeOrder: data.timeOrder,
+                tableId: table.id,
+                customerId: customer.id,
+            });
+        }
         await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
 
         return {
