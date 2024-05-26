@@ -283,7 +283,7 @@ let handleReserveTableAjax = async (req, res) => {
             \nSố người: ${req.body.currentNumber}
             \nNgày đặt bàn: ${req.body.reserveDate}
             \nGhi chú: ${req.body.note}
-            \nLoại bàn: ${req.body.TypeId}`
+            \nLoại bàn: ${req.body.tableTpId}`
 
 
         };
