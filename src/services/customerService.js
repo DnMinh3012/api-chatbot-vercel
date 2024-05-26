@@ -82,7 +82,6 @@ async function freeReservationRequest(id) {
     await table.save();
     reservationRequest.status = "completed";
     await reservationRequest.save();
-    return reservationRequest.get({ plain: true });
 }
 
 async function findAvailableTableByType(tableTypeId) {
@@ -126,9 +125,7 @@ let postBookAppointment = async (data) => {
 
         let selectedTableId = await findAvailableTableByType(data.TypeId);
         console.log("selectedTableId:", selectedTableId)
-        reservationRequest = await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
-
-        confirmedRequest = await confirmReservationRequest(reservationRequest.id);
+        await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
 
         return {
             errCode: 0,
