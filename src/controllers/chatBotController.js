@@ -272,22 +272,22 @@ let handleReserveTableAjax = async (req, res) => {
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
         };
-        await customerService.postBookAppointment(data);
-        await chatBotService.writeDataToGoogleSheet(data);
+        // await customerService.postBookAppointment(data);
+        // await chatBotService.writeDataToGoogleSheet(data);
 
-        let response1 = {
-            text: `Thông tin khách đặt bàn:
-            \nHọ và tên: ${username}
-            \nEmail: ${req.body.email}
-            \nSố điện thoại: ${req.body.phoneNumber}
-            \nSố người: ${req.body.currentNumber}
-            \nNgày đặt bàn: ${req.body.reserveDate}
-            \nGhi chú: ${req.body.note}
-            \nLoại bàn: ${req.body.TypeId}`
+        // let response1 = {
+        //     text: `Thông tin khách đặt bàn:
+        //     \nHọ và tên: ${username}
+        //     \nEmail: ${req.body.email}
+        //     \nSố điện thoại: ${req.body.phoneNumber}
+        //     \nSố người: ${req.body.currentNumber}
+        //     \nNgày đặt bàn: ${req.body.reserveDate}
+        //     \nGhi chú: ${req.body.note}
+        //     \nLoại bàn: ${req.body.TypeId}`
 
 
-        };
-        await chatBotService.sendMessage(req.body.psid, response1);
+        // };
+        // await chatBotService.sendMessage(req.body.psid, response1);
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
