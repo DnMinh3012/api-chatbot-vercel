@@ -95,13 +95,14 @@ async function findAvailableTableByType(tableTypeId) {
         ],
     });
     let randomIndex = Math.floor(Math.random() * availableTables.length);
-    let availableTables = tableType.tables[randomIndex];
+    let availableTables = tableType.tables;
+    let SelectedTable = availableTables[randomIndex]
 
     if (!availableTables) {
         throw new Error("No available tables found");
     }
-    console.log("Table Selected:", availableTables.id)
-    return availableTables.id;
+    console.log("Table Selected:", SelectedTable.id)
+    return SelectedTable.id;
 }
 
 let postBookAppointment = async (data) => {
