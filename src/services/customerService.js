@@ -122,6 +122,7 @@ let postBookAppointment = async (data) => {
         });
 
         let customerId = customer[0].id;
+        console.log("Customer Id", customerId)
 
         let selectedTableId = await findAvailableTableByType(data.TypeId);
         console.log("selectedTableId:", selectedTableId)
