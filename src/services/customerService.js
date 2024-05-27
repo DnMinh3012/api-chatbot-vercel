@@ -85,18 +85,23 @@ async function freeReservationRequest(id) {
 }
 
 async function findAvailableTableByType(tableTypeId) {
-    let availableTables = await TableModel.findAll({
-        where: { status: "available", typeId: tableTypeId }
+    let tableType = await TableTypeModel.findOne({
+        where: { id: tableTypeId },
+        include: [
+            {
+                model: TableModel,
+                as: "tables",
+            },
+        ],
     });
+    let randomIndex = Math.floor(Math.random() * availableTables.length);
+    let availableTables = tableType.tables[randomIndex];
 
-    if (availableTables.length === 0) {
+    if (!availableTables) {
         throw new Error("No available tables found");
     }
-
-    let randomIndex = Math.floor(Math.random() * availableTables.length);
-    let selectedTable = availableTables[randomIndex];
-    console.log("Table Selected:", selectedTable.id)
-    return selectedTable.id;
+    console.log("Table Selected:", availableTables.id)
+    return availableTables.id;
 }
 
 let postBookAppointment = async (data) => {
