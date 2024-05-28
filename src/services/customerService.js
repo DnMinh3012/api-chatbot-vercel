@@ -130,30 +130,47 @@ let postBookAppointment = async (data) => {
         let customerId = customer[0].id;
         console.log("Customer Id", customerId)
         console.log("postBookAppointment.typeID", data.TypeId)
-
-        let selectedTableId = await findAvailableTableByType(data.TypeId);
-        console.log("selectedTableId:", selectedTableId)
-        if (selectedTableId) {
-            let table = await TableModel.findOne({
-                where: { id: selectedTableId },
-            });
-            if (table === null) {
-                throw new Error("Table not found");
-            }
-
-            let customer = await CustomerModel.findOne({
-                where: { id: customerId },
-            });;
-            if (customer === null) {
-                throw new Error("Customer not found");
-            }
-            let reservationRequest = await ReservationRequestModel.create({
-                timeOrder: data.timeOrder,
-                tableId: table.id,
-                customerId: customer.id,
-            });
+        let tables = await TableTypeModel.findOne({
+            where: { id: data.TypeId },
+            include: [
+                {
+                    model: TableModel,
+                    as: "tables",
+                },
+            ],
+        });
+        if (!tables) {
+            return {
+                errCode: 1,
+                message: "Table not found"
+            };
+        } else {
+            let randomIndex = Math.floor(Math.random() * availableTables.length);
+            console.log("tables:", tables)
         }
-        await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
+        // let selectedTableId = await findAvailableTableByType(data.TypeId);
+        // console.log("selectedTableId:", selectedTableId)
+        // if (selectedTableId) {
+        //     let table = await TableModel.findOne({
+        //         where: { id: selectedTableId },
+        //     });
+        //     if (table === null) {
+        //         throw new Error("Table not found");
+        //     }
+
+        //     let customer = await CustomerModel.findOne({
+        //         where: { id: customerId },
+        //     });;
+        //     if (customer === null) {
+        //         throw new Error("Customer not found");
+        //     }
+        //     let reservationRequest = await ReservationRequestModel.create({
+        //         timeOrder: data.timeOrder,
+        //         tableId: table.id,
+        //         customerId: customer.id,
+        //     });
+        // }
+        // await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
 
         return {
             errCode: 0,
