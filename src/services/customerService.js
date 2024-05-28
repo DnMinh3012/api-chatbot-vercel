@@ -114,78 +114,88 @@ let postBookAppointment = async (data) => {
                 errCode: 1,
                 message: "Missing required parameters"
             };
-        } else {
-            // Tìm hoặc tạo khách hàng theo email và phone
-            let customer = await CustomerModel.findOrCreate({
-                where: {
-                    email: data.email,
-                    phone: data.phone
-                },
-                defaults: {
-                    name: data.name
-                }
-            });
-
-            let customerId = customer[0].id;
-            console.log("Customer Id", customerId)
-            console.log("postBookAppointment.typeID", data.TypeId)
-            let tables = await TableTypeModel.findOne({
-                where: { id: data.TypeId },
-                include: [
-                    {
-                        model: TableModel,
-                        as: "tables",
-                    },
-                ],
-            });
-            if (!tables) {
-                return {
-                    errCode: 1,
-                    message: "Table not found"
-                };
-            } else {
-                let randomIndex = Math.floor(Math.random() * tables.tables.length);
-                console.log("tables:", tables)
-                let selectedTableId = tables.tables[randomIndex];
-                console.log("selectedTableId:", selectedTableId)
-                if (selectedTableId) {
-                    let table = await TableModel.findOne({
-                        where: { id: selectedTableId },
-                    });
-                    if (table === null) {
-                        throw new Error("Table not found");
-                    }
-
-                    let customer = await CustomerModel.findOne({
-                        where: { id: customerId },
-                    });;
-                    if (customer === null) {
-                        throw new Error("Customer not found");
-                    }
-                    let reservationRequest = await ReservationRequestModel.create({
-                        timeOrder: data.timeOrder,
-                        tableId: table.id,
-                        customerId: customer.id,
-                    });
-                }
-                await makeReservationRequest(data.timeOrder, selectedTableId, customerId);
-
-                return {
-                    errCode: 0,
-                    message: "Booking successful",
-                    data: confirmedRequest
-                };
-            }
-
         }
 
+        // Tìm hoặc tạo khách hàng theo email và phone
+        let [customer, created] = await CustomerModel.findOrCreate({
+            where: {
+                email: data.email,
+                phone: data.phone
+            },
+            defaults: {
+                name: data.name
+            }
+        });
+
+        let customerId = customer[0].id;
+        console.log("Customer Id:", customerId);
+
+        let tables = await TableTypeModel.findOne({
+            where: { id: data.TypeId },
+            include: [
+                {
+                    model: TableModel,
+                    as: "tables",
+                },
+            ],
+        });
+
+        if (!tables.tables.length) {
+            return {
+                errCode: 1,
+                message: "Table not found"
+            };
+        }
+
+        // Chọn ngẫu nhiên một bàn từ danh sách
+        let randomIndex = Math.floor(Math.random() * tables.tables.length);
+        let selectedTable = tables.tables[randomIndex];
+        let selectedTableId = selectedTable.id;
+        console.log("Selected Table Id:", selectedTableId);
+
+        if (!selectedTableId) {
+            return {
+                errCode: 1,
+                message: "Selected table not found"
+            };
+        }
+
+        let table = await TableModel.findOne({
+            where: { id: selectedTableId },
+        });
+
+        if (!table) {
+            return {
+                errCode: 1,
+                message: "Table not found"
+            };
+        }
+
+        // Tạo yêu cầu đặt bàn
+        let reservationRequest = await ReservationRequestModel.findOrCreate({
+            where: {
+                customerId: customer.id,
+            },
+            timeOrder: data.timeOrder,
+            tableId: table.id,
+            customerId: customer.id,
+        });
+
+        return {
+            errCode: 0,
+            message: "Booking successful",
+            data: reservationRequest
+        };
+
     } catch (e) {
+        console.error("Error in postBookAppointment:", e);
         return {
             errCode: 2,
             message: e.message
         };
     }
 };
+
 
 module.exports = {
     findRequestWithCustomerAndTable,
