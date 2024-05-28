@@ -129,7 +129,7 @@ let postBookAppointment = async (data) => {
         let customerId = customer.id;
         console.log("Customer Id:", customerId);
 
-        let tables = await TableTypeModel.findOne({
+        let tableType = await TableTypeModel.findOne({
             where: { id: data.TypeId },
             include: [
                 {
@@ -139,7 +139,7 @@ let postBookAppointment = async (data) => {
             ],
         });
 
-        if (!tables.tables.length) {
+        if (!tableType || !tableType.tables.length) {
             return {
                 errCode: 1,
                 message: "Table not found"
@@ -147,8 +147,8 @@ let postBookAppointment = async (data) => {
         }
 
         // Chọn ngẫu nhiên một bàn từ danh sách
-        let randomIndex = Math.floor(Math.random() * tables.tables.length);
-        let selectedTable = tables.tables[randomIndex];
+        let randomIndex = Math.floor(Math.random() * tableType.tables.length);
+        let selectedTable = tableType.tables[randomIndex];
         let selectedTableId = selectedTable.id;
         console.log("Selected Table Id:", selectedTableId);
 
@@ -160,12 +160,9 @@ let postBookAppointment = async (data) => {
         }
 
         // Tạo yêu cầu đặt bàn
-        let reservationRequest = await ReservationRequestModel.findOrCreate({
-            where: {
-                customerId: customer.id,
-            },
+        let reservationRequest = await ReservationRequestModel.create({
             timeOrder: data.timeOrder,
-            tableId: selectedTableId.id,
+            tableId: selectedTableId,
             customerId: customerId,
         });
 
@@ -183,6 +180,7 @@ let postBookAppointment = async (data) => {
         };
     }
 };
+
 
 
 module.exports = {
