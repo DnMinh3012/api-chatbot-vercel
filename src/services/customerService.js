@@ -126,8 +126,7 @@ let postBookAppointment = async (data) => {
                 name: data.name
             }
         });
-
-        let customerId = customer[0].id;
+        let customerId = customer.id;
         console.log("Customer Id:", customerId);
 
         let tables = await TableTypeModel.findOne({
