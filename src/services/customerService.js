@@ -160,25 +160,14 @@ let postBookAppointment = async (data) => {
             };
         }
 
-        let table = await TableModel.findOne({
-            where: { id: selectedTableId },
-        });
-
-        if (!table) {
-            return {
-                errCode: 1,
-                message: "Table not found"
-            };
-        }
-
         // Tạo yêu cầu đặt bàn
         let reservationRequest = await ReservationRequestModel.findOrCreate({
             where: {
                 customerId: customer.id,
             },
             timeOrder: data.timeOrder,
-            tableId: table.id,
-            customerId: customer.id,
+            tableId: selectedTableId.id,
+            customerId: customerId,
         });
 
         return {
