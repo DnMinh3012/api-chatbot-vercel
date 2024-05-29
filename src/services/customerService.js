@@ -160,15 +160,6 @@ let postBookAppointment = async (data) => {
             tableId: selectedTableId,
             customerId: customerId,
         });
-        let response1 = {
-            text: `Thông tin khách đặt bàn:
-            \nHọ và tên: ${customer.name}
-            \nEmail: ${customer.email}
-            \nSố điện thoại: ${customer.phone}
-            \nSố người: ${req.body.currentNumber}
-            \nNgày đặt bàn: ${reservationRequest.timeOrder}
-            \nLoại bàn: ${tableType.name}`
-        };
         let response = {
             "attachment": {
                 "type": "template",
@@ -180,7 +171,6 @@ let postBookAppointment = async (data) => {
                             \nHọ và tên: ${customer.name}
                             \nEmail: ${customer.email}
                             \nSố điện thoại: ${customer.phone}
-                            \nSố người: ${req.body.currentNumber}
                             \nNgày đặt bàn: ${reservationRequest.timeOrder}
                             \nLoại bàn: ${tableType.name}`,
                             "image_url": IMAGE_MAIN_MENU4,
