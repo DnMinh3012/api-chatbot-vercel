@@ -251,6 +251,15 @@ let getReserveTable = (req, res) => {
     });
     console.log("table Type:", TypeId)
 }
+let getEditTable = (req, res) => {
+    let senderId = req.params.senderId;
+    let TypeId = req.params.tableTpId;
+    return res.render('edit-table.ejs', {
+        senderId: senderId,
+        tableTpId: TypeId
+    });
+    console.log("table Type:", TypeId)
+}
 // let getFeedbackTable = (req, res) => {
 //     let senderId = req.params.senderId;
 //     return res.render('feedback-table.ejs', {
@@ -275,19 +284,7 @@ let handleReserveTableAjax = async (req, res) => {
         await customerService.postBookAppointment(data);
         await chatBotService.writeDataToGoogleSheet(data);
 
-        let response1 = {
-            text: `Thông tin khách đặt bàn:
-            \nHọ và tên: ${username}
-            \nEmail: ${req.body.email}
-            \nSố điện thoại: ${req.body.phoneNumber}
-            \nSố người: ${req.body.currentNumber}
-            \nNgày đặt bàn: ${req.body.reserveDate}
-            \nGhi chú: ${req.body.note}
-            \nLoại bàn: ${req.body.tableTpId}`
 
-
-        };
-        await chatBotService.sendMessage(req.body.psid, response1);
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
@@ -332,6 +329,7 @@ module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
+    getEditTable: getEditTable,
     handleReserveTableAjax: handleReserveTableAjax,
     // getFeedbackTable: getFeedbackTable,
     // handleFeedbackTableAjax, handleFeedbackTableAjax

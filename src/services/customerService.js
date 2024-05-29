@@ -108,7 +108,6 @@ async function findAvailableTableByType(tableTypeId) {
 let postBookAppointment = async (data) => {
     console.log("Customer Data:", data);
     try {
-        // Kiểm tra các tham số bắt buộc
         if (!data.email || !data.phone || !data.timeOrder || !data.TypeId) {
             return {
                 errCode: 1,
@@ -116,7 +115,6 @@ let postBookAppointment = async (data) => {
             };
         }
 
-        // Tìm hoặc tạo khách hàng theo email và phone
         let [customer, created] = await CustomerModel.findOrCreate({
             where: {
                 email: data.email,
@@ -145,8 +143,6 @@ let postBookAppointment = async (data) => {
                 message: "Table not found"
             };
         }
-
-        // Chọn ngẫu nhiên một bàn từ danh sách
         let randomIndex = Math.floor(Math.random() * tableType.tables.length);
         let selectedTable = tableType.tables[randomIndex];
         let selectedTableId = selectedTable.id;
@@ -159,13 +155,57 @@ let postBookAppointment = async (data) => {
             };
         }
 
-        // Tạo yêu cầu đặt bàn
         let reservationRequest = await ReservationRequestModel.create({
             timeOrder: data.timeOrder,
             tableId: selectedTableId,
             customerId: customerId,
         });
-
+        let response1 = {
+            text: `Thông tin khách đặt bàn:
+            \nHọ và tên: ${customer.name}
+            \nEmail: ${customer.email}
+            \nSố điện thoại: ${customer.phone}
+            \nSố người: ${req.body.currentNumber}
+            \nNgày đặt bàn: ${reservationRequest.timeOrder}
+            \nLoại bàn: ${tableType.name}`
+        };
+        let response = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
+                        {
+                            "title": `Thông tin khách đặt bàn:
+                            \nHọ và tên: ${customer.name}
+                            \nEmail: ${customer.email}
+                            \nSố điện thoại: ${customer.phone}
+                            \nSố người: ${req.body.currentNumber}
+                            \nNgày đặt bàn: ${reservationRequest.timeOrder}
+                            \nLoại bàn: ${tableType.name}`,
+                            "image_url": IMAGE_MAIN_MENU4,
+                            "buttons": [
+                                {
+                                    "type": "web_url",
+                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                    "title": "Thay doi Thoi Gian dat ban",
+                                    "webview_height_ratio": "tall",
+                                    "messenger_extensions": true
+                                },
+                                {
+                                    "type": "web_url",
+                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${sender_psid}`,
+                                    "title": "Thay doi Thoi Gian dat ban",
+                                    "webview_height_ratio": "tall",
+                                    "messenger_extensions": true
+                                }
+                            ],
+                        }
+                    ]
+                }
+            }
+        };
+        await chatBotService.sendMessage(req.body.psid, response1);
         return {
             errCode: 0,
             message: "Booking successful",
