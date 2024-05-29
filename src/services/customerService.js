@@ -108,17 +108,20 @@ async function findAvailableTableByType(tableTypeId) {
     return SelectedTable.id;
 }
 
-let postBookAppointment = async (data) => {
+const postBookAppointment = async (data) => {
     console.log("Customer Data:", data);
-    try {
-        if (!data.email || !data.phone || !data.timeOrder || !data.TypeId) {
-            return {
-                errCode: 1,
-                message: "Missing required parameters"
-            };
-        }
 
-        let [customer, created] = await CustomerModel.findOrCreate({
+    // Validate required parameters
+    if (!data.email || !data.phone || !data.timeOrder || !data.TypeId) {
+        return {
+            errCode: 1,
+            message: "Missing required parameters"
+        };
+    }
+
+    try {
+        // Find or create the customer
+        const [customer, created] = await CustomerModel.findOrCreate({
             where: {
                 email: data.email,
                 phone: data.phone
@@ -127,16 +130,17 @@ let postBookAppointment = async (data) => {
                 name: data.name
             }
         });
-        let customerId = customer.id;
+        const customerId = customer.id;
         console.log("Customer Id:", customerId);
 
-        let tableType = await TableTypeModel.findOne({
+        // Find the table type with tables
+        const tableType = await TableTypeModel.findOne({
             where: { id: data.TypeId },
             include: [
                 {
                     model: TableModel,
                     as: "tables",
-                },
+                }
             ],
         });
 
@@ -146,9 +150,11 @@ let postBookAppointment = async (data) => {
                 message: "Table not found"
             };
         }
-        let randomIndex = Math.floor(Math.random() * tableType.tables.length);
-        let selectedTable = tableType.tables[randomIndex];
-        let selectedTableId = selectedTable.id;
+
+        // Select a random table from the available tables
+        const randomIndex = Math.floor(Math.random() * tableType.tables.length);
+        const selectedTable = tableType.tables[randomIndex];
+        const selectedTableId = selectedTable.id;
         console.log("Selected Table Id:", selectedTableId);
 
         if (!selectedTableId) {
@@ -158,12 +164,15 @@ let postBookAppointment = async (data) => {
             };
         }
 
-        let reservationRequest = await ReservationRequestModel.create({
+        // Create a reservation request
+        const reservationRequest = await ReservationRequestModel.create({
             timeOrder: data.timeOrder,
             tableId: selectedTableId,
             customerId: customerId,
         });
-        let response = {
+
+        // Prepare the response payload for the chatbot
+        const response = {
             "attachment": {
                 "type": "template",
                 "payload": {
@@ -181,14 +190,14 @@ let postBookAppointment = async (data) => {
                                 {
                                     "type": "web_url",
                                     "url": `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
-                                    "title": "Thay doi Thoi Gian dat ban",
+                                    "title": "Thay đổi Thời Gian đặt bàn",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
                                 },
                                 {
                                     "type": "web_url",
                                     "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
-                                    "title": "Thay doi Thoi Gian dat ban",
+                                    "title": "Thay đổi Thời Gian đặt bàn",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
                                 }
@@ -198,7 +207,10 @@ let postBookAppointment = async (data) => {
                 }
             }
         };
+
+        // Send the response message via chatbot service
         await chatBotService.sendMessage(data.psid, response);
+
         return {
             errCode: 0,
             message: "Booking successful",
@@ -213,7 +225,6 @@ let postBookAppointment = async (data) => {
         };
     }
 };
-
 
 
 module.exports = {
