@@ -227,7 +227,7 @@ const postBookAppointment = async (data) => {
                                 },
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${psid}`,
+                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}`,
                                     "title": "Đặt bàn",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
