@@ -172,38 +172,68 @@ const postBookAppointment = async (data) => {
         });
 
         // Prepare the response payload for the chatbot
-        const response = {
+        // const response = {
+        //     "attachment": {
+        //         "type": "template",
+        //         "payload": {
+        //             "template_type": "generic",
+        //             "elements": [
+        //                 {
+        //                     "title": `Thông tin khách đặt bàn:
+        //                     \nHọ và tên: ${customer.name}
+        //                     \nEmail: ${customer.email}
+        //                     \nSố điện thoại: ${customer.phone}
+        //                     \nNgày đặt bàn: ${reservationRequest.timeOrder}
+        //                     \nLoại bàn: ${tableType.name}`,
+        //                     "image_url": IMAGE_MAIN_MENU4,
+        //                     "buttons": [
+        //                         {
+        //                             "type": "web_url",
+        //                             "url": `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
+        //                             "title": "Thay đổi Thời Gian đặt bàn",
+        //                             "webview_height_ratio": "tall",
+        //                             "messenger_extensions": true
+        //                         },
+        //                         {
+        //                             "type": "web_url",
+        //                             "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
+        //                             "title": "Thay đổi Thời Gian đặt bàn",
+        //                             "webview_height_ratio": "tall",
+        //                             "messenger_extensions": true
+        //                         }
+        //                     ],
+        //                 }
+        //             ]
+        //         }
+        //     }
+        // };
+        let response = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
                     "elements": [
                         {
-                            "title": `Thông tin khách đặt bàn:
-                            \nHọ và tên: ${customer.name}
-                            \nEmail: ${customer.email}
-                            \nSố điện thoại: ${customer.phone}
-                            \nNgày đặt bàn: ${reservationRequest.timeOrder}
-                            \nLoại bàn: ${tableType.name}`,
-                            "image_url": IMAGE_MAIN_MENU4,
+                            "title": "Vimaru restaurant",
+                            "subtitle": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi, xin hãy để lại đánh giá để bọn tôi có thể phục vụ bạn tốt hơn trong lần sau",
+                            "image_url": "https://bit.ly/imageToSend",
                             "buttons": [
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
-                                    "title": "Thay đổi Thời Gian đặt bàn",
+                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
+                                    "title": "Thay doi",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
                                 },
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
-                                    "title": "Thay đổi Thời Gian đặt bàn",
+                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${psid}`,
+                                    "title": "Đặt bàn",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
                                 }
                             ],
-                        }
-                    ]
+                        }]
                 }
             }
         };
