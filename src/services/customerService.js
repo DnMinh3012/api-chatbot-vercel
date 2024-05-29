@@ -178,14 +178,14 @@ let postBookAppointment = async (data) => {
                             "buttons": [
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}`,
+                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
                                     "title": "Thay doi Thoi Gian dat ban",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
                                 },
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${sender_psid}`,
+                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
                                     "title": "Thay doi Thoi Gian dat ban",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
