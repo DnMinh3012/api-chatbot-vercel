@@ -198,7 +198,7 @@ let postBookAppointment = async (data) => {
                 }
             }
         };
-        await chatBotService.sendMessage(req.body.psid, response1);
+        await chatBotService.sendMessage(data.psid, response);
         return {
             errCode: 0,
             message: "Booking successful",
