@@ -1,5 +1,7 @@
 import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel } from "../model/index.js";
 import { json } from "sequelize";
+import chatBotService from "../services/chatBotService.js";
+
 const IMAGE_MAIN_MENU4 = "https://bit.ly/3PEVSVH"
 
 async function findRequestWithCustomerAndTable(id) {
