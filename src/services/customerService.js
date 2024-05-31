@@ -170,46 +170,7 @@ const postBookAppointment = async (data) => {
             tableId: selectedTableId,
             customerId: customerId,
         });
-
-        const response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": `Thông tin khách đặt bàn:
-                            \nHọ và tên: ${customer.name}
-                            \nEmail: ${customer.email}
-                            \nSố điện thoại: ${customer.phone}
-                            \nNgày đặt bàn: ${reservationRequest.timeOrder}
-                            \nLoại bàn: ${tableType.name}`,
-                            "image_url": IMAGE_MAIN_MENU4,
-                            "buttons": [
-                                {
-                                    "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
-                                    "title": "Thay đổi Thời Gian đặt bàn",
-                                    "webview_height_ratio": "tall",
-                                    "messenger_extensions": true
-                                },
-                                {
-                                    "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
-                                    "title": "Thay đổi Thời Gian đặt bàn",
-                                    "webview_height_ratio": "tall",
-                                    "messenger_extensions": true
-                                }
-                            ],
-                        }
-                    ]
-                }
-            }
-        };
-
-        // Send the response message via chatbot service
-        await chatBotService.sendMessage(data.psid, response);
-
+        await editRevervationRequest(reservationRequest.id, data.psid);
         return {
             errCode: 0,
             message: "Booking successful",
@@ -225,7 +186,63 @@ const postBookAppointment = async (data) => {
     }
 };
 
+let editRevervationRequest = (reservationRequest_id, psid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (reservationRequest_id) {
+                let reservationRequest = await ReservationRequestModel.findOne({
+                    where: { id: reservationRequest_id },
+                    include: [
+                        {
+                            model: TableModel,
+                            as: "tables",
+                        }
+                    ],
+                })
+                let response = {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": `Cảm ơn bạn đã đặt bàn:
+                                    \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}
+                                    \Tên bàn: ${reservationRequest.tables.name}`,
+                                    "image_url": IMAGE_MAIN_MENU4,
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
+                                            "title": "Thay đổi Thời Gian đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        },
+                                        {
+                                            "type": "web_url",
+                                            "url": `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
+                                            "title": "Thay đổi Thời Gian đặt bàn",
+                                            "webview_height_ratio": "tall",
+                                            "messenger_extensions": true
+                                        }
+                                    ],
+                                }
+                            ]
+                        }
+                    }
+                };
 
+                // Send the response message via chatbot service
+                await chatBotService.sendMessage(psid, response);
+                resolve("done");
+            } else {
+                reject("Không tìm yêu cầu.");
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
 module.exports = {
     findRequestWithCustomerAndTable,
     makeReservationRequest,
