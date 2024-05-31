@@ -486,10 +486,10 @@ let handleShowRooms = (sender_psid) => {
             if (roomTypes) {
                 let elements = roomTypes.slice(0, 7).map(roomType => ({
                     title: roomType.name,
+                    image_url: `petrung.id.vn/api/images/table_types/${roomType.id}`,
                     buttons: [{
                         type: "web_url",
                         url: `${process.env.URL_WEB_VIEW_ORDER}/${sender_psid}/${roomType.id}`,
-                        image_url: `petrung.id.vn/api/images/table_types/${roomType.id}`,
                         title: "Đặt bàn",
                         webview_height_ratio: "tall",
                         messenger_extensions: true
