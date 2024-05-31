@@ -282,7 +282,7 @@ let handleReserveTableAjax = async (req, res) => {
             number_of_seats: req.body.currentNumber,
         };
         await customerService.postBookAppointment(data);
-        await chatBotService.writeDataToGoogleSheet(data);
+        // await chatBotService.writeDataToGoogleSheet(data);
 
 
         return res.status(200).json({
