@@ -191,6 +191,7 @@ const postBookAppointment = async (data) => {
         };
     }
 };
+
 let editRevervationRequest = (reservationRequest_id, psid) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -201,43 +202,40 @@ let editRevervationRequest = (reservationRequest_id, psid) => {
 
                 if (reservationRequest) {
                     let response = {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "generic",
-                                "elements": [
-                                    // {
-                                    //     "title": `Cảm ơn bạn đã đặt bàn:
-                                    //     \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
-                                    //     "image_url": IMAGE_MAIN_MENU4,
-                                    //     "buttons": [
-                                    //         {
-                                    //             "type": "web_url",
-                                    //             "url": `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
-                                    //             "title": "Thay đổi Thời Gian đặt bàn",
-                                    //             "webview_height_ratio": "tall",
-                                    //             "messenger_extensions": true
-                                    //         },
-                                    //         {
-                                    //             "type": "web_url",
-                                    //             "url": `${process.env.URL_WEB_VIEW_EDIT}/${psid}/${reservationRequest.id}`,
-                                    //             "title": "Thay đổi Thời Gian đặt bàn",
-                                    //             "webview_height_ratio": "tall",
-                                    //             "messenger_extensions": true
-                                    //         }
-                                    //     ],
-                                    // }
+                        attachment: {
+                            type: "template",
+                            payload: {
+                                template_type: "generic",
+                                elements: [
                                     {
-                                        "type": "postback",
-                                        "title": "Quay lại",
-                                        "payload": "BACK_TO_MAIN_MENU",
+                                        title: `Cảm ơn bạn đã đặt bàn:\nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
+                                        buttons: [
+                                            {
+                                                type: "web_url",
+                                                url: `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
+                                                title: "Thay đổi Thời Gian đặt bàn",
+                                                webview_height_ratio: "tall",
+                                                messenger_extensions: true
+                                            },
+                                            {
+                                                type: "web_url",
+                                                url: `${process.env.URL_WEB_VIEW_EDIT}/${psid}/${reservationRequest.id}`,
+                                                title: "Thay đổi Thời Gian đặt bàn",
+                                                webview_height_ratio: "tall",
+                                                messenger_extensions: true
+                                            }
+                                        ]
                                     },
-
                                     {
-                                        "type": "postback",
-                                        "title": "Đặt bàn",
-                                        "payload": "SHOW_ROOMS",
-                                    },
+                                        title: "Quay lại",
+                                        buttons: [
+                                            {
+                                                type: "postback",
+                                                title: "Quay lại",
+                                                payload: "BACK_TO_MAIN_MENU",
+                                            }
+                                        ]
+                                    }
                                 ]
                             }
                         }
@@ -277,6 +275,7 @@ let editRevervationRequest = (reservationRequest_id, psid) => {
         }
     });
 };
+
 
 module.exports = {
     findRequestWithCustomerAndTable,
