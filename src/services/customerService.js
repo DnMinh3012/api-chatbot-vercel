@@ -170,12 +170,18 @@ const postBookAppointment = async (data) => {
             tableId: selectedTableId,
             customerId: customerId,
         });
-        await editRevervationRequest(reservationRequest.id, data.psid);
-        return {
-            errCode: 0,
-            message: "Booking successful",
-            data: reservationRequest
-        };
+
+        // Handle the reservation request creation and messaging
+        const result = await editRevervationRequest(reservationRequest.id, data.psid);
+        if (result.errCode === 0) {
+            return {
+                errCode: 0,
+                message: "Booking successful",
+                data: reservationRequest
+            };
+        } else {
+            return result;
+        }
 
     } catch (e) {
         console.error("Error in postBookAppointment:", e);
@@ -185,14 +191,12 @@ const postBookAppointment = async (data) => {
         };
     }
 };
-
 let editRevervationRequest = (reservationRequest_id, psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (reservationRequest_id) {
                 let reservationRequest = await ReservationRequestModel.findOne({
                     where: { id: reservationRequest_id },
-
                 });
 
                 if (reservationRequest) {
@@ -204,8 +208,7 @@ let editRevervationRequest = (reservationRequest_id, psid) => {
                                 "elements": [
                                     {
                                         "title": `Cảm ơn bạn đã đặt bàn:
-                                        \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}
-                                      `,
+                                        \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
                                         "image_url": IMAGE_MAIN_MENU4,
                                         "buttons": [
                                             {
@@ -230,16 +233,36 @@ let editRevervationRequest = (reservationRequest_id, psid) => {
                     };
 
                     // Send the response message via chatbot service
-                    await chatBotService.sendMessage(psid, response);
-                    resolve("done");
+                    await chatBotService.sendMessage(psid, response).then(() => {
+                        resolve({
+                            errCode: 0,
+                            message: "Message sent successfully"
+                        });
+                    }).catch((error) => {
+                        console.error("Error sending message:", error);
+                        resolve({
+                            errCode: 1,
+                            message: "Error sending message"
+                        });
+                    });
                 } else {
-                    reject("Không tìm thấy yêu cầu.");
+                    resolve({
+                        errCode: 1,
+                        message: "Không tìm thấy yêu cầu."
+                    });
                 }
             } else {
-                reject("Không tìm yêu cầu.");
+                resolve({
+                    errCode: 1,
+                    message: "Không tìm yêu cầu."
+                });
             }
         } catch (e) {
-            reject(e);
+            console.error("Error in editRevervationRequest:", e);
+            resolve({
+                errCode: 2,
+                message: e.message
+            });
         }
     });
 };
