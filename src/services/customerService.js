@@ -192,12 +192,7 @@ let editRevervationRequest = (reservationRequest_id, psid) => {
             if (reservationRequest_id) {
                 let reservationRequest = await ReservationRequestModel.findOne({
                     where: { id: reservationRequest_id },
-                    include: [
-                        {
-                            model: TableModel,
-                            as: "tables",  // Use the alias "tables" as defined in the association
-                        }
-                    ],
+
                 });
 
                 if (reservationRequest) {
