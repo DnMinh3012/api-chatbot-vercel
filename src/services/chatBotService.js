@@ -496,7 +496,8 @@ let handleShowRooms = (sender_psid) => {
                     }]
                 }));
 
-                console.log("tabletype:", elements.buttons);
+                console.log("tabletype:", elements);
+
                 elements.push({
                     title: "Quay lại MENU chính",
                     image_url: IMAGE_MAIN_MENU4,
