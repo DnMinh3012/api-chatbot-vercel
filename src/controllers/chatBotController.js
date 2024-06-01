@@ -4,6 +4,8 @@ import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
 import customerService from "../services/customerService"
+import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel } from "../model/index";
+
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
