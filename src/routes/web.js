@@ -3,7 +3,7 @@ import homepageController from "../controllers/homepageController";
 import chatBotController from "../controllers/chatBotController";
 import chatBotService from "../services/chatBotService";
 import userController from "../controllers/userController";
-const ReservationRequestModel = require('./models/ReservationRequestModel');
+const { ReservationRequestModel } = require('../model/index');
 let router = express.Router();
 
 let initWebRoutes = (app) => {
