@@ -171,18 +171,11 @@ const postBookAppointment = async (data) => {
             customerId: customerId,
         });
 
-        // Handle the reservation request creation and messaging
-        RequestId = reservationRequest.id;
-
-        if (result.errCode === 0) {
-            return {
-                errCode: 0,
-                message: "Booking successful",
-                data: reservationRequest
-            };
-        } else {
-            return result;
-        }
+        return {
+            errCode: 0,
+            message: "Booking successful",
+            data: reservationRequest
+        };
 
     } catch (e) {
         console.error("Error in postBookAppointment:", e);
