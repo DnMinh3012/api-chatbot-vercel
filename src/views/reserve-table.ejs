@@ -135,38 +135,39 @@
 
         function handleClickButtonReserveTable() {
             $("#btnReserveTable").on("click", function (e) {
-                let check = validateInputFields(); // return true or false
+                let check = validateInputFields(); //return true or false
 
-                if (check) {
-                    let data = {
-                        psid: $("#psid").val(),
-                        tableTpId: $("#tableTpId").val(),
-                        email: $("#email").val(),
-                        currentNumber: $("#currentNumber").val(),
-                        reserveDate: $("#reserveDate").val(),
-                        note: $("#note").val(),
-                        phoneNumber: $("#phoneNumber").val(),
-                    };
+                let data = {
+                    psid: $("#psid").val(),
+                    tableTpId: $("#tableTpId").val(),
+                    email: $("#email").val(),
+                    currentNumber: $("#currentNumber").val(),
+                    reserveDate: $("#reserveDate").val(),
+                    note: $("#note").val(),
+                    phoneNumber: $("#phoneNumber").val(),
+                };
 
-                    // Send data to node.js server 
+                if (!check) {
+                    //close webview
+                    MessengerExtensions.requestCloseBrowser(function success() {
+                        // webview closed
+                    }, function error(err) {
+                        // an error occurred
+                        console.log(err);
+                    });
+
+                    //send data to node.js server 
                     $.ajax({
                         url: `${window.location.origin}/reserve-table-ajax`,
                         method: "POST",
                         data: data,
                         success: function (data) {
                             console.log(data);
-                            // Close webview after successful AJAX call
-                            MessengerExtensions.requestCloseBrowser(function success() {
-                                // Webview closed
-                            }, function error(err) {
-                                // An error occurred
-                                console.log(err);
-                            });
                         },
                         error: function (error) {
                             console.log(error);
                         }
-                    });
+                    })
                 }
             });
         }
