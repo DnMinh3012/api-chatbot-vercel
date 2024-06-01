@@ -283,11 +283,15 @@ let handleReserveTableAjax = async (req, res) => {
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
         };
-        await customerService.postBookAppointment(data);
-        // await chatBotService.writeDataToGoogleSheet(data);
-        let reservationRequest = await ReservationRequestModel.findOne({
-            where: { id: customerService.RequestId },
-        });
+
+        const bookingResult = await customerService.postBookAppointment(data);
+
+        if (bookingResult.errCode !== 0) {
+            throw new Error(bookingResult.message);
+        }
+
+        let reservationRequest = bookingResult.data;
+
         let response = {
             attachment: {
                 type: "template",
@@ -299,14 +303,14 @@ let handleReserveTableAjax = async (req, res) => {
                             buttons: [
                                 {
                                     type: "web_url",
-                                    url: `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
+                                    url: `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
                                     title: "Thay đổi Thời Gian đặt bàn",
                                     webview_height_ratio: "tall",
                                     messenger_extensions: true
                                 },
                                 {
                                     type: "web_url",
-                                    url: `${process.env.URL_WEB_VIEW_EDIT}/${psid}/${reservationRequest.id}`,
+                                    url: `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
                                     title: "Thay đổi Thời Gian đặt bàn",
                                     webview_height_ratio: "tall",
                                     messenger_extensions: true
@@ -340,6 +344,7 @@ let handleReserveTableAjax = async (req, res) => {
         });
     }
 }
+
 // let handleFeedbackTableAjax = async (req, res) => {
 //     try {
 //         let username = await chatBotService.getFacebookUsername(req.body.psid);
