@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đánh giá dịch vụ đặt bàn Vimaru Restaurant</title>
+    <title>Đặt bàn nhà hàng</title>
     <script>
         let senderId = "<%= senderId %>"
+        let reservationRequestId = "<%= reservationRequestId %>"
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -30,9 +31,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="text-center mt-3">
-                    <span class="title">Đánh giá dịch vụ đặt bàn Vimaru Restaurant</span>
+                    <span class="title">Thông tin khách hàng</span>
                 </div>
                 <input type="text" id="psid" hidden>
+                <input type="text" id="tableTpId" hidden value="<%= tableTpId %>"> <!-- Gán giá trị tableTpId -->
                 <div class="form-group">
                     <label for="email">Địa chỉ email (<span style="color: red">*</span>):</label>
                     <input type="email" id="email" class="form-control" placeholder="Địa chỉ email...">
@@ -43,16 +45,24 @@
                     <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
                     <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Ngày đặt bàn(<span style="color: red">*</span>):</label>
-                    <input type="datetime-local" id="reserveDate" class="form-control" placeholder="Ngày đặt bàn ...">
-                    <div class="invalid-feedback"> không hợp lệ.</div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="email">Số người (<span style="color: red">*</span>):</label>
+                        <input type="text" id="currentNumber" class="form-control" placeholder="Số người ...">
+                        <div class="invalid-feedback">không hợp lệ.</div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="email">Ngày đặt bàn (<span style="color: red">*</span>):</label>
+                        <input type="datetime-local" id="reserveDate" class="form-control"
+                            placeholder="Ngày đặt bàn ...">
+                        <div class="invalid-feedback"> không hợp lệ.</div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="phoneNumber">Phản hồi của bạn</label>
-                    <input type="textarea" id="feedback" class="form-control" placeholder="Ghi chú...">
+                    <label for="phoneNumber">Ghi chú</label>
+                    <input type="textarea" id="note" class="form-control" placeholder="Ghi chú...">
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> Gửi
+                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> ĐẶT BÀN
                 </button>
             </div>
 
@@ -96,8 +106,9 @@
 
             let email = $("#email");
             let phoneNumber = $("#phoneNumber");
-            let feedback = $("#feedback");
+            let currentNumber = $("#currentNumber");
             let reserveDate = $("#reserveDate");
+            let note = $("#note");
             if (!email.val().match(EMAIL_REG)) {
                 email.addClass("is-invalid");
                 return true;
@@ -128,10 +139,12 @@
 
                 let data = {
                     psid: $("#psid").val(),
+                    reservationRequestId: $("#reservationRequestId").val(),
                     email: $("#email").val(),
-                    feedback: $("#feedback").val(),
+                    currentNumber: $("#currentNumber").val(),
                     reserveDate: $("#reserveDate").val(),
-                    phoneNumber: $("#phoneNumber").val()
+                    note: $("#note").val(),
+                    phoneNumber: $("#phoneNumber").val(),
                 };
 
                 if (!check) {
@@ -145,7 +158,7 @@
 
                     //send data to node.js server 
                     $.ajax({
-                        url: `${window.location.origin}/feedback-table-ajax`,
+                        url: `${window.location.origin}/reserve-table-ajax`,
                         method: "POST",
                         data: data,
                         success: function (data) {

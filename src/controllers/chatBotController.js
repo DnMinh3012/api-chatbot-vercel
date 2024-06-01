@@ -255,10 +255,10 @@ let getReserveTable = (req, res) => {
 }
 let getEditTable = (req, res) => {
     let senderId = req.params.senderId;
-    let TypeId = req.params.tableTpId;
+    let reservationRequestId = req.params.reservationRequestId;
     return res.render('edit-table.ejs', {
         senderId: senderId,
-        tableTpId: TypeId
+        reservationRequestid: reservationRequestId
     });
     console.log("table Type:", TypeId)
 }
@@ -299,12 +299,13 @@ let handleReserveTableAjax = async (req, res) => {
                     template_type: "generic",
                     elements: [
                         {
-                            title: `Cảm ơn bạn đã đặt bàn:\nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
+                            title: `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
+                            \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
                             buttons: [
                                 {
                                     type: "web_url",
                                     url: `${process.env.URL_WEB_VIEW_ORDER}/${req.body.psid}`,
-                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    title: "Huỷ đặt bàn",
                                     webview_height_ratio: "tall",
                                     messenger_extensions: true
                                 },
@@ -336,40 +337,41 @@ let handleReserveTableAjax = async (req, res) => {
     }
 }
 
-// let handleFeedbackTableAjax = async (req, res) => {
-//     try {
-//         let username = await chatBotService.getFacebookUsername(req.body.psid);
-//         let data = {
-//             psid: req.body.psid,
-//             username: username,
-//             email: req.body.email,
-//             phoneNumber: req.body.phoneNumber,
-//             reserveDate: req.body.reserveDate,
-//             feedback: req.body.feedback
-//         }
-//         console.log("check data", data)
-//         await customerService.feedbackAppointment(data);
-//         let response1 = {
-//             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
-//         }
-//         await chatBotService.sendMessage(req.body.psid, response1)
-//         return res.status(200).json({
-//             message: 'ok',
-//             data: data
-//         })
-//     } catch (e) {
-//         console.log("Loi Reserve table: ", e);
-//         return res.status(500).json({
-//             message: e
-//         })
-//     }
-// }
+let handleEditReserveTableAjax = async (req, res) => {
+    try {
+        let username = await chatBotService.getFacebookUsername(req.body.psid);
+        let data = {
+            psid: req.body.psid,
+            username: username,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            reserveDate: req.body.reserveDate,
+            feedback: req.body.feedback
+        }
+        console.log("check data", data)
+        await customerService.feedbackAppointment(data);
+        let response1 = {
+            "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
+        }
+        await chatBotService.sendMessage(req.body.psid, response1)
+        return res.status(200).json({
+            message: 'ok',
+            data: data
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     getEditTable: getEditTable,
     handleReserveTableAjax: handleReserveTableAjax,
+    handleEditReserveTableAjax: handleEditReserveTableAjax
     // getFeedbackTable: getFeedbackTable,
     // handleFeedbackTableAjax, handleFeedbackTableAjax
 };
