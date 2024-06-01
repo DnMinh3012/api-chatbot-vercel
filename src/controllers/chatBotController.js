@@ -316,16 +316,6 @@ let handleReserveTableAjax = async (req, res) => {
                                     messenger_extensions: true
                                 }
                             ]
-                        },
-                        {
-                            title: "Quay lại",
-                            buttons: [
-                                {
-                                    type: "postback",
-                                    title: "Quay lại",
-                                    payload: "BACK_TO_MAIN_MENU",
-                                }
-                            ]
                         }
                     ]
                 }
