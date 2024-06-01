@@ -331,8 +331,8 @@ let handleReserveTableAjax = async (req, res) => {
                 }
             }
         };
-        await chatBotService.sendTypingOn(sender_psid);
-        await chatBotService.sendMessage(sender_psid, response1);
+        await chatBotService.sendTypingOn(data.psid);
+        await chatBotService.sendMessage(data.psid, response);
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
