@@ -3,6 +3,7 @@ import homepageController from "../controllers/homepageController";
 import chatBotController from "../controllers/chatBotController";
 import chatBotService from "../services/chatBotService";
 import userController from "../controllers/userController";
+import { where } from "sequelize";
 const { ReservationRequestModel } = require('../model/index');
 let router = express.Router();
 
@@ -30,7 +31,7 @@ let initWebRoutes = (app) => {
     app.get('/get-reservation/:id', async (req, res) => {
         try {
             const reservationRequestId = req.params.id;
-            const reservation = await ReservationRequestModel.findById(reservationRequestId);
+            const reservation = await ReservationRequestModel.findById({ where: { id: id }, });
             if (reservation) {
                 res.json(reservation);
             } else {

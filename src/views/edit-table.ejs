@@ -99,12 +99,10 @@
                 url: `${window.location.origin}/get-reservation/${reservationRequestId}`,
                 method: "GET",
                 success: function (data) {
-                    $("#tableTpId").val(data.tableTpId);
-                    $("#email").val(data.email);
-                    $("#phoneNumber").val(data.phoneNumber);
-                    $("#currentNumber").val(data.currentNumber);
-                    $("#reserveDate").val(data.reserveDate);
-                    $("#note").val(data.note);
+                    $("#email").val(data.customerId);
+                    $("#phoneNumber").val(data.customerId);
+                    $("#currentNumber").val(data.tableId);
+                    $("#reserveDate").val(data.timeOrder);
                 },
                 error: function (error) {
                     console.log('Error fetching reservation data: ', error);
