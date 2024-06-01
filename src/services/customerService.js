@@ -107,7 +107,7 @@ async function findAvailableTableByType(tableTypeId) {
     console.log("Table Selected:", SelectedTable.id)
     return SelectedTable.id;
 }
-
+let RequestId = "";
 const postBookAppointment = async (data) => {
     console.log("Customer Data:", data);
 
@@ -172,7 +172,8 @@ const postBookAppointment = async (data) => {
         });
 
         // Handle the reservation request creation and messaging
-        const result = await editRevervationRequest(reservationRequest.id, data.psid);
+        RequestId = reservationRequest.id;
+
         if (result.errCode === 0) {
             return {
                 errCode: 0,
@@ -192,90 +193,6 @@ const postBookAppointment = async (data) => {
     }
 };
 
-let editRevervationRequest = (reservationRequest_id, psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (reservationRequest_id) {
-                let reservationRequest = await ReservationRequestModel.findOne({
-                    where: { id: reservationRequest_id },
-                });
-
-                if (reservationRequest) {
-                    let response = {
-                        attachment: {
-                            type: "template",
-                            payload: {
-                                template_type: "generic",
-                                elements: [
-                                    {
-                                        title: `Cảm ơn bạn đã đặt bàn:\nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
-                                        buttons: [
-                                            {
-                                                type: "web_url",
-                                                url: `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
-                                                title: "Thay đổi Thời Gian đặt bàn",
-                                                webview_height_ratio: "tall",
-                                                messenger_extensions: true
-                                            },
-                                            {
-                                                type: "web_url",
-                                                url: `${process.env.URL_WEB_VIEW_EDIT}/${psid}/${reservationRequest.id}`,
-                                                title: "Thay đổi Thời Gian đặt bàn",
-                                                webview_height_ratio: "tall",
-                                                messenger_extensions: true
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        title: "Quay lại",
-                                        buttons: [
-                                            {
-                                                type: "postback",
-                                                title: "Quay lại",
-                                                payload: "BACK_TO_MAIN_MENU",
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    };
-
-                    // Send the response message via chatbot service
-                    await chatBotService.sendMessage(psid, response).then(() => {
-                        resolve({
-                            errCode: 0,
-                            message: "Message sent successfully"
-                        });
-                    }).catch((error) => {
-                        console.error("Error sending message:", error);
-                        resolve({
-                            errCode: 1,
-                            message: "Error sending message"
-                        });
-                    });
-                } else {
-                    resolve({
-                        errCode: 1,
-                        message: "Không tìm thấy yêu cầu."
-                    });
-                }
-            } else {
-                resolve({
-                    errCode: 1,
-                    message: "Không tìm yêu cầu."
-                });
-            }
-        } catch (e) {
-            console.error("Error in editRevervationRequest:", e);
-            resolve({
-                errCode: 2,
-                message: e.message
-            });
-        }
-    });
-};
-
 
 module.exports = {
     findRequestWithCustomerAndTable,
@@ -284,4 +201,5 @@ module.exports = {
     freeReservationRequest,
     findAvailableTableByType,
     postBookAppointment,
+    RequestId,
 };

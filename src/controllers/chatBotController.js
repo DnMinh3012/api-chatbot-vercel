@@ -283,7 +283,48 @@ let handleReserveTableAjax = async (req, res) => {
         };
         await customerService.postBookAppointment(data);
         // await chatBotService.writeDataToGoogleSheet(data);
-
+        let reservationRequest = await ReservationRequestModel.findOne({
+            where: { id: customerService.RequestId },
+        });
+        let response = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: `Cảm ơn bạn đã đặt bàn:\nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
+                            buttons: [
+                                {
+                                    type: "web_url",
+                                    url: `${process.env.URL_WEB_VIEW_ORDER}/${psid}`,
+                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    webview_height_ratio: "tall",
+                                    messenger_extensions: true
+                                },
+                                {
+                                    type: "web_url",
+                                    url: `${process.env.URL_WEB_VIEW_EDIT}/${psid}/${reservationRequest.id}`,
+                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    webview_height_ratio: "tall",
+                                    messenger_extensions: true
+                                }
+                            ]
+                        },
+                        {
+                            title: "Quay lại",
+                            buttons: [
+                                {
+                                    type: "postback",
+                                    title: "Quay lại",
+                                    payload: "BACK_TO_MAIN_MENU",
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
 
         return res.status(200).json({
             message: 'ok',
