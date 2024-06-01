@@ -298,25 +298,25 @@ let handleReserveTableAjax = async (req, res) => {
                 payload: {
                     template_type: "generic",
                     elements: [
-                        // {
-                        //     title: `Cảm ơn bạn đã đặt bàn:\nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
-                        //     buttons: [
-                        //         {
-                        //             type: "web_url",
-                        //             url: `${process.env.URL_WEB_VIEW_ORDER}/${data.psid}`,
-                        //             title: "Thay đổi Thời Gian đặt bàn",
-                        //             webview_height_ratio: "tall",
-                        //             messenger_extensions: true
-                        //         },
-                        //         {
-                        //             type: "web_url",
-                        //             url: `${process.env.URL_WEB_VIEW_EDIT}/${data.psid}/${reservationRequest.id}`,
-                        //             title: "Thay đổi Thời Gian đặt bàn",
-                        //             webview_height_ratio: "tall",
-                        //             messenger_extensions: true
-                        //         }
-                        //     ]
-                        // },
+                        {
+                            title: `Cảm ơn bạn đã đặt bàn:\nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
+                            buttons: [
+                                {
+                                    type: "web_url",
+                                    url: `${process.env.URL_WEB_VIEW_ORDER}/${req.body.psid}`,
+                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    webview_height_ratio: "tall",
+                                    messenger_extensions: true
+                                },
+                                {
+                                    type: "web_url",
+                                    url: `${process.env.URL_WEB_VIEW_EDIT}/${req.body.psid}/${reservationRequest.id}`,
+                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    webview_height_ratio: "tall",
+                                    messenger_extensions: true
+                                }
+                            ]
+                        },
                         {
                             title: "Quay lại",
                             buttons: [
@@ -331,8 +331,8 @@ let handleReserveTableAjax = async (req, res) => {
                 }
             }
         };
-        await chatBotService.sendTypingOn(data.psid);
-        await chatBotService.sendMessage(data.psid, response);
+        await chatBotService.sendTypingOn(req.body.psid);
+        await chatBotService.sendMessage(req.body.psid, response);
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
