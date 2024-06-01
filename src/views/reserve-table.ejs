@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,6 +24,7 @@
 
     <!-- Load custom Javascript and CSS-->
     <link rel="stylesheet" href="/src/public/css/style.css">
+    <script src="https://connect.facebook.net/en_US/messenger.Extensions.js"></script>
 
 </head>
 
@@ -62,7 +64,7 @@
                     <label for="phoneNumber">Ghi chú</label>
                     <input type="textarea" id="note" class="form-control" placeholder="Ghi chú...">
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> ĐẶT BÀN
+                <button class="btn btn-primary" id="btnReserveTable"> ĐẶT BÀN
                 </button>
             </div>
 
@@ -87,15 +89,11 @@
                     // success 
                     //set psid to input
                     $("#psid").val(thread_context.psid);
-                    handleClickButtonReserveTable();
                 },
                 function error(err) {
                     // error
                     console.log('Lỗi đặt bàn bot', err);
-
-
                     $("#psid").val(senderId);
-                    handleClickButtonReserveTable();
                 }
             );
         };
@@ -111,33 +109,40 @@
             let note = $("#note");
             if (!email.val().match(EMAIL_REG)) {
                 email.addClass("is-invalid");
-                return true;
+                return false;
             } else {
                 email.removeClass("is-invalid");
             }
 
             if (phoneNumber.val() === "") {
                 phoneNumber.addClass("is-invalid");
-                return true;
+                return false;
             } else {
                 phoneNumber.removeClass("is-invalid");
             }
 
+            if (currentNumber.val() === "" || isNaN(currentNumber.val())) {
+                currentNumber.addClass("is-invalid");
+                return false;
+            } else {
+                currentNumber.removeClass("is-invalid");
+            }
+
             if (reserveDate.val() === "") {
                 reserveDate.addClass("is-invalid");
-                return true;
+                return false;
             } else {
                 reserveDate.removeClass("is-invalid");
             }
-            return false;
-        }
 
+            return true;
+        }
 
         function handleClickButtonReserveTable() {
             $("#btnReserveTable").on("click", function (e) {
-                let check = validateInputFields(); // return true or false
+                let isValid = validateInputFields(); // return true or false
 
-                if (check) {
+                if (isValid) {
                     let data = {
                         psid: $("#psid").val(),
                         tableTpId: $("#tableTpId").val(),
@@ -153,23 +158,30 @@
                         url: `${window.location.origin}/reserve-table-ajax`,
                         method: "POST",
                         data: data,
-                        success: function (data) {
-                            console.log(data);
-                            // Close webview after successful AJAX call
-                            MessengerExtensions.requestCloseBrowser(function success() {
-                                // Webview closed
-                            }, function error(err) {
-                                // An error occurred
-                                console.log(err);
-                            });
+                        success: function (response) {
+                            console.log(response);
+                            if (response.message === 'ok') {
+                                // Close webview after successful AJAX call
+                                MessengerExtensions.requestCloseBrowser(function success() {
+                                    console.log('Webview closed');
+                                }, function error(err) {
+                                    console.log('Error closing webview: ' + err);
+                                });
+                            } else {
+                                console.log('Error in reservation: ' + response.message);
+                            }
                         },
                         error: function (error) {
-                            console.log(error);
+                            console.log('AJAX error: ' + error);
                         }
                     });
                 }
             });
         }
+
+        $(document).ready(function () {
+            handleClickButtonReserveTable();
+        });
     </script>
 </body>
 
