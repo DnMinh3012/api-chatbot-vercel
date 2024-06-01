@@ -258,7 +258,7 @@ let getEditTable = (req, res) => {
     let reservationRequestId = req.params.reservationRequestId;
     return res.render('edit-table.ejs', {
         senderId: senderId,
-        reservationRequestid: reservationRequestId
+        reservationRequestId: reservationRequestId
     });
     console.log("table Type:", TypeId)
 }
