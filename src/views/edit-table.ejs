@@ -69,31 +69,6 @@
     </div>
 
     <script>
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'Messenger'));
-
-        window.extAsyncInit = function () {
-            // the Messenger Extensions JS SDK is done loading 
-            MessengerExtensions.getContext('1170374183946016',
-                function success(thread_context) {
-                    // success 
-                    $("#psid").val(thread_context.psid);
-                    fetchReservationData();
-                },
-                function error(err) {
-                    // error
-                    console.log('Lỗi đặt bàn bot', err);
-                    $("#psid").val(senderId);
-                    fetchReservationData();
-                }
-            );
-        };
-
         function fetchReservationData() {
             $.ajax({
                 url: `${window.location.origin}/get-reservation/${reservationRequestId}`,
@@ -188,8 +163,26 @@
         }
 
         $(document).ready(function () {
+            // First try to fetch the Messenger Extensions context
+            if (typeof MessengerExtensions !== 'undefined') {
+                MessengerExtensions.getContext('1170374183946016',
+                    function success(thread_context) {
+                        $("#psid").val(thread_context.psid);
+                        fetchReservationData();
+                    },
+                    function error(err) {
+                        console.log('Lỗi đặt bàn bot', err);
+                        $("#psid").val(senderId);
+                        fetchReservationData();
+                    }
+                );
+            } else {
+                // If Messenger Extensions is not available, just fetch the reservation data with senderId
+                $("#psid").val(senderId);
+                fetchReservationData();
+            }
+
             handleClickButtonReserveTable();
-            fetchReservationData();
         });
     </script>
 </body>
