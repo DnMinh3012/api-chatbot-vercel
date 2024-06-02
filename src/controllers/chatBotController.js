@@ -260,7 +260,7 @@ let getEditTable = (req, res) => {
         senderId: senderId,
         reservationRequestId: reservationRequestId
     });
-    console.log("table Type:", TypeId)
+    console.log("table Type:", reservationRequestId)
 }
 let getDeleteReserveTable = (req, res) => {
     let senderId = req.params.senderId;
@@ -269,7 +269,7 @@ let getDeleteReserveTable = (req, res) => {
         senderId: senderId,
         reservationRequestId: reservationRequestId
     });
-    console.log("table Type:", TypeId)
+    console.log("table Type:", reservationRequestId)
 }
 
 // let getFeedbackTable = (req, res) => {
