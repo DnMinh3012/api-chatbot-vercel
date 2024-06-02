@@ -186,7 +186,42 @@ const postBookAppointment = async (data) => {
     }
 };
 
+const DeleteAppointment = async (data) => {
+    console.log("Customer Data:", data);
 
+    // Validate required parameters
+    if (!data.email || !data.phone || !data.reservationRequestId) {
+        return {
+            errCode: 1,
+            message: "Missing required parameters"
+        };
+    }
+
+    try {
+
+        await ReservationRequestModel.destroy({
+            where: { id: data.reservationRequestId },
+        });
+
+        if (!tableType || !tableType.tables.length) {
+            return {
+                errCode: 1,
+                message: "Table not found"
+            };
+        }
+        return {
+            errCode: 0,
+            message: "Delete successful",
+        };
+
+    } catch (e) {
+        console.error("Error in postBookAppointment:", e);
+        return {
+            errCode: 2,
+            message: e.message
+        };
+    }
+};
 
 module.exports = {
     findRequestWithCustomerAndTable,
@@ -196,4 +231,5 @@ module.exports = {
     findAvailableTableByType,
     postBookAppointment,
     RequestId,
+    DeleteAppointment
 };

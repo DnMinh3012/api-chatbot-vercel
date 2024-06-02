@@ -11,12 +11,16 @@ let initWebRoutes = (app) => {
     router.get("/", homepageController.getHomepage);
     router.get('/form-reserve-table/:senderId/:tableTpId', chatBotController.getReserveTable);
     router.get('/form-edit-table/:senderId/:reservationRequestId', chatBotController.getEditTable)
+    router.get('/form-delete-table/:senderId/:tableTpId', chatBotController.getDeleteReserveTable);
+
     // router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);
     router.post('/setup-persistent-menu', chatBotService.setupPersistentMenu);
     router.post('/reserve-table-ajax', chatBotController.handleReserveTableAjax)
     router.post('/edit-reserve-table-ajax', chatBotController.handleEditReserveTableAjax)
+    router.post('/delete-reserve-table-ajax', chatBotController.handleDeletetReserveTableAjax)
+
     // router.post('/feedback-table-ajax', chatBotController.handleFeedbackTableAjax)
 
     router.get('/api/get-users', userController.handleGetUsers);

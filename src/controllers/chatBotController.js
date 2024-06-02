@@ -262,6 +262,16 @@ let getEditTable = (req, res) => {
     });
     console.log("table Type:", TypeId)
 }
+let getDeleteReserveTable = (req, res) => {
+    let senderId = req.params.senderId;
+    let reservationRequestId = req.params.reservationRequestId;
+    return res.render('delete-table.ejs', {
+        senderId: senderId,
+        reservationRequestId: reservationRequestId
+    });
+    console.log("table Type:", TypeId)
+}
+
 // let getFeedbackTable = (req, res) => {
 //     let senderId = req.params.senderId;
 //     return res.render('feedback-table.ejs', {
@@ -304,7 +314,7 @@ let handleReserveTableAjax = async (req, res) => {
                             buttons: [
                                 {
                                     type: "web_url",
-                                    url: `${process.env.URL_WEB_VIEW_ORDER}/${req.body.psid}`,
+                                    url: `${process.env.URL_WEB_VIEW_DELETE}/${req.body.psid}/${reservationRequest.id}`,
                                     title: "Huỷ đặt bàn",
                                     webview_height_ratio: "tall",
                                     messenger_extensions: true
@@ -365,13 +375,42 @@ let handleEditReserveTableAjax = async (req, res) => {
         })
     }
 }
+let handleDeletetReserveTableAjax = async (req, res) => {
+    try {
+        let username = await chatBotService.getFacebookUsername(req.body.psid);
+        let data = {
+            psid: req.body.psid,
+            reservationRequestId: req.body.reservationRequestId,
+            username: username,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            note: req.body.note,
+        }
+        console.log("check data", data)
+        await customerService.DeleteAppointment(data);
+        let response1 = {
+            "text": `Rất tiếc vì bạn đã huỷ đặt bàn, mong có thể tiếp tục phục vụ bạn ${username} lần sau`
+        }
+        await chatBotService.sendMessage(req.body.psid, response1)
+        return res.status(200).json({
+            message: 'ok',
+            data: data
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     getEditTable: getEditTable,
     handleReserveTableAjax: handleReserveTableAjax,
-    handleEditReserveTableAjax: handleEditReserveTableAjax
+    handleEditReserveTableAjax: handleEditReserveTableAjax,
+    handleDeletetReserveTableAjax: handleDeletetReserveTableAjax
     // getFeedbackTable: getFeedbackTable,
     // handleFeedbackTableAjax, handleFeedbackTableAjax
 };
