@@ -408,6 +408,7 @@ module.exports = {
     getWebhook: getWebhook,
     getReserveTable: getReserveTable,
     getEditTable: getEditTable,
+    getDeleteReserveTable: getDeleteReserveTable,
     handleReserveTableAjax: handleReserveTableAjax,
     handleEditReserveTableAjax: handleEditReserveTableAjax,
     handleDeletetReserveTableAjax: handleDeletetReserveTableAjax
