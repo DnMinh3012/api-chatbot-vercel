@@ -188,9 +188,7 @@ const postBookAppointment = async (data) => {
 
 const DeleteAppointment = async (data) => {
     console.log("Customer Data:", data);
-
-    // Validate required parameters
-    if (!data.email || !data.phone || !data.reservationRequestId) {
+    if (!data.email || !data.phoneNumber || !data.reservationRequestId) {
         return {
             errCode: 1,
             message: "Missing required parameters"
@@ -198,24 +196,24 @@ const DeleteAppointment = async (data) => {
     }
 
     try {
-
-        await ReservationRequestModel.destroy({
+        const result = await ReservationRequestModel.destroy({
             where: { id: data.reservationRequestId },
         });
 
-        if (!tableType || !tableType.tables.length) {
+        if (result === 0) {
             return {
-                errCode: 1,
-                message: "Table not found"
+                errCode: 3,
+                message: "No reservation found with the provided ID",
             };
         }
+
         return {
             errCode: 0,
             message: "Delete successful",
         };
 
     } catch (e) {
-        console.error("Error in postBookAppointment:", e);
+        console.error("Error in DeleteAppointment:", e);
         return {
             errCode: 2,
             message: e.message
