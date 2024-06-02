@@ -301,6 +301,7 @@ let handleReserveTableAjax = async (req, res) => {
         }
 
         let reservationRequest = bookingResult.data;
+        console.log("reservationRequest::", reservationRequest)
 
         let response = {
             attachment: {
