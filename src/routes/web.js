@@ -11,7 +11,7 @@ let initWebRoutes = (app) => {
     router.get("/", homepageController.getHomepage);
     router.get('/form-reserve-table/:senderId/:tableTpId', chatBotController.getReserveTable);
     router.get('/form-edit-table/:senderId/:reservationRequestId', chatBotController.getEditTable)
-    router.get('/form-delete-table/:senderId/:tableTpId', chatBotController.getDeleteReserveTable);
+    router.get('/form-delete-table/:senderId/:reservationRequestId', chatBotController.getDeleteReserveTable);
 
     // router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
     router.get("/webhook", chatBotController.getWebhook);
