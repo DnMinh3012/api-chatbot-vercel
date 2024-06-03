@@ -370,12 +370,12 @@ let handleEditReserveTableAjax = async (req, res) => {
             email: req.body.email,
             phone: req.body.phoneNumber,
             timeOrder: req.body.reserveDate,
-            TypeId: req.body.tableTpId,
+            reservationRequestId: req.body.reservationRequestId,
             note: req.body.note,
             number_of_seats: req.body.currentNumber,
         }
         console.log("check data", data)
-        await customerService.feedbackAppointment(data);
+        await customerService.EditAppointment(data);
         let response1 = {
             "text": `Cảm ơn bạn Chúng tôi đã thay đổi lại giờ đặt bàn của bạn: ${reservationRequest.timeOrder} `
         }
@@ -401,6 +401,7 @@ let handleDeletetReserveTableAjax = async (req, res) => {
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
             note: req.body.note,
+            
         }
         console.log("check data", data)
         await customerService.DeleteAppointment(data);
