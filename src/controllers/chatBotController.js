@@ -253,14 +253,27 @@ let getReserveTable = (req, res) => {
     });
     console.log("table Type:", TypeId)
 }
-let getEditTable = (req, res) => {
+let getEditTable = async (req, res) => {
     let senderId = req.params.senderId;
     let reservationRequestId = req.params.reservationRequestId;
+    let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+    let table = await TableModel.findOne({ where: { id: reservationRequestId.tableId } });
+    let customer = await ReservationRequestModel.findOne({ where: { id: reservationRequestId.customerId } });
+    let data = {
+        email: customer.email,
+        phoneNumber: customer.phoneNumber,
+        currentNumber: customer.numberOfSeats,
+        timeOrder: reservation.timeOrder
+    }
     return res.render('edit-table.ejs', {
         senderId: senderId,
-        reservationRequestId: reservationRequestId
+        reservationRequestId: reservationRequestId,
+        data: data
     });
-    console.log("table Type:", reservationRequestId)
+    console.log("m Type:", {
+        data: data,
+        reservationRequestId: reservationRequestId,
+    })
 }
 let getDeleteReserveTable = (req, res) => {
     let senderId = req.params.senderId;

@@ -70,18 +70,9 @@
 
     <script>
         function fetchReservationData() {
-            $.ajax({
-                url: `https://api-chatbot-render.onrender.com/get-reservation/${reservationRequestId}`,
-                method: "GET",
-                success: function (data) {
-                    $("#email").val(data.email)
-                    $("#phoneNumber").val(data.phoneNumber)
-                    $("#reserveDate").val(data.timeOrder);
-                },
-                error: function (error) {
-                    console.log('Error fetching reservation data: ', error);
-                }
-            });
+            $("#email").val(data.email)
+            $("#phoneNumber").val(data.phoneNumber)
+            $("#reserveDate").val(data.timeOrder);
         }
 
         function validateInputFields() {
