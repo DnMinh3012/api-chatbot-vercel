@@ -157,6 +157,11 @@
 
         $(document).ready(function () {
             // First try to fetch the Messenger Extensions context
+            if (data) {
+                $("#email").val(data.email || "54656");
+                $("#phoneNumber").val(data.phoneNumber || "87999");
+                $("#reserveDate").val(data.timeOrder || "");
+            }
             if (typeof MessengerExtensions !== 'undefined') {
                 MessengerExtensions.getContext('1170374183946016',
                     function success(thread_context) {
