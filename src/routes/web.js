@@ -34,7 +34,7 @@ let initWebRoutes = (app) => {
     });
     app.get('/get-reservation/:reservationRequestId', async (req, res) => {
         try {
-            const reservationRequestId = req.params.id;
+            const reservationRequestId = req.params.reservationRequestId;
             const reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
             const table = await TableModel.findOne({ where: { id: reservationRequestId.tableId } });
 
