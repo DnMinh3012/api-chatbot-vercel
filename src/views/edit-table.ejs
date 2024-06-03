@@ -8,8 +8,12 @@
     <title>Đặt bàn nhà hàng</title>
     <script>
         let senderId = "<%= senderId %>";
-        let reservationRequestId = "<%= reservationRequestId %>";
-        let data = "<%- JSON.stringify(data) %>";
+        let reservationRequestId = "<%= email %>";
+        let temail = "<%= email %>";
+        let tphoneNumber = "<%= phoneNumber %>";
+        let tcurrentNumber = "<%= currentNumber %>";
+        let ttimeOrder = "<%= timeOrder %>";
+
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -71,11 +75,9 @@
 
     <script>
         function fetchReservationData() {
-            if (data) {
-                $("#email").val(data.email || "54656");
-                $("#phoneNumber").val(data.phoneNumber || "87999");
-                $("#reserveDate").val(data.timeOrder || "");
-            }
+            $("#email").val(temail || "54656");
+            $("#phoneNumber").val(tphoneNumber || "87999");
+            $("#reserveDate").val(ttimeOrder || "");
         }
 
         function validateInputFields() {
@@ -157,11 +159,9 @@
 
         $(document).ready(function () {
             // First try to fetch the Messenger Extensions context
-            if (data) {
-                $("#email").val(data.email || "54656");
-                $("#phoneNumber").val(data.phoneNumber || "87999");
-                $("#reserveDate").val(data.timeOrder || "");
-            }
+            $("#email").val(temail || "54656");
+            $("#phoneNumber").val(tphoneNumber || "87999");
+            $("#reserveDate").val(ttimeOrder || "");
             if (typeof MessengerExtensions !== 'undefined') {
                 MessengerExtensions.getContext('1170374183946016',
                     function success(thread_context) {

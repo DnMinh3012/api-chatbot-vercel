@@ -259,16 +259,13 @@ let getEditTable = async (req, res) => {
     let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
     let table = await TableModel.findOne({ where: { id: reservation.tableId } });
     let customer = await ReservationRequestModel.findOne({ where: { id: reservation.customerId } });
-    let data = {
+    return res.render('edit-table.ejs', {
+        senderId: senderId,
+        reservationRequestId: reservationRequestId,
         email: customer.email,
         phoneNumber: customer.phoneNumber,
         currentNumber: customer.numberOfSeats,
         timeOrder: reservation.timeOrder
-    }
-    return res.render('edit-table.ejs', {
-        senderId: senderId,
-        reservationRequestId: reservationRequestId,
-        data: data
     });
     console.log("m Type:", {
         data: data,
