@@ -71,7 +71,7 @@
     <script>
         function fetchReservationData() {
             $.ajax({
-                url: `${window.location.origin}/get-reservation/${reservationRequestId}`,
+                url: `https://api-chatbot-render.onrender.com/get-reservation/${reservationRequestId}`,
                 method: "GET",
                 success: function (data) {
                     $("#email").val(data.email)

@@ -32,7 +32,7 @@ let initWebRoutes = (app) => {
     router.get("/test", async (req, res) => {
         let user = await chatBotService.getFacebookUsername(3350311028355090);
     });
-    app.get('/get-reservation/:id', async (req, res) => {
+    app.get('/get-reservation/:reservationRequestId', async (req, res) => {
         try {
             const reservationRequestId = req.params.id;
             const reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
