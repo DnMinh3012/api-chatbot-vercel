@@ -2,7 +2,7 @@ import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel } fr
 import { json } from "sequelize";
 import chatBotService from "../services/chatBotService.js";
 
-const IMAGE_MAIN_MENU4 = "https://bit.ly/3PEVSVH"
+let IMAGE_MAIN_MENU4 = "https://bit.ly/3PEVSVH"
 
 async function findRequestWithCustomerAndTable(id) {
     let data = await ReservationRequestModel.findOne({
@@ -108,7 +108,7 @@ async function findAvailableTableByType(tableTypeId) {
     return SelectedTable.id;
 }
 let RequestId = "";
-const postBookAppointment = async (data) => {
+let postBookAppointment = async (data) => {
     console.log("Customer Data:", data);
 
     // Validate required parameters
@@ -121,7 +121,7 @@ const postBookAppointment = async (data) => {
 
     try {
         // Find or create the customer
-        const [customer, created] = await CustomerModel.findOrCreate({
+        let [customer, created] = await CustomerModel.findOrCreate({
             where: {
                 email: data.email,
                 phone: data.phone
@@ -130,11 +130,11 @@ const postBookAppointment = async (data) => {
                 name: data.name
             }
         });
-        const customerId = customer.id;
+        let customerId = customer.id;
         console.log("Customer Id:", customerId);
 
         // Find the table type with tables
-        const tableType = await TableTypeModel.findOne({
+        let tableType = await TableTypeModel.findOne({
             where: { id: data.TypeId },
             include: [
                 {
@@ -152,9 +152,9 @@ const postBookAppointment = async (data) => {
         }
 
         // Select a random table from the available tables
-        const randomIndex = Math.floor(Math.random() * tableType.tables.length);
-        const selectedTable = tableType.tables[randomIndex];
-        const selectedTableId = selectedTable.id;
+        let randomIndex = Math.floor(Math.random() * tableType.tables.length);
+        let selectedTable = tableType.tables[randomIndex];
+        let selectedTableId = selectedTable.id;
         console.log("Selected Table Id:", selectedTableId);
 
         if (!selectedTableId) {
@@ -165,7 +165,7 @@ const postBookAppointment = async (data) => {
         }
 
         // Create a reservation request
-        const reservationRequest = await ReservationRequestModel.create({
+        let reservationRequest = await ReservationRequestModel.create({
             timeOrder: data.timeOrder,
             tableId: selectedTableId,
             customerId: customerId,
@@ -186,7 +186,39 @@ const postBookAppointment = async (data) => {
     }
 };
 
-const DeleteAppointment = async (data) => {
+let EditAppointment = async (data) => {
+    console.log("Customer Data:", data);
+
+    // Validate required parameters
+    if (!data.email || !data.phone || !data.timeOrder || !data.reservationRequest) {
+        return {
+            errCode: 1,
+            message: "Missing required parameters"
+        };
+    }
+    try {
+        let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
+        let table = await TableModel.findOne({ where: { id: reservation.tableId } });
+        let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+        customer.email = data.email;
+        customer.phone = data.phone;
+        reservation.timeOrder = data.timeOrder;
+        table.numberOfSeats = data.numberOfSeats
+        return {
+            errCode: 0,
+            message: "Update Booking successful",
+            data: reservationRequest
+        };
+
+    } catch (e) {
+        console.error("Error in Update Booking:", e);
+        return {
+            errCode: 2,
+            message: e.message
+        };
+    }
+};
+let DeleteAppointment = async (data) => {
     console.log("Customer Data:", data);
     if (!data.email || !data.phoneNumber || !data.reservationRequestId) {
         return {
@@ -196,7 +228,7 @@ const DeleteAppointment = async (data) => {
     }
 
     try {
-        const result = await ReservationRequestModel.destroy({
+        let result = await ReservationRequestModel.destroy({
             where: { id: data.reservationRequestId },
         });
 
@@ -229,5 +261,6 @@ module.exports = {
     findAvailableTableByType,
     postBookAppointment,
     RequestId,
-    DeleteAppointment
+    DeleteAppointment,
+    EditAppointment
 };

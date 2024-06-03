@@ -265,7 +265,8 @@ let getEditTable = async (req, res) => {
         email: customer.email,
         phoneNumber: customer.phoneNumber,
         currentNumber: customer.numberOfSeats,
-        timeOrder: reservation.timeOrder
+        timeOrder: reservation.timeOrder,
+        numberOfSeats: table.numberOfSeats
     });
     console.log("m Type:", {
         data: data,
@@ -312,7 +313,10 @@ let handleReserveTableAjax = async (req, res) => {
 
         let reservationRequest = bookingResult.data;
         console.log("reservationRequest::", reservationRequest)
-
+        let response2 = {
+            "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
+        \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`
+        }
         let response = {
             attachment: {
                 type: "template",
@@ -320,8 +324,7 @@ let handleReserveTableAjax = async (req, res) => {
                     template_type: "generic",
                     elements: [
                         {
-                            title: `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
-                            \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`,
+                            title: `Thay Đổi giờ đặt bàn của bạn`,
                             buttons: [
                                 {
                                     type: "web_url",
@@ -362,17 +365,19 @@ let handleEditReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
-            psid: req.body.psid,
-            username: username,
+            psid: req.body.senderId,
+            name: username,
             email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            reserveDate: req.body.reserveDate,
-            feedback: req.body.feedback
+            phone: req.body.phoneNumber,
+            timeOrder: req.body.reserveDate,
+            TypeId: req.body.tableTpId,
+            note: req.body.note,
+            number_of_seats: req.body.currentNumber,
         }
         console.log("check data", data)
         await customerService.feedbackAppointment(data);
         let response1 = {
-            "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
+            "text": `Cảm ơn bạn Chúng tôi đã thay đổi lại giờ đặt bàn của bạn: ${reservationRequest.timeOrder} `
         }
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({

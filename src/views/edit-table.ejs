@@ -13,6 +13,8 @@
         let tphoneNumber = "<%= phoneNumber %>";
         let tcurrentNumber = "<%= currentNumber %>";
         let ttimeOrder = "<%= timeOrder %>";
+        let tnumberOfSeats = "<%= numberOfSeats %>";
+
 
     </script>
     <!-- Latest compiled and minified CSS -->
@@ -78,6 +80,7 @@
             $("#email").val(temail || "54656");
             $("#phoneNumber").val(tphoneNumber || "87999");
             $("#reserveDate").val(ttimeOrder || "");
+            $("#currentNumber").val(tnumberOfSeats || "");
         }
 
         function validateInputFields() {
@@ -134,7 +137,7 @@
                     };
 
                     $.ajax({
-                        url: `${window.location.origin}/reserve-table-ajax`,
+                        url: `${window.location.origin}/edit-reserve-table-ajax`,
                         method: "POST",
                         data: reservationData,
                         success: function (response) {

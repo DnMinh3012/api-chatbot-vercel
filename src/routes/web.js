@@ -32,29 +32,29 @@ let initWebRoutes = (app) => {
     router.get("/test", async (req, res) => {
         let user = await chatBotService.getFacebookUsername(3350311028355090);
     });
-    app.get('/get-reservation/:reservationRequestId', async (req, res) => {
-        try {
-            const reservationRequestId = req.params.reservationRequestId;
-            const reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
-            const table = await TableModel.findOne({ where: { id: reservationRequestId.tableId } });
+    // app.get('/get-reservation/:reservationRequestId', async (req, res) => {
+    //     try {
+    //         const reservationRequestId = req.params.reservationRequestId;
+    //         const reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+    //         const table = await TableModel.findOne({ where: { id: reservationRequestId.tableId } });
 
-            let customer = await ReservationRequestModel.findOne({ where: { id: reservationRequestId.customerId } });
-            let data = {
-                email: customer.email,
-                phoneNumber: customer.phoneNumber,
-                currentNumber: customer.numberOfSeats,
-                timeOrder: reservation.timeOrder
-            }
-            console.log("dataWeb:", data);
-            if (reservation) {
-                res.json(data);
-            } else {
-                res.status(404).send('Reservation not found');
-            }
-        } catch (error) {
-            res.status(500).send(error.message);
-        }
-    });
+    //         let customer = await ReservationRequestModel.findOne({ where: { id: reservationRequestId.customerId } });
+    //         let data = {
+    //             email: customer.email, 
+    //             phoneNumber: customer.phoneNumber,
+    //             currentNumber: customer.numberOfSeats,
+    //             timeOrder: reservation.timeOrder
+    //         }
+    //         console.log("dataWeb:", data);
+    //         if (reservation) {
+    //             res.json(data);
+    //         } else {
+    //             res.status(404).send('Reservation not found');
+    //         }
+    //     } catch (error) {
+    //         res.status(500).send(error.message);
+    //     }
+    // });
 
     return app.use("/", router);
 };
