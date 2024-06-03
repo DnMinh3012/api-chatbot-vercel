@@ -257,8 +257,8 @@ let getEditTable = async (req, res) => {
     let senderId = req.params.senderId;
     let reservationRequestId = req.params.reservationRequestId;
     let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
-    let table = await TableModel.findOne({ where: { id: reservationRequestId.tableId } });
-    let customer = await ReservationRequestModel.findOne({ where: { id: reservationRequestId.customerId } });
+    let table = await TableModel.findOne({ where: { id: reservation.tableId } });
+    let customer = await ReservationRequestModel.findOne({ where: { id: reservation.customerId } });
     let data = {
         email: customer.email,
         phoneNumber: customer.phoneNumber,
