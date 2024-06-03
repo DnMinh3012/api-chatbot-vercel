@@ -9,7 +9,7 @@
     <script>
         let senderId = "<%= senderId %>";
         let reservationRequestId = "<%= reservationRequestId %>";
-        let data = "<%= data %>"
+        let data = "<%- JSON.stringify(data) %>";
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -71,9 +71,11 @@
 
     <script>
         function fetchReservationData() {
-            $("#email").val(data.email)
-            $("#phoneNumber").val(data.phoneNumber)
-            $("#reserveDate").val(data.timeOrder);
+            if (data) {
+                $("#email").val(data.email || "");
+                $("#phoneNumber").val(data.phoneNumber || "");
+                $("#reserveDate").val(data.timeOrder || "");
+            }
         }
 
         function validateInputFields() {
@@ -119,7 +121,7 @@
         function handleClickButtonReserveTable() {
             $("#btnReserveTable").on("click", function (e) {
                 if (validateInputFields()) {
-                    let data = {
+                    let reservationData = {
                         psid: $("#psid").val(),
                         reservationRequestId: reservationRequestId,
                         email: $("#email").val(),
@@ -132,7 +134,7 @@
                     $.ajax({
                         url: `${window.location.origin}/reserve-table-ajax`,
                         method: "POST",
-                        data: data,
+                        data: reservationData,
                         success: function (response) {
                             console.log(response);
                             if (response.message === 'ok') {
