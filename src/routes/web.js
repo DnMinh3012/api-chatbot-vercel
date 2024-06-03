@@ -4,7 +4,7 @@ import chatBotController from "../controllers/chatBotController";
 import chatBotService from "../services/chatBotService";
 import userController from "../controllers/userController";
 import { where } from "sequelize";
-const { ReservationRequestModel } = require('../model/index');
+const { ReservationRequestModel, CustomerModel, TableModel } = require('../model/index');
 let router = express.Router();
 
 let initWebRoutes = (app) => {
@@ -35,9 +35,19 @@ let initWebRoutes = (app) => {
     app.get('/get-reservation/:id', async (req, res) => {
         try {
             const reservationRequestId = req.params.id;
-            const reservation = await ReservationRequestModel.findById({ where: { id: id }, });
+            const reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+            const table = await TableModel.findOne({ where: { id: reservationRequestId.tableId } });
+
+            let customer = await ReservationRequestModel.findOne({ where: { id: reservationRequestId.customerId } });
+            let data = {
+                email: customer.email,
+                phoneNumber: customer.phoneNumber,
+                currentNumber: customer.numberOfSeats,
+                timeOrder: reservation.timeOrder
+            }
+            console.log("dataWeb:", data);
             if (reservation) {
-                res.json(reservation);
+                res.json(data);
             } else {
                 res.status(404).send('Reservation not found');
             }

@@ -74,9 +74,8 @@
                 url: `${window.location.origin}/get-reservation/${reservationRequestId}`,
                 method: "GET",
                 success: function (data) {
-                    $("#email").val(data.customerId);
-                    $("#phoneNumber").val(data.customerId);
-                    $("#currentNumber").val(data.tableId);
+                    $("#email").val(data.email)
+                    $("#phoneNumber").val(data.phoneNumber)
                     $("#reserveDate").val(data.timeOrder);
                 },
                 error: function (error) {
