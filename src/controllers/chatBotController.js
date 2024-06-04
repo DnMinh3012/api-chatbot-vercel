@@ -273,6 +273,23 @@ let getEditTable = async (req, res) => {
         reservationRequestId: reservationRequestId,
     })
 }
+let getFeedbackTable = async (req, res) => {
+    let senderId = req.params.senderId;
+    let reservationRequestId = req.params.reservationRequestId;
+    let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+    let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+    return res.render('feedback-table.ejs', {
+        senderId: senderId,
+        reservationRequestId: reservationRequestId,
+        email: customer.email,
+        phoneNumber: customer.phoneNumber,
+    });
+    console.log("m Type:", {
+        data: data,
+        reservationRequestId: reservationRequestId,
+    })
+}
+
 let getDeleteReserveTable = (req, res) => {
     let senderId = req.params.senderId;
     let reservationRequestId = req.params.reservationRequestId;
@@ -441,7 +458,7 @@ let setCompleted = async (req, res) => {
                             "buttons": [
                                 {
                                     "type": "web_url",
-                                    "url": `${process.env.URL_WEB_VIEW_FEEDBACK}/${customer.sender_id}`,
+                                    "url": `${process.env.URL_WEB_VIEW_FEEDBACK}/${customer.sender_id}/${Rid}`,
                                     "title": "Đánh giá",
                                     "webview_height_ratio": "tall",
                                     "messenger_extensions": true
@@ -463,6 +480,35 @@ let setCompleted = async (req, res) => {
         })
     }
 }
+let handleFeedbackTableAjax = async (req, res) => {
+    try {
+        let username = await chatBotService.getFacebookUsername(req.body.psid);
+        let data = {
+            psid: req.body.psid,
+            reservationRequestId: req.body.reservationRequestId,
+            username: username,
+            email: req.body.email,
+            phone: req.body.phoneNumber,
+            timeOrder: req.body.reserveDate,
+            feedback: req.body.note
+        }
+        console.log("check data", data)
+        await customerService.feedbackAppointment(data);
+        let response1 = {
+            "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
+        }
+        await chatBotService.sendMessage(req.body.psid, response1)
+        return res.status(200).json({
+            message: 'ok',
+            data: data
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
@@ -472,7 +518,8 @@ module.exports = {
     handleReserveTableAjax: handleReserveTableAjax,
     handleEditReserveTableAjax: handleEditReserveTableAjax,
     handleDeletetReserveTableAjax: handleDeletetReserveTableAjax,
-    setCompleted: setCompleted
+    setCompleted: setCompleted,
+    getFeedbackTable: getFeedbackTable,
     // getFeedbackTable: getFeedbackTable,
-    // handleFeedbackTableAjax, handleFeedbackTableAjax
+    handleFeedbackTableAjax, handleFeedbackTableAjax
 };

@@ -1,4 +1,4 @@
-import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel } from "../model/index.js";
+import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedBackModel } from "../model/index.js";
 import { json } from "sequelize";
 import chatBotService from "../services/chatBotService.js";
 
@@ -259,6 +259,35 @@ let DeleteAppointment = async (data) => {
         };
     }
 };
+
+const feedbackAppointment = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.email || !data.phone || !data.reservationRequestId) {
+                return {
+                    errCode: 1,
+                    message: "Missing required parameters"
+                };
+            } else {
+                let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
+                let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+                const newFeedback = await FeedBackModel.create({
+                    reservationRequestId: data.reservationRequestId,
+                    note: data.note
+                });
+
+                resolve({
+                    errCode: 0,
+                    feedback: newFeedback
+                });
+            }
+        } catch (error) {
+            console.error("Error in feedbackAppointment:", error);
+            reject(error);
+        }
+    });
+};
+
 
 module.exports = {
     findRequestWithCustomerAndTable,

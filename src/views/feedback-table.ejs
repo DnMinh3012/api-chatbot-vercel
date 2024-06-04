@@ -1,12 +1,19 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đánh giá dịch vụ đặt bàn Vimaru Restaurant</title>
+    <title>Đặt bàn nhà hàng</title>
     <script>
-        let senderId = "<%= senderId %>"
+        let senderId = "<%= senderId %>";
+        let reservationRequestId = "<%= reservationRequestId %>";
+        let temail = "<%= email %>";
+        let tphoneNumber = "<%= phoneNumber %>";
+        let ttimeOrder = "<%= timeOrder %>";
+
+
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -30,134 +37,147 @@
         <div class="row">
             <div class="col-12">
                 <div class="text-center mt-3">
-                    <span class="title">Đánh giá dịch vụ đặt bàn Vimaru Restaurant</span>
+                    <span class="title">Thông tin khách hàng</span>
                 </div>
                 <input type="text" id="psid" hidden>
+                <input type="text" id="reservationRequestId" hidden>
                 <div class="form-group">
                     <label for="email">Địa chỉ email (<span style="color: red">*</span>):</label>
                     <input type="email" id="email" class="form-control" placeholder="Địa chỉ email...">
                     <div class="invalid-feedback">Địa chỉ email không hợp lệ.</div>
                 </div>
-                <div class="form-group">
-                    <label for="phoneNumber">Số điện thoại (<span style="color: red">*</span>):</label>
-                    <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
-                    <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
+
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="phoneNumber">Số điện thoại (<span style="color: red">*</span>):</label>
+                        <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
+                        <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="reserveDate">Ngày đặt bàn (<span style="color: red">*</span>):</label>
+                        <input type="datetime-local" id="reserveDate" class="form-control"
+                            placeholder="Ngày đặt bàn ...">
+                        <div class="invalid-feedback"> không hợp lệ.</div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="email">Ngày đặt bàn(<span style="color: red">*</span>):</label>
-                    <input type="datetime-local" id="reserveDate" class="form-control" placeholder="Ngày đặt bàn ...">
-                    <div class="invalid-feedback"> không hợp lệ.</div>
+                    <label for="note">Phản hồi</label>
+                    <input type="textarea" id="note" class="form-control" placeholder="Ghi chú...">
                 </div>
-                <div class="form-group">
-                    <label for="phoneNumber">Phản hồi của bạn</label>
-                    <input type="textarea" id="feedback" class="form-control" placeholder="Ghi chú...">
-                </div>
-                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> Gửi
-                </button>
+                <button class="btn btn-primary" id="btnReserveTable"> Sửa đổi </button>
             </div>
-
         </div>
-
     </div>
 
     <script>
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) { return; }
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'Messenger'));
+        function fetchReservationData() {
+            $("#email").val(temail || "54656");
+            $("#phoneNumber").val(tphoneNumber || "87999");
+            $("#reserveDate").val(ttimeOrder || "");
+            $("#currentNumber").val(tnumberOfSeats || "");
+        }
 
-        window.extAsyncInit = function () {
-            // the Messenger Extensions JS SDK is done loading 
-
-            MessengerExtensions.getContext('1170374183946016',
-                function success(thread_context) {
-                    // success 
-                    //set psid to input
-                    $("#psid").val(thread_context.psid);
-                    handleClickButtonReserveTable();
-                },
-                function error(err) {
-                    // error
-                    console.log('Lỗi đặt bàn bot', err);
-
-
-                    $("#psid").val(senderId);
-                    handleClickButtonReserveTable();
-                }
-            );
-        };
-
-        //validate inputs
         function validateInputFields() {
             const EMAIL_REG = /[a-zA-Z][a-zA-Z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}/g;
 
             let email = $("#email");
             let phoneNumber = $("#phoneNumber");
-            let feedback = $("#feedback");
+            let currentNumber = $("#currentNumber");
             let reserveDate = $("#reserveDate");
+            let note = $("#note");
+
             if (!email.val().match(EMAIL_REG)) {
                 email.addClass("is-invalid");
-                return true;
+                return false;
             } else {
                 email.removeClass("is-invalid");
             }
 
             if (phoneNumber.val() === "") {
                 phoneNumber.addClass("is-invalid");
-                return true;
+                return false;
             } else {
                 phoneNumber.removeClass("is-invalid");
             }
 
+            if (currentNumber.val() === "" || isNaN(currentNumber.val())) {
+                currentNumber.addClass("is-invalid");
+                return false;
+            } else {
+                currentNumber.removeClass("is-invalid");
+            }
+
             if (reserveDate.val() === "") {
                 reserveDate.addClass("is-invalid");
-                return true;
+                return false;
             } else {
                 reserveDate.removeClass("is-invalid");
             }
-            return false;
-        }
 
+            return true;
+        }
 
         function handleClickButtonReserveTable() {
             $("#btnReserveTable").on("click", function (e) {
-                let check = validateInputFields(); //return true or false
+                if (validateInputFields()) {
+                    let reservationData = {
+                        psid: $("#psid").val(),
+                        reservationRequestId: reservationRequestId,
+                        email: $("#email").val(),
+                        reserveDate: $("#reserveDate").val(),
+                        note: $("#note").val(),
+                        phoneNumber: $("#phoneNumber").val(),
+                    };
 
-                let data = {
-                    psid: $("#psid").val(),
-                    email: $("#email").val(),
-                    feedback: $("#feedback").val(),
-                    reserveDate: $("#reserveDate").val(),
-                    phoneNumber: $("#phoneNumber").val()
-                };
-
-                if (!check) {
-                    //close webview
-                    MessengerExtensions.requestCloseBrowser(function success() {
-                        // webview closed
-                    }, function error(err) {
-                        // an error occurred
-                        console.log(err);
-                    });
-
-                    //send data to node.js server 
                     $.ajax({
                         url: `${window.location.origin}/feedback-table-ajax`,
                         method: "POST",
-                        data: data,
-                        success: function (data) {
-                            console.log(data);
+                        data: reservationData,
+                        success: function (response) {
+                            console.log(response);
+                            if (response.message === 'ok') {
+                                MessengerExtensions.requestCloseBrowser(function success() {
+                                    console.log('Webview closed');
+                                }, function error(err) {
+                                    console.log('Error closing webview: ' + err);
+                                });
+                            } else {
+                                console.log('Error in reservation: ' + response.message);
+                            }
                         },
                         error: function (error) {
-                            console.log(error);
+                            console.log('AJAX error: ' + error);
                         }
-                    })
+                    });
                 }
             });
         }
+
+        $(document).ready(function () {
+            // First try to fetch the Messenger Extensions context
+            $("#email").val(temail || "54656");
+            $("#phoneNumber").val(tphoneNumber || "87999");
+            $("#reserveDate").val(ttimeOrder || "");
+            if (typeof MessengerExtensions !== 'undefined') {
+                MessengerExtensions.getContext('1170374183946016',
+                    function success(thread_context) {
+                        $("#psid").val(thread_context.psid);
+                        fetchReservationData();
+                    },
+                    function error(err) {
+                        console.log('Lỗi đặt bàn bot', err);
+                        $("#psid").val(senderId);
+                        fetchReservationData();
+                    }
+                );
+            } else {
+                // If Messenger Extensions is not available, just fetch the reservation data with senderId
+                $("#psid").val(senderId);
+                fetchReservationData();
+            }
+
+            handleClickButtonReserveTable();
+        });
     </script>
 </body>
 
