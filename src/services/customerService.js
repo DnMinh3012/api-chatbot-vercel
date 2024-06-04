@@ -190,7 +190,7 @@ let EditAppointment = async (data) => {
     console.log("Customer Data:", data);
 
     // Validate required parameters
-    if (!data.email || !data.phone || !data.timeOrder || !data.reservationRequest) {
+    if (!data.email || !data.phone || !data.timeOrder || !data.reservationRequestId) {
         return {
             errCode: 1,
             message: "Missing required parameters"
