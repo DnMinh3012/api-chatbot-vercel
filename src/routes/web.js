@@ -12,7 +12,7 @@ let initWebRoutes = (app) => {
     router.get('/form-reserve-table/:senderId/:tableTpId', chatBotController.getReserveTable);
     router.get('/form-edit-table/:senderId/:reservationRequestId', chatBotController.getEditTable)
     router.get('/form-delete-table/:senderId/:reservationRequestId', chatBotController.getDeleteReserveTable);
-    router.post('/set-completed/:reservationRequestId', chatBotController.setCompleted)
+    router.post('/set-completed/:id', chatBotController.setCompleted)
     // router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);

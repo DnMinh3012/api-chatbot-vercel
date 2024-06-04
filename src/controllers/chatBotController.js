@@ -423,6 +423,8 @@ let handleDeletetReserveTableAjax = async (req, res) => {
 
 let setCompleted = async (req, res) => {
     try {
+        let Rid = req.params.id;
+        console.log("Rid:", Rid)
         return res.status(200).json({
             message: ok
         })
