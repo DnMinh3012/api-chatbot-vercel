@@ -377,7 +377,7 @@ let handleEditReserveTableAjax = async (req, res) => {
         console.log("check data", data)
         await customerService.EditAppointment(data);
         let response1 = {
-            "text": `Cảm ơn bạn Chúng tôi đã thay đổi lại giờ đặt bàn của bạn: ${reservationRequest.timeOrder} `
+            "text": `Cảm ơn bạn Chúng tôi đã thay đổi lại giờ đặt bàn của bạn: ${data.timeOrder} `
         }
         await chatBotService.sendMessage(req.body.psid, response1)
         return res.status(200).json({
@@ -401,7 +401,7 @@ let handleDeletetReserveTableAjax = async (req, res) => {
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
             note: req.body.note,
-            
+
         }
         console.log("check data", data)
         await customerService.DeleteAppointment(data);
