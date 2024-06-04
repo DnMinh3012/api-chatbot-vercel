@@ -423,7 +423,9 @@ let handleDeletetReserveTableAjax = async (req, res) => {
 
 let setCompleted = async (req, res) => {
     try {
-
+        return res.status(200).json({
+            message: ok
+        })
     } catch (e) {
         console.log("Loi Reserve table: ", e);
         return res.status(500).json({
