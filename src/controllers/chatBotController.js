@@ -420,6 +420,17 @@ let handleDeletetReserveTableAjax = async (req, res) => {
         })
     }
 }
+
+let setCompleted = async (req, res) => {
+    try {
+
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
@@ -428,7 +439,8 @@ module.exports = {
     getDeleteReserveTable: getDeleteReserveTable,
     handleReserveTableAjax: handleReserveTableAjax,
     handleEditReserveTableAjax: handleEditReserveTableAjax,
-    handleDeletetReserveTableAjax: handleDeletetReserveTableAjax
+    handleDeletetReserveTableAjax: handleDeletetReserveTableAjax,
+    setCompleted: setCompleted
     // getFeedbackTable: getFeedbackTable,
     // handleFeedbackTableAjax, handleFeedbackTableAjax
 };
