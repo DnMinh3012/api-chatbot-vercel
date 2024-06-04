@@ -204,6 +204,11 @@ let EditAppointment = async (data) => {
         customer.phone = data.phone;
         reservation.timeOrder = data.timeOrder;
         table.numberOfSeats = data.numberOfSeats
+
+        reservation.save();
+        table.save();
+        customer.save();
+
         return {
             errCode: 0,
             message: "Update Booking successful",
