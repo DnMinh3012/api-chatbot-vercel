@@ -424,9 +424,13 @@ let handleDeletetReserveTableAjax = async (req, res) => {
 let setCompleted = async (req, res) => {
     try {
         let Rid = req.params.id;
+        let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
+        let table = await TableModel.findOne({ where: { id: reservation.tableId } });
+        let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
         console.log("Rid:", Rid)
         return res.status(200).json({
-            message: "ok"
+            message: "ok",
+            psid: customer.sender_id,
         })
     } catch (e) {
         console.log("Loi Reserve table: ", e);
