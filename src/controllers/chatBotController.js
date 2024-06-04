@@ -426,7 +426,7 @@ let setCompleted = async (req, res) => {
         let Rid = req.params.id;
         console.log("Rid:", Rid)
         return res.status(200).json({
-            message: ok
+            message: "ok"
         })
     } catch (e) {
         console.log("Loi Reserve table: ", e);
