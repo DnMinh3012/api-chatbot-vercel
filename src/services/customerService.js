@@ -130,6 +130,8 @@ let postBookAppointment = async (data) => {
                 name: data.name
             }
         });
+        customer.sender_id = data.psid
+        customer.save();
         let customerId = customer.id;
         console.log("Customer Id:", customerId);
 
