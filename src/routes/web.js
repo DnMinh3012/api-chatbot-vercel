@@ -22,7 +22,7 @@ let initWebRoutes = (app) => {
     router.post('/edit-reserve-table-ajax', chatBotController.handleEditReserveTableAjax)
     router.post('/delete-reserve-table-ajax', chatBotController.handleDeletetReserveTableAjax)
 
-    // router.post('/feedback-table-ajax', chatBotController.handleFeedbackTableAjax)
+    router.post('/feedback-table-ajax', chatBotController.handleFeedbackTableAjax)
 
     router.get('/api/get-users', userController.handleGetUsers);
     router.get('/api/get-dishes', userController.handleGetDishes);

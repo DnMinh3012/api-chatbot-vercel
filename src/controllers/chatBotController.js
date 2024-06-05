@@ -248,7 +248,7 @@ let getReserveTable = (req, res) => {
     let senderId = req.params.senderId;
     let TypeId = req.params.tableTpId;
     return res.render('reserve-table.ejs', {
-        senderId: senderId,
+        senderId: req.params.senderId,
         tableTpId: TypeId
     });
     console.log("table Type:", TypeId)
