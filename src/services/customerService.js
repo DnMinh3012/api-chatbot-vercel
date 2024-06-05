@@ -127,11 +127,10 @@ let postBookAppointment = async (data) => {
                 phone: data.phone
             },
             defaults: {
-                name: data.name
+                name: data.name,
+                sender_id: data.psid
             }
         });
-        customer.sender_id = data.psid
-        customer.save();
         let customerId = customer.id;
         console.log("Customer Id:", customerId);
 
