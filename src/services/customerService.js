@@ -1,4 +1,4 @@
-import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedBackModel } from "../model/index.js";
+import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel } from "../model/index.js";
 import { json } from "sequelize";
 import chatBotService from "../services/chatBotService.js";
 
@@ -271,9 +271,9 @@ const feedbackAppointment = async (data) => {
             } else {
                 let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
                 let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
-                const newFeedback = await FeedBackModel.create({
-                    reservationRequestId: data.reservationRequestId,
-                    note: data.note
+                const newFeedback = await FeedbackModel.create({
+                    // reservationRequestId: data.reservationRequestId,
+                    content: data.note
                 });
 
                 resolve({

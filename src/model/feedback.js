@@ -1,19 +1,13 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
-const Customer = sequelize.define("customer", {
+const Feedback = sequelize.define("feedback", {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    name: {
-        type: DataTypes.STRING,
-    },
-    email: {
-        type: DataTypes.STRING,
-    },
-    phone: {
+    content: {
         type: DataTypes.STRING,
     },
     createdAt: {
@@ -26,4 +20,4 @@ const Customer = sequelize.define("customer", {
     },
 });
 
-export default Customer;
+export default Feedback;
