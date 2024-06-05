@@ -312,7 +312,7 @@ let handleReserveTableAjax = async (req, res) => {
         console.log("Request Body:", req.body); // Kiểm tra dữ liệu đầu vào
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
-            psid: req.body.senderId,
+            psid: req.body.psid,
             name: username,
             email: req.body.email,
             phone: req.body.phoneNumber,
@@ -382,7 +382,7 @@ let handleEditReserveTableAjax = async (req, res) => {
     try {
         let username = await chatBotService.getFacebookUsername(req.body.psid);
         let data = {
-            psid: req.body.senderId,
+            psid: req.body.psid,
             name: username,
             email: req.body.email,
             phone: req.body.phoneNumber,
