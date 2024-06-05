@@ -444,7 +444,7 @@ let setCompleted = async (req, res) => {
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
         let table = await TableModel.findOne({ where: { id: reservation.tableId } });
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
-        console.log("Rid:", customer.sender_id)
+        console.log("Rid:", customer)
         let response = {
             "attachment": {
                 "type": "template",
