@@ -475,7 +475,7 @@ let setCompleted = async (req, res) => {
         await chatBotService.sendMessage(customer.sender_id, response)
         return res.status(200).json({
             message: "ok",
-            psid: customer.sender_id,
+            psid: customer,
         })
     } catch (e) {
         console.log("Loi Reserve table: ", e);
