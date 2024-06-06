@@ -386,7 +386,7 @@ let handleEditReserveTableAjax = async (req, res) => {
             psid: req.body.psid,
             name: username,
             email: req.body.email,
-            phone: req.body.phoneNumber,
+            phone: req.body.phone,
             timeOrder: req.body.reserveDate,
             reservationRequestId: req.body.reservationRequestId,
             note: req.body.note,
