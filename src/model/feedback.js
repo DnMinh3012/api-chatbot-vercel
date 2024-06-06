@@ -11,13 +11,13 @@ const Feedback = sequelize.define("feedback", {
     content: {
         type: DataTypes.STRING,
     },
-    reservation_request_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: ReservationRequest,
-            key: 'id',
-        },
-    },
+    // reservation_request_id: {
+    //     type: DataTypes.INTEGER,
+    //     references: {
+    //         model: ReservationRequest,
+    //         key: 'id',
+    //     },
+    // },
     createdAt: {
         field: "created_at",
         type: DataTypes.DATE,
