@@ -55,4 +55,5 @@ export {
     Table,
     ReservationRequest,
     User,
+    Feedback
 }
