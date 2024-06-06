@@ -263,7 +263,7 @@ let getEditTable = async (req, res) => {
         senderId: senderId,
         reservationRequestId: reservationRequestId,
         email: customer.email,
-        phoneNumber: customer.phoneNumber,
+        phone: customer.phone,
         currentNumber: customer.numberOfSeats,
         timeOrder: reservation.timeOrder,
         numberOfSeats: table.numberOfSeats
@@ -283,7 +283,7 @@ let getFeedbackTable = async (req, res) => {
         senderId: senderId,
         reservationRequestId: reservationRequestId,
         email: customer.email,
-        phoneNumber: customer.phone,
+        phone: customer.phone,
     });
     console.log("m Type:", {
         data: data,
