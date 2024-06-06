@@ -299,5 +299,6 @@ module.exports = {
     postBookAppointment,
     RequestId,
     DeleteAppointment,
-    EditAppointment
+    EditAppointment,
+    feedbackAppointment
 };
