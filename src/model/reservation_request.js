@@ -1,5 +1,7 @@
-import {DataTypes} from "sequelize";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
+import ReservationRequestModel from './model.relationships.js';
+
 
 const ReservationRequest = sequelize.define("reservation_request", {
     id: {
