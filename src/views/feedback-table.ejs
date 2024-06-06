@@ -11,9 +11,6 @@
         let reservationRequestId = "<%= reservationRequestId %>";
         let temail = "<%= email %>";
         let tphone = "<%= phone %>";
-
-
-
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -56,8 +53,7 @@
                     <label for="note">FeedBack</label>
                     <input type="textarea" id="note" class="form-control" placeholder="FeedBack...">
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable" onclick=handleClickButtonReserveTable()> Gửi
-                    FeedBack </button>
+                <button class="btn btn-primary" id="btnReserveTable">Gửi FeedBack</button>
             </div>
         </div>
     </div>
@@ -73,9 +69,6 @@
 
             let email = $("#email");
             let phone = $("#phone");
-            let currentNumber = $("#currentNumber");
-            let reserveDate = $("#reserveDate");
-            let note = $("#note");
 
             if (!email.val().match(EMAIL_REG)) {
                 email.addClass("is-invalid");
@@ -91,48 +84,43 @@
                 phone.removeClass("is-invalid");
             }
 
-
-
             return true;
         }
 
         function handleClickButtonReserveTable() {
-            $("#btnReserveTable").on("click", function (e) {
-                if (validateInputFields()) {
-                    let reservationData = {
-                        psid: $("#psid").val(),
-                        reservationRequestId: reservationRequestId,
-                        email: $("#email").val(),
-                        note: $("#note").val(),
-                        phone: $("#phone").val(),
-                    };
+            if (validateInputFields()) {
+                let reservationData = {
+                    psid: $("#psid").val(),
+                    reservationRequestId: reservationRequestId,
+                    email: $("#email").val(),
+                    note: $("#note").val(),
+                    phone: $("#phone").val(),
+                };
 
-                    $.ajax({
-                        url: `${window.location.origin}/feedback-table-ajax'`,
-                        method: "POST",
-                        data: reservationData,
-                        success: function (response) {
-                            console.log(response);
-                            if (response.message === 'ok') {
-                                MessengerExtensions.requestCloseBrowser(function success() {
-                                    console.log('Webview closed');
-                                }, function error(err) {
-                                    console.log('Error closing webview: ' + err);
-                                });
-                            } else {
-                                console.log('Error in reservation: ' + response.message);
-                            }
-                        },
-                        error: function (error) {
-                            console.log('AJAX error: ' + error);
+                $.ajax({
+                    url: `${window.location.origin}/feedback-table-ajax`,
+                    method: "POST",
+                    data: reservationData,
+                    success: function (response) {
+                        console.log(response);
+                        if (response.message === 'ok') {
+                            MessengerExtensions.requestCloseBrowser(function success() {
+                                console.log('Webview closed');
+                            }, function error(err) {
+                                console.log('Error closing webview: ' + err);
+                            });
+                        } else {
+                            console.log('Error in reservation: ' + response.message);
                         }
-                    });
-                }
-            });
+                    },
+                    error: function (error) {
+                        console.log('AJAX error: ' + error);
+                    }
+                });
+            }
         }
 
         $(document).ready(function () {
-            // First try to fetch the Messenger Extensions context
             $("#email").val(temail || "54656");
             $("#phone").val(tphone || "87999");
             if (typeof MessengerExtensions !== 'undefined') {
@@ -148,12 +136,11 @@
                     }
                 );
             } else {
-                // If Messenger Extensions is not available, just fetch the reservation data with senderId
                 $("#psid").val(senderId);
                 fetchReservationData();
             }
 
-            handleClickButtonReserveTable();
+            $("#btnReserveTable").on("click", handleClickButtonReserveTable);
         });
     </script>
 </body>
