@@ -271,10 +271,9 @@ const feedbackAppointment = async (data) => {
                 };
             } else {
                 let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
-                let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
                 const newFeedback = await FeedbackModel.create({
                     // reservationRequestId: data.reservationRequestId,
-                    content: data.note
+                    content: data.feedback
                 });
 
                 resolve({
