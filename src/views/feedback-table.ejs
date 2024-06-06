@@ -11,7 +11,7 @@
         let reservationRequestId = "<%= reservationRequestId %>";
         let temail = "<%= email %>";
         let tphoneNumber = "<%= phoneNumber %>";
-        let ttimeOrder = "<%= reserveDate %>";
+        let ttimeOrder = "<%= timeOrder %>";
 
 
     </script>
@@ -54,9 +54,8 @@
                         <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
                     </div>
                     <div class="form-group col-6">
-                        <label for="reserveDate">Ngày đặt bàn (<span style="color: red">*</span>):</label>
-                        <input type="datetime-local" id="reserveDate" class="form-control"
-                            placeholder="Ngày đặt bàn ...">
+                        <label for="timeOrder">Ngày đặt bàn (<span style="color: red">*</span>):</label>
+                        <input type="datetime-local" id="timeOrder" class="form-control" placeholder="Ngày đặt bàn ...">
                         <div class="invalid-feedback"> không hợp lệ.</div>
                     </div>
                 </div>
@@ -73,7 +72,7 @@
         function fetchReservationData() {
             $("#email").val(temail || "54656");
             $("#phoneNumber").val(tphoneNumber || "87999");
-            $("#reserveDate").val(ttimeOrder || "");
+            $("#timeOrder").val(ttimeOrder || "");
             $("#currentNumber").val(tnumberOfSeats || "");
         }
 
@@ -83,7 +82,7 @@
             let email = $("#email");
             let phoneNumber = $("#phoneNumber");
             let currentNumber = $("#currentNumber");
-            let reserveDate = $("#reserveDate");
+            let timeOrder = $("#timeOrder");
             let note = $("#note");
 
             if (!email.val().match(EMAIL_REG)) {
@@ -107,11 +106,11 @@
                 currentNumber.removeClass("is-invalid");
             }
 
-            if (reserveDate.val() === "") {
-                reserveDate.addClass("is-invalid");
+            if (timeOrder.val() === "") {
+                timeOrder.addClass("is-invalid");
                 return false;
             } else {
-                reserveDate.removeClass("is-invalid");
+                timeOrder.removeClass("is-invalid");
             }
 
             return true;
@@ -124,7 +123,7 @@
                         psid: $("#psid").val(),
                         reservationRequestId: reservationRequestId,
                         email: $("#email").val(),
-                        reserveDate: $("#reserveDate").val(),
+                        timeOrder: $("#timeOrder").val(),
                         note: $("#note").val(),
                         phoneNumber: $("#phoneNumber").val(),
                     };
@@ -157,7 +156,7 @@
             // First try to fetch the Messenger Extensions context
             $("#email").val(temail || "54656");
             $("#phoneNumber").val(tphoneNumber || "87999");
-            $("#reserveDate").val(ttimeOrder || "");
+            $("#timeOrder").val(ttimeOrder || "");
             if (typeof MessengerExtensions !== 'undefined') {
                 MessengerExtensions.getContext('1170374183946016',
                     function success(thread_context) {
