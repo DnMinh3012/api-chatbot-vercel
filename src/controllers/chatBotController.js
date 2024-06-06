@@ -278,11 +278,13 @@ let getFeedbackTable = async (req, res) => {
     let reservationRequestId = req.params.reservationRequestId;
     let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
     let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+
     return res.render('feedback-table.ejs', {
         senderId: senderId,
         reservationRequestId: reservationRequestId,
         email: customer.email,
         phoneNumber: customer.phoneNumber,
+        timeOrder: reservation.timeOrder
     });
     console.log("m Type:", {
         data: data,
