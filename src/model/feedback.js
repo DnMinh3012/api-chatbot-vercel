@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import {DataTypes} from "sequelize";
 import sequelize from "../config/database.js";
 
 const Feedback = sequelize.define("feedback", {
@@ -9,11 +9,6 @@ const Feedback = sequelize.define("feedback", {
     },
     content: {
         type: DataTypes.STRING,
-    },
-    ReservationRequestid: {
-        field: "reservationRequest_id",
-        type: DataTypes.INTEGER,
-        foreignKey: true,
     },
     createdAt: {
         field: "created_at",

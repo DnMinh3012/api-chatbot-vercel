@@ -39,10 +39,12 @@ ReservationRequest.belongsTo(Customer, {
     foreignKey: "customer_id",
     as: "customer",
 });
+
 Feedback.belongsTo(ReservationRequest, {
-    foreignKey: "reservationRequest_id",
+    foreignKey: "reservation_request_id",
     as: "reservationRequest",
-})
+});
+
 export {
     Customer,
     DishType,
