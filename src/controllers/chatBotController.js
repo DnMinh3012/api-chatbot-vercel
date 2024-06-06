@@ -276,7 +276,7 @@ let getEditTable = async (req, res) => {
 let getFeedbackTable = async (req, res) => {
     let senderId = req.params.senderId;
     let reservationRequestId = req.params.reservationRequestId;
-    let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+    let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
     let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
 
     return res.render('feedback-table.ejs', {
@@ -500,7 +500,7 @@ let handleFeedbackTableAjax = async (req, res) => {
             feedback: req.body.note
         }
         console.log("check data", data)
-        // await customerService.feedbackAppointment(data);
+        await customerService.feedbackAppointment(data);
         let response1 = {
             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
         }
