@@ -128,6 +128,7 @@ let postBookAppointment = async (data) => {
             },
             defaults: {
                 name: data.name,
+                sender_id: data.psid
             }
         });
         customer.sender_id = data.psid
