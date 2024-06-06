@@ -283,8 +283,7 @@ let getFeedbackTable = async (req, res) => {
         senderId: senderId,
         reservationRequestId: reservationRequestId,
         email: customer.email,
-        phoneNumber: customer.phoneNumber,
-        timeOrder: reservation.timeOrder
+        phoneNumber: customer.phone,
     });
     console.log("m Type:", {
         data: data,
