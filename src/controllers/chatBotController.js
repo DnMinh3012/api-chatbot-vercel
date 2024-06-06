@@ -445,7 +445,7 @@ let setCompleted = async (req, res) => {
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
         let table = await TableModel.findOne({ where: { id: reservation.tableId } });
         table.status = "available"
-        table.save()
+        table.save();
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
         console.log("Rid:", {
             "rid": Rid,
