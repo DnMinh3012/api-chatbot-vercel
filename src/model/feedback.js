@@ -10,6 +10,11 @@ const Feedback = sequelize.define("feedback", {
     content: {
         type: DataTypes.STRING,
     },
+    ReservationRequestid: {
+        field: "reservationRequest_id",
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+    },
     createdAt: {
         field: "created_at",
         type: DataTypes.DATE,
