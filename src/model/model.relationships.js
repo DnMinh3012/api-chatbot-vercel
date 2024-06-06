@@ -39,7 +39,7 @@ ReservationRequest.belongsTo(Customer, {
     foreignKey: "customer_id",
     as: "customer",
 });
-Feedback.belongsTo.ReservationRequest(Customer, {
+Feedback.belongsTo(ReservationRequest, {
     foreignKey: "reservationRequest_id",
     as: "reservationRequest",
 })
