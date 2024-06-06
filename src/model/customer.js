@@ -17,7 +17,7 @@ const Customer = sequelize.define("customer", {
         type: DataTypes.STRING,
     },
     sender_id: {
-        field: " sender_id",
+        field: "sender_id",
         type: DataTypes.STRING,
     },
     createdAt: {
