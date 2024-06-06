@@ -445,7 +445,7 @@ let setCompleted = async (req, res) => {
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
         let table = await TableModel.findOne({ where: { id: reservation.tableId } });
         table.status = "available"
-        table.save();
+        table.save()
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
         console.log("Rid:", {
             "rid": Rid,
@@ -500,7 +500,7 @@ let handleFeedbackTableAjax = async (req, res) => {
             feedback: req.body.note
         }
         console.log("check data", data)
-        await customerService.feedbackAppointment(data);
+        // await customerService.feedbackAppointment(data);
         let response1 = {
             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
         }
