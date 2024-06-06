@@ -276,7 +276,7 @@ let getEditTable = async (req, res) => {
 let getFeedbackTable = async (req, res) => {
     let senderId = req.params.senderId;
     let reservationRequestId = req.params.reservationRequestId;
-    let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
+    let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
     let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
 
     return res.render('feedback-table.ejs', {
