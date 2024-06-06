@@ -7,6 +7,7 @@ import TableType from "./table_types.js";
 import Table from "./table.js";
 import ReservationRequest from "./reservation_request.js";
 import User from "./user.js";
+import Feedback from "./feedback.js"
 
 Dish.belongsTo(DishType, {
     foreignKey: "dish_type_id",
