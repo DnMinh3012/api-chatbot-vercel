@@ -1130,55 +1130,60 @@ let timeOutChatbot = (sender_psid) => {
 
 
 
-let adminSendReservationRequest = (psid, data) => {
-    return new Promise((resolve, reject) => {
+let adminSendReservationRequest = (psid, data, pageAccessToken) => {
+    return new Promise(async (resolve, reject) => {
         try {
-            let response1 = " Đã có thêm 1 lượt đặt bàn"
+            let response1 = "Đã có thêm 1 lượt đặt bàn";
             let response2 = `Khách hàng: ${data.name}
-            \n Thời gian đặt bàn ${data.timeOrder}
-            \n Loại bàn ${data.TypeId}
-            \n Xin vui lòng xác nhận yêu cầu
-            `
+Thời gian đặt bàn: ${data.timeOrder}
+Loại bàn: ${data.TypeId}
+Xin vui lòng xác nhận yêu cầu.`;
+
             let response3 = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "generic",
+                        elements: [
                             {
-                                "title": "Yêu cầu đặt bàn",
-                                "subtitle": `Khách Hàng ${data.name}`,
-                                "buttons": [
+                                title: "Yêu cầu đặt bàn",
+                                subtitle: `Khách Hàng: ${data.name}`,
+                                buttons: [
                                     {
-                                        "type": "postback",
-                                        "title": "Xác nhận",
-                                        "payload": "MAIN_MENU",
+                                        type: "postback",
+                                        title: "Xác nhận",
+                                        payload: "CONFIRM_RESERVATION",
                                     },
                                     {
-                                        "type": "postback",
-                                        "title": "Huỷ",
-                                        "payload": "SHOW_ROOMS",
+                                        type: "postback",
+                                        title: "Huỷ",
+                                        payload: "CANCEL_RESERVATION",
                                     },
                                     {
+                                        type: "web_url",
                                         url: `https://petrung.id.vn/platform/crud/list/reservation-request-resources`,
                                         title: "Truy cập Website quản lý",
                                         webview_height_ratio: "tall",
                                         messenger_extensions: true
                                     }
                                 ],
-                            }]
+                            }
+                        ]
                     }
                 }
             };
-            sendMessage(process.env.ADMIN_PSID, response1)
-            sendMessage(process.env.ADMIN_PSID, response2)
-            sendMessage(process.env.ADMIN_PSID, response3)
-        }
-        catch (e) {
+
+            await sendMessage(psid, response1);
+            await sendMessage(psid, response2);
+            await sendMessage(psid, response3);
+
+            resolve();
+        } catch (e) {
             reject(e);
         }
     });
 };
+
 module.exports = {
     getFacebookUsername: getFacebookUsername,
     handleGetStartedResponding: handleGetStartedResponding,
