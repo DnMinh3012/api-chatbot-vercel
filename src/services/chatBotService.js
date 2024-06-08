@@ -1127,6 +1127,58 @@ let timeOutChatbot = (sender_psid) => {
         sendMessage(sender_psid, response2);
     }, 10000); // 10 seconds in milliseconds
 }
+
+
+
+let adminSendReservationRequest = (psid, data) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let response1 = " Đã có thêm 1 lượt đặt bàn"
+            let response2 = `Khách hàng: ${data.name}
+            \n Thời gian đặt bàn ${data.timeOrder}
+            \n Loại bàn ${data.TypeId}
+            \n Xin vui lòng xác nhận yêu cầu
+            `
+            let response3 = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Yêu cầu đặt bàn",
+                                "subtitle": `Khách Hàng ${data.name}`,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Xác nhận",
+                                        "payload": "MAIN_MENU",
+                                    },
+                                    {
+                                        "type": "postback",
+                                        "title": "Huỷ",
+                                        "payload": "SHOW_ROOMS",
+                                    },
+                                    {
+                                        url: `https://petrung.id.vn/platform/crud/list/reservation-request-resources`,
+                                        title: "Truy cập Website quản lý",
+                                        webview_height_ratio: "tall",
+                                        messenger_extensions: true
+                                    }
+                                ],
+                            }]
+                    }
+                }
+            };
+            sendMessage(process.env.ADMIN_PSID, response1)
+            sendMessage(process.env.ADMIN_PSID, response2)
+            sendMessage(process.env.ADMIN_PSID, response3)
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     getFacebookUsername: getFacebookUsername,
     handleGetStartedResponding: handleGetStartedResponding,
@@ -1150,5 +1202,6 @@ module.exports = {
     setupPersistentMenu: setupPersistentMenu,
     writeDataToGoogleSheet: writeDataToGoogleSheet,
     timeOutChatbot: timeOutChatbot,
-    handleSendMenuDetail: handleSendMenuDetail
+    handleSendMenuDetail: handleSendMenuDetail,
+    adminSendReservationRequest: adminSendReservationRequest
 };
