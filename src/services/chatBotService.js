@@ -1130,7 +1130,7 @@ let timeOutChatbot = (sender_psid) => {
 
 
 
-let adminSendReservationRequest = (psid, data, pageAccessToken) => {
+let adminSendReservationRequest = (psid, data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response1 = "Đã có thêm 1 lượt đặt bàn";
