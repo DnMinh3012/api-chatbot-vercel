@@ -1132,6 +1132,7 @@ let timeOutChatbot = (sender_psid) => {
 
 let adminSendReservationRequest = (psid, data) => {
     return new Promise(async (resolve, reject) => {
+        console.log("Check admin psid", psid)
         try {
             let response1 = "Đã có thêm 1 lượt đặt bàn";
             let response2 = `Khách hàng: ${data.name}

@@ -330,6 +330,7 @@ let handleReserveTableAjax = async (req, res) => {
         }
 
         let reservationRequest = bookingResult.data;
+        await chatBotService.adminSendReservationRequest(data.psid, data)
         console.log("reservationRequest::", reservationRequest)
         let response2 = {
             "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
