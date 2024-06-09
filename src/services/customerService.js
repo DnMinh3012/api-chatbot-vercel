@@ -263,29 +263,48 @@ let DeleteAppointment = async (data) => {
 
 const feedbackAppointment = async (data) => {
     try {
-        if (!data.email || !data.phone || !data.reservationRequestId) {
+        // Kiểm tra các tham số đầu vào
+        if (!data.email || !data.phone || !data.reservationRequestId || !data.feedback) {
             return {
                 errCode: 1,
                 message: "Missing required parameters"
             };
-        } else {
-            let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
-            if (!reservation) {
-                return {
-                    errCode: 2,
-                    message: "Reservation request not found"
-                };
-            }
-            let content = data.feedback
-            let reservationRequestId = data.reservationRequestId
+        }
+
+        // Tìm kiếm yêu cầu đặt chỗ theo ID
+        let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
+        if (!reservation) {
+            return {
+                errCode: 2,
+                message: "Reservation request not found"
+            };
+        }
+
+        // Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
+        const transaction = await sequelize.transaction();
+
+        try {
+            // Tạo phản hồi mới
             const newFeedback = await FeedbackModel.create({
-                content,
-                reservationRequestId,
-            });
+                content: data.feedback,
+                reservationRequestId: data.reservationRequestId,
+            }, { transaction });
+
+            // Lưu transaction
+            await transaction.commit();
 
             return {
                 errCode: 0,
+                message: "Feedback submitted successfully",
                 feedback: newFeedback
+            };
+        } catch (error) {
+            // Rollback transaction nếu có lỗi
+            await transaction.rollback();
+            console.error("Error while creating feedback:", error);
+            return {
+                errCode: 3,
+                message: "An error occurred while saving the feedback"
             };
         }
     } catch (error) {
