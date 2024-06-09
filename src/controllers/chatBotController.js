@@ -291,9 +291,12 @@ let getFeedbackTable = async (req, res) => {
     })
 }
 
-let getDeleteReserveTable = (req, res) => {
+let getDeleteReserveTable = async (req, res) => {
     let senderId = req.params.senderId;
     let reservationRequestId = req.params.reservationRequestId;
+    let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+    let table = await TableModel.findOne({ where: { id: reservation.tableId } });
+    let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
     return res.render('delete-table.ejs', {
         senderId: senderId,
         reservationRequestId: reservationRequestId,
