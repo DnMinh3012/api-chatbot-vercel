@@ -296,7 +296,12 @@ let getDeleteReserveTable = (req, res) => {
     let reservationRequestId = req.params.reservationRequestId;
     return res.render('delete-table.ejs', {
         senderId: senderId,
-        reservationRequestId: reservationRequestId
+        reservationRequestId: reservationRequestId,
+        email: customer.email,
+        phone: customer.phone,
+        currentNumber: customer.numberOfSeats,
+        timeOrder: reservation.timeOrder,
+        numberOfSeats: table.numberOfSeats
     });
     console.log("table Type:", reservationRequestId)
 }
@@ -368,17 +373,6 @@ let handleReserveTableAjax = async (req, res) => {
         await chatBotService.sendTypingOn(req.body.psid);
         await chatBotService.sendMessage(req.body.psid, response2);
         await chatBotService.sendMessage(req.body.psid, response);
-        
-        let dataSend = {
-            name: username,
-            phoneNumber: req.body.phoneNumber, 
-        };
-        const emailHtml = emailService.getBodyHTMLEmail(dataSend);
-        // Gửi email thông báo cho KH
-        let customerEmail = req.body.email; // Email của khách hàng
-        const emailSubject = 'Thông báo đặt bàn mới';
-        await emailService.sendEmail(customerEmail, emailSubject, emailHtml);
-
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
@@ -565,6 +559,7 @@ module.exports = {
     handleEditReserveTableAjax: handleEditReserveTableAjax,
     handleDeletetReserveTableAjax: handleDeletetReserveTableAjax,
     setCompleted: setCompleted,
+
     getFeedbackTable: getFeedbackTable,
     setapproved: setapproved,
     handleFeedbackTableAjax: handleFeedbackTableAjax
