@@ -280,33 +280,17 @@ const feedbackAppointment = async (data) => {
             };
         }
 
-        // Bắt đầu transaction để đảm bảo tính toàn vẹn dữ liệu
-        const transaction = await sequelize.transaction();
+        // Tạo phản hồi mới
+        const newFeedback = await FeedbackModel.create({
+            content: data.feedback,
+            reservationRequestId: data.reservationRequestId,
+        });
 
-        try {
-            // Tạo phản hồi mới
-            const newFeedback = await FeedbackModel.create({
-                content: data.feedback,
-                reservationRequestId: data.reservationRequestId,
-            }, { transaction });
-
-            // Lưu transaction
-            await transaction.commit();
-
-            return {
-                errCode: 0,
-                message: "Feedback submitted successfully",
-                feedback: newFeedback
-            };
-        } catch (error) {
-            // Rollback transaction nếu có lỗi
-            await transaction.rollback();
-            console.error("Error while creating feedback:", error);
-            return {
-                errCode: 3,
-                message: "An error occurred while saving the feedback"
-            };
-        }
+        return {
+            errCode: 0,
+            message: "Feedback submitted successfully",
+            feedback: newFeedback
+        };
     } catch (error) {
         console.error("Error in feedbackAppointment:", error);
         return {
@@ -315,6 +299,7 @@ const feedbackAppointment = async (data) => {
         };
     }
 };
+
 
 const makeFeedback = async (reservationRequestId, content) => {
     return await FeedbackModel.create({
