@@ -408,9 +408,10 @@ Xin vui lòng xác nhận yêu cầu.`;
         await chatBotService.sendMessage(req.body.psid, response);
 
         await chatBotService.sendTypingOn(req.body.psid);
-        await chatBotService.sendMessage(24865972223047833, Adminresponse1);
-        await chatBotService.sendMessage(24865972223047833, Adminresponse2);
-        await chatBotService.sendMessage(24865972223047833, Adminresponse3);
+        await chatBotService.sendMessage(req.body.psid, Adminresponse1);
+        await chatBotService.sendMessage(req.body.psid, Adminresponse2);
+        await chatBotService.sendMessage(req.body.psid, Adminresponse3);
+
 
         return res.status(200).json({
             message: 'ok',
