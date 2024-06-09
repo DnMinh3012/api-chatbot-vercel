@@ -560,6 +560,7 @@ let handleFeedbackTableAjax = async (req, res) => {
             "text": `Cảm ơn bạn đã để lại phản hồi xin gửi tặng bạn voucher giảm giá cho lần đặt bàn lần sau: MINHDEPTRAI`
         }
         await chatBotService.sendMessage(req.body.psid, response1)
+        await customerService.feedbackAppointment(data);
         return res.status(200).json({
             message: 'ok',
             data: data

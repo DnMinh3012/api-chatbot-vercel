@@ -1158,7 +1158,7 @@ Xin vui lòng xác nhận yêu cầu.`
                                 "buttons": [
                                     {
                                         type: "web_url",
-                                        url: `https://api-chatbot-render.onrender.com/set-approved/${reservationRequest.id}`,
+                                        url: `https://api-chatbot-render.onrender.com/form-approved-table/${psid}/${reservationRequest.id}`,
                                         title: "Xác nhận yêu cầu",
                                         webview_height_ratio: "tall",
                                         messenger_extensions: true
