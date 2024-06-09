@@ -1134,11 +1134,16 @@ let adminSendReservationRequest = (psid, data) => {
     return new Promise(async (resolve, reject) => {
         console.log("Check admin psid", psid)
         try {
-            let response1 = "Đã có thêm 1 lượt đặt bàn";
-            let response2 = `Khách hàng: ${data.name}
+            let response1 = {
+                "text": "Đã có thêm 1 lượt đặt bàn"
+            };
+
+            let response2 = {
+                "text": `Khách hàng: ${data.name}
 Thời gian đặt bàn: ${data.timeOrder}
 Loại bàn: ${data.TypeId}
-Xin vui lòng xác nhận yêu cầu.`;
+Xin vui lòng xác nhận yêu cầu.`
+            };
 
             let response3 = {
                 attachment: {
