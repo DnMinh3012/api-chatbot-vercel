@@ -15,7 +15,7 @@ const Feedback = sequelize.define("feedback", {
         type: DataTypes.DATE,
     },
 
-    reservationRequest: {
+    reservationRequestId: {
         field: "reservation_request_id",
         type: DataTypes.INTEGER,
         foreignKey: true,
