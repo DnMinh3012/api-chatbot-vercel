@@ -494,7 +494,6 @@ let setapproved = async (req, res) => {
         let Rid = req.params.id;
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
-        reservation.status = "approved";
         console.log("Rid:", {
             "rid": Rid,
             "customerId": customer.id,
@@ -556,7 +555,5 @@ module.exports = {
     handleDeletetReserveTableAjax: handleDeletetReserveTableAjax,
     setCompleted: setCompleted,
     getFeedbackTable: getFeedbackTable,
-    // getFeedbackTable: getFeedbackTable,
-    handleFeedbackTableAjax, handleFeedbackTableAjax,
     setapproved: setapproved
 };
