@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt bàn nhà hàng</title>
+    <script>
+        let senderId = "<%= senderId %>";
+        let reservationRequestId = "<%= reservationRequestId %>";
+        let temail = "<%= email %>";
+        let tphone = "<%= phone %>";
+        let tcurrentNumber = "<%= currentNumber %>";
+        let ttimeOrder = "<%= timeOrder %>";
+        let tnumberOfSeats = "<%= numberOfSeats %>";
+    </script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Load custom Javascript and CSS-->
+    <link rel="stylesheet" href="/src/public/css/style.css">
+
+</head>
+
+<body>
+    <div class="container fix-height">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center mt-3">
+                    <span class="title">Huỷ đặt bàn</span>
+                </div>
+                <input type="text" id="psid" hidden>
+                <input type="text" id="reservationRequestId" hidden>
+                <div class="form-group">
+                    <label for="email">Địa chỉ email (<span style="color: red">*</span>):</label>
+                    <input type="email" id="email" class="form-control" placeholder="Địa chỉ email...">
+                    <div class="invalid-feedback">Địa chỉ email không hợp lệ.</div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Số điện thoại (<span style="color: red">*</span>):</label>
+                    <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
+                    <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
+                </div>
+                <button class="btn btn-primary" id="btnReserveTable">Xac Nhan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'Messenger'));
+
+        window.extAsyncInit = function () {
+            MessengerExtensions.getContext('1170374183946016',
+                function success(thread_context) {
+                    $("#psid").val(thread_context.psid);
+                    fetchReservationData();
+                },
+                function error(err) {
+                    console.log('Lỗi đặt bàn bot', err);
+                    $("#psid").val(senderId);
+                    fetchReservationData();
+                }
+            );
+        };
+
+        function fetchReservationData() {
+            $("#email").val(temail || "");
+            $("#phoneNumber").val(tphone || "");
+            // Add any additional fields as needed
+        }
+
+        function validateInputFields() {
+            const EMAIL_REG = /[a-zA-Z][a-zA-Z0-9_\.]{1,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}/g;
+
+            let email = $("#email");
+            let phoneNumber = $("#phoneNumber");
+
+            if (!email.val().match(EMAIL_REG)) {
+                email.addClass("is-invalid");
+                return false;
+            } else {
+                email.removeClass("is-invalid");
+            }
+
+            if (phoneNumber.val() === "") {
+                phoneNumber.addClass("is-invalid");
+                return false;
+            } else {
+                phoneNumber.removeClass("is-invalid");
+            }
+
+            return true;
+        }
+
+        function handleClickButtonReserveTable() {
+            $("#btnReserveTable").on("click", function (e) {
+                if (validateInputFields()) {
+                    let data = {
+                        psid: $("#psid").val(),
+                        reservationRequestId: reservationRequestId,
+                        email: $("#email").val(),
+                        note: $("#note").val(),
+                        phoneNumber: $("#phoneNumber").val(),
+                    };
+
+                    $.ajax({
+                        url: `${window.location.origin}/set-approved`,
+                        method: "POST",
+                        data: data,
+                        success: function (response) {
+                            console.log(response);
+                            if (response.message === 'ok') {
+                                MessengerExtensions.requestCloseBrowser(function success() {
+                                    console.log('Webview closed');
+                                }, function error(err) {
+                                    console.log('Error closing webview: ' + err);
+                                });
+                            } else {
+                                console.log('Error in reservation: ' + response.message);
+                            }
+                        },
+                        error: function (error) {
+                            console.log('AJAX error: ' + error);
+                        }
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            handleClickButtonReserveTable();
+            fetchReservationData();
+        });
+    </script>
+</body>
+
+</html>

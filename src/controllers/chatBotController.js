@@ -309,6 +309,24 @@ let getDeleteReserveTable = async (req, res) => {
     console.log("table Type:", reservationRequestId)
 }
 
+let getAppovedReserveTable = async (req, res) => {
+    let senderId = req.params.senderId;
+    let reservationRequestId = req.params.reservationRequestId;
+    let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
+    let table = await TableModel.findOne({ where: { id: reservation.tableId } });
+    let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+    return res.render('delete-table.ejs', {
+        senderId: senderId,
+        reservationRequestId: reservationRequestId,
+        email: customer.email,
+        phone: customer.phone,
+        currentNumber: customer.numberOfSeats,
+        timeOrder: reservation.timeOrder,
+        numberOfSeats: table.numberOfSeats
+    });
+    console.log("table Type:", reservationRequestId)
+}
+
 // let getFeedbackTable = (req, res) => {
 //     let senderId = req.params.senderId;
 //     return res.render('feedback-table.ejs', {
@@ -500,6 +518,7 @@ let setCompleted = async (req, res) => {
 let setapproved = async (req, res) => {
     try {
         let Rid = req.params.id;
+        if (!Rid) Rid = req.body.psid;
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
         console.log("Rid:", {
@@ -562,7 +581,7 @@ module.exports = {
     handleEditReserveTableAjax: handleEditReserveTableAjax,
     handleDeletetReserveTableAjax: handleDeletetReserveTableAjax,
     setCompleted: setCompleted,
-
+    getAppovedReserveTable: getAppovedReserveTable,
     getFeedbackTable: getFeedbackTable,
     setapproved: setapproved,
     handleFeedbackTableAjax: handleFeedbackTableAjax
