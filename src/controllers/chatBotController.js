@@ -546,7 +546,7 @@ let handleFeedbackTableAjax = async (req, res) => {
             reservationRequestId: req.body.reservationRequestId,
             username: username,
             email: req.body.email,
-            phone: req.body.phoneNumber,
+            phone: req.body.phone,
             timeOrder: req.body.reserveDate,
             feedback: req.body.note
         }
