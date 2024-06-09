@@ -494,13 +494,14 @@ let setapproved = async (req, res) => {
         let Rid = req.params.id;
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+        reservation.status = "approved";
         console.log("Rid:", {
             "rid": Rid,
             "customerId": customer.id,
             "psid": customer.sender_id
         })
         let response1 = {
-            "text": "Cảm ơn yêu cầu đặt bàn của bạn đã được xác nhận"
+            "text": "Cảm ơn! yêu cầu đặt bàn của bạn đã được xác nhận"
         };
 
         await chatBotService.sendMessage(customer.sender_id, response1)
