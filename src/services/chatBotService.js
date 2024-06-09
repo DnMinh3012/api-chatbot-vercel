@@ -1145,43 +1145,41 @@ Loại bàn: ${data.TypeId}
 Xin vui lòng xác nhận yêu cầu.`
             };
 
-            let response3 = {
-                attachment: {
-                    type: "template",
-                    payload: {
-                        template_type: "generic",
-                        elements: [
+            let response_second = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
                             {
-                                title: "Yêu cầu đặt bàn",
-                                subtitle: `Khách Hàng: ${data.name}`,
-                                buttons: [
+                                "title": "Vimaru restaurant",
+                                "subtitle": "Xin được phục vụ cho bạn những món ngon nhất",
+                                "image_url": "https://bit.ly/imageToSend",
+                                "buttons": [
                                     {
-                                        type: "postback",
-                                        title: "Xác nhận",
-                                        payload: "CONFIRM_RESERVATION",
+                                        "type": "postback",
+                                        "title": "MENU",
+                                        "payload": "MAIN_MENU",
                                     },
                                     {
-                                        type: "postback",
-                                        title: "Huỷ",
-                                        payload: "CANCEL_RESERVATION",
+                                        "type": "postback",
+                                        "title": "Đặt bàn",
+                                        "payload": "SHOW_ROOMS",
                                     },
                                     {
-                                        type: "web_url",
-                                        url: `https://petrung.id.vn/platform/crud/list/reservation-request-resources`,
-                                        title: "Truy cập Website quản lý",
-                                        webview_height_ratio: "tall",
-                                        messenger_extensions: true
+                                        "type": "postback",
+                                        "title": "Hướng dẫn sử dụng Bot",
+                                        "payload": "GUIDE_BOT",
                                     }
                                 ],
-                            }
-                        ]
+                            }]
                     }
                 }
             };
 
             await sendMessage(psid, response1);
             await sendMessage(psid, response2);
-            await sendMessage(psid, response3);
+            await sendMessage(psid, response_second);
 
             resolve();
         } catch (e) {

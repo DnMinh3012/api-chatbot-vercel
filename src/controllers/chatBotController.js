@@ -8,7 +8,7 @@ import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, Fee
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-
+const ADMIN_PSID = process.env.ADMIN_PSID;
 let user = {
     name: "",
     phoneNumber: "",
@@ -330,7 +330,7 @@ let handleReserveTableAjax = async (req, res) => {
         }
 
         let reservationRequest = bookingResult.data;
-        await chatBotService.adminSendReservationRequest(req.body.psid, data)
+        await chatBotService.adminSendReservationRequest(ADMIN_PSID, data)
         console.log("reservationRequest::", reservationRequest)
         let response2 = {
             "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
