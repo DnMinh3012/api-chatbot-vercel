@@ -7,7 +7,7 @@ import TableType from "./table_types.js";
 import Table from "./table.js";
 import ReservationRequest from "./reservation_request.js";
 import User from "./user.js";
-import Feedback from "./feedback.js"
+import Feedback from "./feedback.js";
 
 Dish.belongsTo(DishType, {
     foreignKey: "dish_type_id",
@@ -20,11 +20,11 @@ Menu.belongsToMany(Dish, {
     foreignKey: "menu_id",
 });
 
-
 Table.belongsTo(TableType, {
     foreignKey: "table_type_id",
     as: "tableType",
 });
+
 TableType.hasMany(Table, {
     foreignKey: "table_type_id",
     as: "tables",
@@ -55,5 +55,5 @@ export {
     Table,
     ReservationRequest,
     User,
-    Feedback
-}
+    Feedback,
+};

@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database.js";
 
-
 const ReservationRequest = sequelize.define("reservation_request", {
     id: {
         type: DataTypes.INTEGER,
@@ -13,7 +12,7 @@ const ReservationRequest = sequelize.define("reservation_request", {
         type: DataTypes.DATE,
     },
     status: {
-        type: DataTypes.ENUM("pending", "approved", "rejected"),
+        type: DataTypes.ENUM("pending", "approved", "rejected", "completed"),
         defaultValue: "pending",
     },
     customerId: {
