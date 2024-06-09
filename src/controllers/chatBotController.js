@@ -556,7 +556,5 @@ module.exports = {
     handleDeletetReserveTableAjax: handleDeletetReserveTableAjax,
     setCompleted: setCompleted,
     getFeedbackTable: getFeedbackTable,
-    // getFeedbackTable: getFeedbackTable,
-    handleFeedbackTableAjax, handleFeedbackTableAjax,
     setapproved: setapproved
 };
