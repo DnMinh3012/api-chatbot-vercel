@@ -368,6 +368,17 @@ let handleReserveTableAjax = async (req, res) => {
         await chatBotService.sendTypingOn(req.body.psid);
         await chatBotService.sendMessage(req.body.psid, response2);
         await chatBotService.sendMessage(req.body.psid, response);
+        
+        let dataSend = {
+            name: username,
+            phoneNumber: req.body.phoneNumber, 
+        };
+        const emailHtml = emailService.getBodyHTMLEmail(dataSend);
+        // Gửi email thông báo cho KH
+        let customerEmail = req.body.email; // Email của khách hàng
+        const emailSubject = 'Thông báo đặt bàn mới';
+        await emailService.sendEmail(customerEmail, emailSubject, emailHtml);
+
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
