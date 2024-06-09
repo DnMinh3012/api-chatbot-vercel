@@ -489,54 +489,32 @@ let setCompleted = async (req, res) => {
         })
     }
 }
-// let setapproved = async (req, res) => {
-//     try {
-//         let Rid = req.params.id;
-//         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
-//         let table = await TableModel.findOne({ where: { id: reservation.tableId } });
-//         table.status = "available"
-//         table.save();
-//         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
-//         console.log("Rid:", {
-//             "rid": Rid,
-//             "customerId": customer.id,
-//             "psid": customer.sender_id
-//         })
-//         let response = {
-//             "attachment": {
-//                 "type": "template",
-//                 "payload": {
-//                     "template_type": "generic",
-//                     "elements": [
-//                         {
-//                             "title": "Vimaru restaurant",
-//                             "subtitle": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi, xin hãy để lại đánh giá để bọn tôi có thể phục vụ bạn tốt hơn trong lần sau",
-//                             "image_url": "https://bit.ly/imageToSend",
-//                             "buttons": [
-//                                 {
-//                                     "type": "web_url",
-//                                     "url": `${process.env.URL_WEB_VIEW_FEEDBACK}/${customer.sender_id}/${Rid}`,
-//                                     "title": "Đánh giá",
-//                                     "webview_height_ratio": "tall",
-//                                     "messenger_extensions": true
-//                                 },
-//                             ],
-//                         }]
-//                 }
-//             }
-//         };
-//         await chatBotService.sendMessage(customer.sender_id, response)
-//         return res.status(200).json({
-//             message: "ok",
-//             psid: customer,
-//         })
-//     } catch (e) {
-//         console.log("Loi Reserve table: ", e);
-//         return res.status(500).json({
-//             message: e
-//         })
-//     }
-// }
+let setapproved = async (req, res) => {
+    try {
+        let Rid = req.params.id;
+        let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
+        let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+        console.log("Rid:", {
+            "rid": Rid,
+            "customerId": customer.id,
+            "psid": customer.sender_id
+        })
+        let response1 = {
+            "text": "Cảm ơn yêu cầu đặt bàn của bạn đã được xác nhận"
+        };
+
+        await chatBotService.sendMessage(customer.sender_id, response1)
+        return res.status(200).json({
+            message: "ok",
+            psid: customer,
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
 
 let handleFeedbackTableAjax = async (req, res) => {
     try {

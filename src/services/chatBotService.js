@@ -1130,7 +1130,7 @@ let timeOutChatbot = (sender_psid) => {
 
 
 
-let adminSendReservationRequest = (psid, data) => {
+let adminSendReservationRequest = (psid, data, reservationRequest) => {
     return new Promise(async (resolve, reject) => {
         console.log("Check admin psid", psid)
         try {
@@ -1153,24 +1153,23 @@ Xin vui lòng xác nhận yêu cầu.`
                         "elements": [
                             {
                                 "title": "Vimaru restaurant",
-                                "subtitle": "Xin được phục vụ cho bạn những món ngon nhất",
+                                "subtitle": "Xác nhận yêu cầu",
                                 "image_url": "https://bit.ly/imageToSend",
                                 "buttons": [
                                     {
-                                        "type": "postback",
-                                        "title": "MENU",
-                                        "payload": "MAIN_MENU",
+                                        type: "web_url",
+                                        url: `https://api-chatbot-render.onrender.com/set-approved/${reservationRequest.id}`,
+                                        title: "Xác nhận yêu cầu",
+                                        webview_height_ratio: "tall",
+                                        messenger_extensions: true
                                     },
                                     {
-                                        "type": "postback",
-                                        "title": "Đặt bàn",
-                                        "payload": "SHOW_ROOMS",
+                                        type: "web_url",
+                                        url: `${process.env.URL_WEB_VIEW_DELETE}/${req.body.psid}/${reservationRequest.id}`,
+                                        title: "Huỷ Yêu cầu",
+                                        webview_height_ratio: "tall",
+                                        messenger_extensions: true
                                     },
-                                    {
-                                        "type": "postback",
-                                        "title": "Hướng dẫn sử dụng Bot",
-                                        "payload": "GUIDE_BOT",
-                                    }
                                 ],
                             }]
                     }
