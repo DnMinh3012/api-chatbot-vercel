@@ -315,7 +315,7 @@ let getAppovedReserveTable = async (req, res) => {
     let reservation = await ReservationRequestModel.findOne({ where: { id: reservationRequestId } });
     let table = await TableModel.findOne({ where: { id: reservation.tableId } });
     let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
-    return res.render('delete-table.ejs', {
+    return res.render('approved.ejs', {
         senderId: senderId,
         reservationRequestId: reservationRequestId,
         email: customer.email,

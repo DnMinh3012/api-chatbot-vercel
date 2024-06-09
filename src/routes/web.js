@@ -13,6 +13,9 @@ let initWebRoutes = (app) => {
     router.get('/form-edit-table/:senderId/:reservationRequestId', chatBotController.getEditTable)
     router.get('/form-delete-table/:senderId/:reservationRequestId', chatBotController.getDeleteReserveTable);
     router.get('/form-feedback-table/:senderId/:reservationRequestId', chatBotController.getFeedbackTable)
+    router.get('/form-approved-table/:senderId/:reservationRequestId', chatBotController.getAppovedReserveTable);
+
+
     router.post('/set-completed/:id', chatBotController.setCompleted)
     router.post('/set-approved/:id', chatBotController.setapproved)
 
