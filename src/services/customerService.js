@@ -262,32 +262,47 @@ let DeleteAppointment = async (data) => {
 };
 
 const feedbackAppointment = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            if (!data.email || !data.phone || !data.reservationRequestId) {
+    try {
+        if (!data.email || !data.phone || !data.reservationRequestId) {
+            return {
+                errCode: 1,
+                message: "Missing required parameters"
+            };
+        } else {
+            let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
+            if (!reservation) {
                 return {
-                    errCode: 1,
-                    message: "Missing required parameters"
+                    errCode: 2,
+                    message: "Reservation request not found"
                 };
-            } else {
-                let reservation = await ReservationRequestModel.findOne({ where: { id: data.reservationRequestId } });
-                const newFeedback = await FeedbackModel.create({
-                    // reservationRequestId: data.reservationRequestId,
-                    content: data.feedback
-                });
-
-                resolve({
-                    errCode: 0,
-                    feedback: newFeedback
-                });
             }
-        } catch (error) {
-            console.error("Error in feedbackAppointment:", error);
-            reject(error);
+            let content = data.feedback
+            let reservationRequestId = data.reservationRequestId
+            const newFeedback = await FeedbackModel.create({
+                content,
+                reservationRequestId,
+            });
+
+            return {
+                errCode: 0,
+                feedback: newFeedback
+            };
         }
-    });
+    } catch (error) {
+        console.error("Error in feedbackAppointment:", error);
+        return {
+            errCode: 500,
+            message: "An error occurred while processing your request"
+        };
+    }
 };
 
+const makeFeedback = async (reservationRequestId, content) => {
+    return await FeedbackModel.create({
+        content,
+        reservationRequestId,
+    });
+}
 
 module.exports = {
     findRequestWithCustomerAndTable,
