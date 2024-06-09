@@ -32,9 +32,7 @@ let initWebRoutes = (app) => {
     router.delete('/api/delete-user', userController.handleDeleteUser)
     router.delete('/api/complete-user', userController.handleCompleteUser)
 
-    router.get("/test", async (req, res) => {
-        let user = await chatBotService.getFacebookUsername(3350311028355090);
-    });
+
     // app.get('/get-reservation/:reservationRequestId', async (req, res) => {
     //     try {
     //         const reservationRequestId = req.params.reservationRequestId;
