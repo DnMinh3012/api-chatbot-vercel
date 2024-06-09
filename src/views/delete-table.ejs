@@ -9,6 +9,11 @@
     <script>
         let senderId = "<%= senderId %>";
         let reservationRequestId = "<%= reservationRequestId %>";
+        let temail = "<%= email %>";
+        let tphone = "<%= phone %>";
+        let tcurrentNumber = "<%= currentNumber %>";
+        let ttimeOrder = "<%= timeOrder %>";
+        let tnumberOfSeats = "<%= numberOfSeats %>";
     </script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -35,8 +40,7 @@
                     <span class="title">Huỷ đặt bàn</span>
                 </div>
                 <input type="text" id="psid" hidden>
-                <input type="text" id="reservationRequestId" hidden value="<%= reservationRequestId %>">
-                <!-- Gán giá trị tableTpId -->
+                <input type="text" id="reservationRequestId" hidden>
                 <div class="form-group">
                     <label for="email">Địa chỉ email (<span style="color: red">*</span>):</label>
                     <input type="email" id="email" class="form-control" placeholder="Địa chỉ email...">
@@ -51,7 +55,7 @@
                     <label for="note">Nguyên nhân huỷ</label>
                     <input type="textarea" id="note" class="form-control" placeholder="Ghi chú...">
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable">HUỶ ĐẶT BÀN </button>
+                <button class="btn btn-primary" id="btnReserveTable">HUỶ ĐẶT BÀN</button>
             </div>
         </div>
     </div>
@@ -66,15 +70,12 @@
         }(document, 'script', 'Messenger'));
 
         window.extAsyncInit = function () {
-            // the Messenger Extensions JS SDK is done loading 
             MessengerExtensions.getContext('1170374183946016',
                 function success(thread_context) {
-                    // success 
                     $("#psid").val(thread_context.psid);
                     fetchReservationData();
                 },
                 function error(err) {
-                    // error
                     console.log('Lỗi đặt bàn bot', err);
                     $("#psid").val(senderId);
                     fetchReservationData();
@@ -83,18 +84,9 @@
         };
 
         function fetchReservationData() {
-            // $.ajax({
-            //     url: `${window.location.origin}/get-reservation/${reservationRequestId}`,
-            //     method: "GET",
-            //     success: function (data) {
-            //         $("#email").val(data.customerId);
-            //         $("#phoneNumber").val(data.customerId);
-            //         $("#reserveDate").val(data.timeOrder);
-            //     },
-            //     error: function (error) {
-            //         console.log('Error fetching reservation data: ', error);
-            //     }
-            // });
+            $("#email").val(temail || "");
+            $("#phoneNumber").val(tphone || "");
+            // Add any additional fields as needed
         }
 
         function validateInputFields() {
@@ -102,7 +94,6 @@
 
             let email = $("#email");
             let phoneNumber = $("#phoneNumber");
-            let note = $("#note");
 
             if (!email.val().match(EMAIL_REG)) {
                 email.addClass("is-invalid");
