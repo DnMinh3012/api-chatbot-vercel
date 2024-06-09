@@ -330,45 +330,7 @@ let handleReserveTableAjax = async (req, res) => {
         }
 
         let reservationRequest = bookingResult.data;
-        let Adminresponse1 = "Đã có thêm 1 lượt đặt bàn";
-        let Adminresponse2 = `Khách hàng: ${data.name}
-Thời gian đặt bàn: ${data.timeOrder}
-Loại bàn: ${data.TypeId}
-Xin vui lòng xác nhận yêu cầu.`;
-
-        let Adminresponse3 = {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: [
-                        {
-                            title: "Yêu cầu đặt bàn",
-                            subtitle: `Khách Hàng: ${data.name}`,
-                            buttons: [
-                                {
-                                    type: "postback",
-                                    title: "Xác nhận",
-                                    payload: "CONFIRM_RESERVATION",
-                                },
-                                {
-                                    type: "postback",
-                                    title: "Huỷ",
-                                    payload: "CANCEL_RESERVATION",
-                                },
-                                {
-                                    type: "web_url",
-                                    url: `https://petrung.id.vn/platform/crud/list/reservation-request-resources`,
-                                    title: "Truy cập Website quản lý",
-                                    webview_height_ratio: "tall",
-                                    messenger_extensions: true
-                                }
-                            ],
-                        }
-                    ]
-                }
-            }
-        };
+        await chatBotService.adminSendReservationRequest(req.body.psid, data)
         console.log("reservationRequest::", reservationRequest)
         let response2 = {
             "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
@@ -406,13 +368,6 @@ Xin vui lòng xác nhận yêu cầu.`;
         await chatBotService.sendTypingOn(req.body.psid);
         await chatBotService.sendMessage(req.body.psid, response2);
         await chatBotService.sendMessage(req.body.psid, response);
-
-        await chatBotService.sendTypingOn(req.body.psid);
-        await chatBotService.sendMessage(req.body.psid, Adminresponse1);
-        await chatBotService.sendMessage(req.body.psid, Adminresponse2);
-        await chatBotService.sendMessage(req.body.psid, Adminresponse3);
-
-
         return res.status(200).json({
             message: 'ok',
             psid: req.body.psid,
