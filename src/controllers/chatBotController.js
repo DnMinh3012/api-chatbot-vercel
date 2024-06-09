@@ -330,7 +330,7 @@ let handleReserveTableAjax = async (req, res) => {
         }
 
         let reservationRequest = bookingResult.data;
-        await chatBotService.adminSendReservationRequest(ADMIN_PSID, data)
+        await chatBotService.adminSendReservationRequest(ADMIN_PSID, data, reservationRequest)
         console.log("reservationRequest::", reservationRequest)
         let response2 = {
             "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
@@ -557,6 +557,6 @@ module.exports = {
     setCompleted: setCompleted,
     getFeedbackTable: getFeedbackTable,
     // getFeedbackTable: getFeedbackTable,
-    handleFeedbackTableAjax, handleFeedbackTableAjax
-    // setapproved:setapproved
+    handleFeedbackTableAjax, handleFeedbackTableAjax,
+    setapproved: setapproved
 };
