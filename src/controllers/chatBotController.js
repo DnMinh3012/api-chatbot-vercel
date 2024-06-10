@@ -12,7 +12,7 @@ const ADMIN_PSID = process.env.ADMIN_PSID;
 const WIT_TOKEN = process.env.WIT_TOKEN;
 
 const { Wit, log } = require('node-wit');
-const witClient = new Wit({ accessToken: WIT_TOKEN });
+const witClient = new Wit({ accessToken: "NK6NTYLMJAEKQU3CAUXQT4PJHWCUKLDQ" });
 
 
 let postWebhook = (req, res) => {
