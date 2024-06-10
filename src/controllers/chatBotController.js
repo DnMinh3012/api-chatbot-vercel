@@ -1,6 +1,5 @@
 require("dotenv").config();
 import request from "request";
-import { Wit, log } from 'node-wit';
 import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
@@ -11,6 +10,10 @@ const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const ADMIN_PSID = process.env.ADMIN_PSID;
 const WIT_TOKEN = process.env.WIT_TOKEN;
+
+const { Wit, log } = require('node-wit');
+const witClient = new Wit({ accessToken: WIT_TOKEN });
+
 
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
@@ -76,27 +79,22 @@ let getWebhook = (req, res) => {
     }
 };
 let timeouts = {};
-async function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
         if (received_message.text) {
-            const data = await witClient.message(received_message.text, {});
-            console.log('Wit.ai response:', JSON.stringify(data));
-            const entities = data.entities;
-            if (entities['intent']) {
-                const intent = entities['intent'][0].value;
-                switch (intent) {
-                    case 'Make_Reservation':
-                        response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
-                        break;
-                    case 'Menu_Info':
-                        await chatBotService.handleSendMainMenu(sender_psid);
-                        return; // Exit the function after handling
-                    default:
-                        response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
-                }
-            } else {
-                response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
+            const { entities } = await witClient.message(received_message.text, {});
+            console.log('Wit.ai response:', JSON.stringify(entities));
+            const intent = entities['intent'] && entities['intent'][0].value;
+            switch (intent) {
+                case 'Make_Reservation':
+                    response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
+                    break;
+                case 'Menu_Info':
+                    chatBotService.handleSendMainMenu(sender_psid);
+                    break;
+                default:
+                    response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
         } else if (received_message.attachments) {
             const attachment_url = received_message.attachments[0].payload.url;
@@ -126,21 +124,22 @@ async function handleMessage(sender_psid, received_message) {
                 }
             };
         }
-
-        callSendAPI(sender_psid, response);
-        clearTimeout(timeouts[sender_psid]);
-
-        timeouts[sender_psid] = setTimeout(() => {
-            const response1 = {
-                "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi, Tôi có thể giúp bạn gì nữa không!"
-            };
-            callSendAPI(sender_psid, response1);
-        }, 10000);
     } catch (error) {
-        console.error("Error handling message:", error);
-        // Handle error gracefully, maybe send an apology message to the user
+        console.error('Error handling message:', error);
+        response = { "text": "Xin lỗi, có lỗi xảy ra khi xử lý tin nhắn của bạn." };
     }
+
+    callSendAPI(sender_psid, response);
+    clearTimeout(timeouts[sender_psid]);
+
+    timeouts[sender_psid] = setTimeout(() => {
+        const response1 = {
+            "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi. Tôi có thể giúp bạn gì nữa không!"
+        };
+        callSendAPI(sender_psid, response1);
+    }, 10000);
 }
+
 
 
 // Handles messaging_postbacks events
