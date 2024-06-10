@@ -1,21 +1,17 @@
 require("dotenv").config();
 import request from "request";
+import { Wit, log } from 'node-wit';
 import moment from "moment";
 import chatBotService from "../services/chatBotService";
 import homepageService from "../services/homepageService";
-import customerService from "../services/customerService"
+import customerService from "../services/customerService";
 import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel } from "../model/index";
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const ADMIN_PSID = process.env.ADMIN_PSID;
-let user = {
-    name: "",
-    phoneNumber: "",
-    time: "",
-    quantity: "",
-    createdAt: ""
-};
+const WIT_TOKEN = process.env.WIT_TOKEN;
+
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
@@ -80,19 +76,31 @@ let getWebhook = (req, res) => {
     }
 };
 let timeouts = {};
-// Handles messages events
-function handleMessage(sender_psid, received_message) {
+async function handleMessage(sender_psid, received_message) {
     let response;
-
-    // Checks if the message contains text
     if (received_message.text) {
-        // Create the payload for a basic text message, which
-        // will be added to the body of our request to the Send API
-        response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-        }
+        await client.message(received_message.text, {})
+            .then((data) => {
+                console.log('Wit.ai response:', JSON.stringify(data));
+                let entities = data.entities;
+                if (entities['intent']) {
+                    let intent = entities['intent'][0].value;
+                    switch (intent) {
+                        case 'Make_Reservation':
+                            response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
+                            break;
+                        case 'Menu_Info':
+                            chatBotService.handleSendMainMenu(sender_psid);
+                            break;
+                        default:
+                            response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
+                    }
+                } else {
+                    response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
+                }
+            })
+            .catch(console.error);
     } else if (received_message.attachments) {
-        // Get the URL of the message attachment
         let attachment_url = received_message.attachments[0].payload.url;
         response = {
             "attachment": {
@@ -121,20 +129,16 @@ function handleMessage(sender_psid, received_message) {
         }
     }
 
-    // Send the response message
     callSendAPI(sender_psid, response);
     clearTimeout(timeouts[sender_psid]);
 
-    // Set a new timeout to send a follow-up message after 10 seconds if no response
     timeouts[sender_psid] = setTimeout(() => {
         let response1 = {
-            "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi,Tôi có thể giúp bạn gì nữa không!"
+            "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi, Tôi có thể giúp bạn gì nữa không!"
         };
         callSendAPI(sender_psid, response1);
-    }, 10000); // 10 seconds in milliseconds
+    }, 10000);
 }
-
-
 
 // Handles messaging_postbacks events
 let handlePostback = async (sender_psid, received_postback) => {
