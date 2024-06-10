@@ -82,8 +82,8 @@ let timeouts = {};
 async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
-        if (received_message.text) {
-            const { entities } = await witClient.message(received_message.text, {});
+        if (received_message && received_message.message) {
+            const { entities } = await witClient.message(received_message.message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
             const intent = entities['intent'] && entities['intent'][0].value;
             switch (intent) {
@@ -96,7 +96,7 @@ async function handleMessage(sender_psid, received_message, witClient) {
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
-        } else if (received_message.attachments) {
+        } else if (received_message && received_message.attachments) {
             const attachment_url = received_message.attachments[0].payload.url;
             response = {
                 "attachment": {
@@ -123,6 +123,9 @@ async function handleMessage(sender_psid, received_message, witClient) {
                     }
                 }
             };
+        } else {
+            console.error('Received message is undefined or missing message property');
+            response = { "text": "Xin lỗi, có lỗi xảy ra khi xử lý tin nhắn của bạn." };
         }
     } catch (error) {
         console.error('Error handling message:', error);
