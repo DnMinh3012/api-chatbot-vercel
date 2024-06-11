@@ -88,7 +88,10 @@ async function handleMessage(sender_psid, received_message, witClient) {
     try {
         console.log("received_message", received_message);
 
-        // Kiểm tra nếu received_message và received_message.text tồn tại
+        if (!witClient || !witClient.message) {
+            throw new Error('witClient is not properly defined.');
+        }
+
         if (received_message && received_message.text) {
             const { entities } = await witClient.message(received_message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
@@ -152,6 +155,7 @@ async function handleMessage(sender_psid, received_message, witClient) {
         callSendAPI(sender_psid, response1);
     }, 10000);
 }
+
 
 
 // Handles messaging_postbacks events
