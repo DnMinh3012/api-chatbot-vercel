@@ -83,7 +83,7 @@ let getWebhook = (req, res) => {
 };
 let timeouts = {};
 
-async function handleMessage(sender_psid, received_message, witClient) {
+async function handleMessage(sender_psid, received_message) {
     let response;
     try {
         console.log("received_message", received_message);
