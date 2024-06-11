@@ -87,7 +87,7 @@ async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
         console.log("received_message", received_message)
-        if (received_message) {
+        if (received_message && received_message.text) {
             const { entities } = await witClient.message(received_message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
             const intent = entities['intent'] && entities['intent'][0].value;
@@ -129,7 +129,7 @@ async function handleMessage(sender_psid, received_message, witClient) {
                 }
             };
         } else {
-            console.error('Received message is undefined or missing message property');
+            console.error('Received message is undefined or missing text property');
             response = { "text": "Xin lỗi, có lỗi xảy ra khi xử lý tin nhắn của bạn." };
         }
     } catch (error) {
@@ -149,7 +149,6 @@ async function handleMessage(sender_psid, received_message, witClient) {
         callSendAPI(sender_psid, response1);
     }, 10000);
 }
-
 
 
 // Handles messaging_postbacks events
