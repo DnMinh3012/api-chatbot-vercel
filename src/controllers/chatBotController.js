@@ -87,7 +87,7 @@ async function handleMessage(sender_psid, received_message, witClient) {
     try {
         console.log("received_message", received_message)
         if (received_message) {
-            const { entities } = await witClient.message(received_message.message.text, {});
+            const { entities } = await witClient.message(received_message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
             const intent = entities['intent'] && entities['intent'][0].value;
             switch (intent) {
