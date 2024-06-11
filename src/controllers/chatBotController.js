@@ -82,6 +82,7 @@ let getWebhook = (req, res) => {
     }
 };
 let timeouts = {};
+
 async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
@@ -136,9 +137,11 @@ async function handleMessage(sender_psid, received_message, witClient) {
         response = { "text": "Xin lỗi, có lỗi xảy ra khi xử lý tin nhắn của bạn." };
     }
 
+    // Gọi hàm callSendAPI để gửi phản hồi về cho người dùng
     callSendAPI(sender_psid, response);
-    clearTimeout(timeouts[sender_psid]);
 
+    // Xóa timeout cũ và thiết lập timeout mới
+    clearTimeout(timeouts[sender_psid]);
     timeouts[sender_psid] = setTimeout(() => {
         const response1 = {
             "text": "Xin cảm ơn bạn đã tin tưởng nhà hàng chúng tôi. Tôi có thể giúp bạn gì nữa không!"
