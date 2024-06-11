@@ -12,7 +12,10 @@ const ADMIN_PSID = process.env.ADMIN_PSID;
 const WIT_TOKEN = process.env.WIT_TOKEN;
 
 const { Wit, log } = require('node-wit');
-const witClient = new Wit({ accessToken: "NK6NTYLMJAEKQU3CAUXQT4PJHWCUKLDQ" });
+const witClient = new Wit({
+    accessToken: WIT_TOKEN,
+    logger: new log.Logger(log.DEBUG)
+});
 
 
 let postWebhook = (req, res) => {
@@ -78,31 +81,24 @@ let getWebhook = (req, res) => {
         }
     }
 };
-const timeouts = {};
-
+let timeouts = {};
 async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
+        console.log("received_message", received_message)
         if (received_message) {
             const { entities } = await witClient.message(received_message.message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
-
-            // Check for greetings
-            const greeting = firstTrait(entities, 'greetings');
-            if (greeting && greeting.confidence > 0.8) {
-                response = { "text": "Hi there!" };
-            } else {
-                const intent = entities['intent'] && entities['intent'][0].value;
-                switch (intent) {
-                    case 'Make_Reservation':
-                        response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
-                        break;
-                    case 'Menu_Info':
-                        chatBotService.handleSendMainMenu(sender_psid);
-                        break;
-                    default:
-                        response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
-                }
+            const intent = entities['intent'] && entities['intent'][0].value;
+            switch (intent) {
+                case 'Make_Reservation':
+                    response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
+                    break;
+                case 'Menu_Info':
+                    chatBotService.handleSendMainMenu(sender_psid);
+                    break;
+                default:
+                    response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
         } else if (received_message && received_message.attachments) {
             const attachment_url = received_message.attachments[0].payload.url;
@@ -149,10 +145,6 @@ async function handleMessage(sender_psid, received_message, witClient) {
         };
         callSendAPI(sender_psid, response1);
     }, 10000);
-}
-
-function firstTrait(nlp, name) {
-    return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
 
