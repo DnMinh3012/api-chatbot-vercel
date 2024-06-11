@@ -78,23 +78,31 @@ let getWebhook = (req, res) => {
         }
     }
 };
-let timeouts = {};
+const timeouts = {};
+
 async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
         if (received_message) {
             const { entities } = await witClient.message(received_message.message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
-            const intent = entities['intent'] && entities['intent'][0].value;
-            switch (intent) {
-                case 'Make_Reservation':
-                    response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
-                    break;
-                case 'Menu_Info':
-                    chatBotService.handleSendMainMenu(sender_psid);
-                    break;
-                default:
-                    response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
+
+            // Check for greetings
+            const greeting = firstTrait(entities, 'greetings');
+            if (greeting && greeting.confidence > 0.8) {
+                response = { "text": "Hi there!" };
+            } else {
+                const intent = entities['intent'] && entities['intent'][0].value;
+                switch (intent) {
+                    case 'Make_Reservation':
+                        response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
+                        break;
+                    case 'Menu_Info':
+                        chatBotService.handleSendMainMenu(sender_psid);
+                        break;
+                    default:
+                        response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
+                }
             }
         } else if (received_message && received_message.attachments) {
             const attachment_url = received_message.attachments[0].payload.url;
@@ -141,6 +149,10 @@ async function handleMessage(sender_psid, received_message, witClient) {
         };
         callSendAPI(sender_psid, response1);
     }, 10000);
+}
+
+function firstTrait(nlp, name) {
+    return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 }
 
 
@@ -402,10 +414,10 @@ let handleReserveTableAjax = async (req, res) => {
         await chatBotService.sendTypingOn(req.body.psid);
         await chatBotService.sendMessage(req.body.psid, response2);
         await chatBotService.sendMessage(req.body.psid, response);
-        
+
         let dataSend = {
             name: username,
-            phoneNumber: req.body.phoneNumber, 
+            phoneNumber: req.body.phoneNumber,
         };
         const emailHtml = emailService.getBodyHTMLEmail(dataSend);
         // Gửi email thông báo cho người quản lý
