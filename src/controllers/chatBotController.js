@@ -82,7 +82,7 @@ let timeouts = {};
 async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
-        if (received_message && received_message.message) {
+        if (received_message) {
             const { entities } = await witClient.message(received_message.message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
             const intent = entities['intent'] && entities['intent'][0].value;
@@ -160,7 +160,6 @@ let handlePostback = async (sender_psid, received_postback) => {
         case "RE_STARTED":
             //get facebook username
             let username = await chatBotService.getFacebookUsername(sender_psid);
-            user.name = username;
             //send welcome response to users
 
             await chatBotService.handleGetStartedResponding(username, sender_psid);
