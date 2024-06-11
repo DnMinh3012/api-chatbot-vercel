@@ -86,18 +86,21 @@ let timeouts = {};
 async function handleMessage(sender_psid, received_message, witClient) {
     let response;
     try {
-        console.log("received_message", received_message)
+        console.log("received_message", received_message);
+
+        // Kiểm tra nếu received_message và received_message.text tồn tại
         if (received_message && received_message.text) {
             const { entities } = await witClient.message(received_message.text, {});
             console.log('Wit.ai response:', JSON.stringify(entities));
-            const intent = entities['intent'] && entities['intent'][0].value;
+            const intent = entities['intent'] && entities['intent'][0] && entities['intent'][0].value;
+
             switch (intent) {
                 case 'Make_Reservation':
                     response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
                     break;
                 case 'Menu_Info':
                     chatBotService.handleSendMainMenu(sender_psid);
-                    break;
+                    return; // Thoát khỏi hàm sau khi gửi thực đơn chính
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
@@ -129,7 +132,7 @@ async function handleMessage(sender_psid, received_message, witClient) {
                 }
             };
         } else {
-            console.error('Received message is undefined or missing text property');
+            console.error('Received message is undefined or missing message property');
             response = { "text": "Xin lỗi, có lỗi xảy ra khi xử lý tin nhắn của bạn." };
         }
     } catch (error) {
