@@ -119,6 +119,17 @@ async function handleMessage(sender_psid, received_message) {
                         response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn." };
                     }
                     break;
+                case 'Change_Reservation':
+                    tableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
+                    if (tableIdEntity) {
+                        const RtableId = tableIdEntity.value;
+                        let customer = await chatBotService.ChangeReservation(sender_psid, RtableId);
+                        console.log("customer AI", customer);
+                        response = customer.response;
+                    } else {
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn." };
+                    }
+                    break;
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }

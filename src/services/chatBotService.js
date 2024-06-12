@@ -1235,6 +1235,64 @@ let CheckReservation = async (psid, RtableId) => {
     }
 };
 
+let ChangeReservation = async (psid, RtableId) => {
+    try {
+        if (!psid || !RtableId) {
+            return {
+                errCode: 1,
+                message: "Missing required parameters",
+                response: "Xin hãy gửi tôi mã bàn của bạn"
+            };
+        }
+
+        let reservation = await ReservationRequestModel.findOne({ where: { id: RtableId } });
+        if (!reservation) {
+            return {
+                errCode: 2,
+                message: "Reservation request not found",
+                response: "Chúng tôi không tìm thấy yêu cầu đặt chỗ của bạn"
+            };
+        }
+
+
+        let response = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: `Ấn nút dưới đây để Thay Đổi giờ đặt bàn của bạn`,
+                            buttons: [
+                                {
+                                    type: "web_url",
+                                    url: `${process.env.URL_WEB_VIEW_EDIT}/${psid}/${RtableId}`,
+                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    webview_height_ratio: "tall",
+                                    messenger_extensions: true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+
+        return {
+            errCode: 0,
+            message: "Feedback submitted successfully",
+            response: response
+        };
+    } catch (error) {
+        console.error("Error in CheckReservation:", error);
+        return {
+            errCode: 500,
+            message: "An error occurred while processing your request",
+            response: { text: "Xin lỗi, đã có lỗi xảy ra khi xử lý yêu cầu của bạn." }
+        };
+    }
+};
+
 module.exports = {
     getFacebookUsername: getFacebookUsername,
     handleGetStartedResponding: handleGetStartedResponding,
@@ -1261,4 +1319,5 @@ module.exports = {
     handleSendMenuDetail: handleSendMenuDetail,
     adminSendReservationRequest: adminSendReservationRequest,
     CheckReservation: CheckReservation,
+    ChangeReservation: ChangeReservation
 };
