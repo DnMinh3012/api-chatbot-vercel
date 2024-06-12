@@ -1188,7 +1188,7 @@ Xin vui lòng xác nhận yêu cầu.`
         }
     });
 };
-let CheckReservation = async (psid, tableId) => {
+let CheckReservation = async (psid, RtableId) => {
     try {
         if (!psid || !tableId) {
             return {
@@ -1198,16 +1198,7 @@ let CheckReservation = async (psid, tableId) => {
             };
         }
 
-        let table = await TableModel.findOne({ where: { id: tableId } });
-        if (!table) {
-            return {
-                errCode: 2,
-                message: "Table not found",
-                response: "Chúng tôi không tìm thấy bàn của bạn"
-            };
-        }
-
-        let reservation = await ReservationRequestModel.findOne({ where: { tableId: table.id } });
+        let reservation = await ReservationRequestModel.findOne({ where: { id: RtableId } });
         if (!reservation) {
             return {
                 errCode: 2,

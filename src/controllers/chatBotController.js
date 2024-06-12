@@ -111,12 +111,12 @@ async function handleMessage(sender_psid, received_message) {
                 case 'Check_Reservation':
                     const tableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
                     if (tableIdEntity) {
-                        const tableId = tableIdEntity.value;
-                        let customer = await chatBotService.CheckReservation(sender_psid, tableId);
+                        const RtableId = tableIdEntity.value;
+                        let customer = await chatBotService.CheckReservation(sender_psid, RtableId);
                         console.log("customer AI", customer);
                         response = customer.response;
                     } else {
-                        response = { "text": "Xin vui lòng cung cấp số bàn của bạn." };
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn." };
                     }
                     break;
                 default:
@@ -397,7 +397,7 @@ let handleReserveTableAjax = async (req, res) => {
         console.log("reservationRequest::", reservationRequest)
         let response2 = {
             "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
-        \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`
+        \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}\n Mã đặt bàn của bạn là: ${reservationRequest.id}`
         }
         let response = {
             attachment: {
