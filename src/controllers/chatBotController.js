@@ -101,7 +101,8 @@ async function handleMessage(sender_psid, received_message) {
 
             switch (intent) {
                 case 'Make_Reservation':
-                    response = { "text": "Bạn muốn đặt bàn. Xin vui lòng cung cấp thêm thông tin." };
+                    response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
+                    chatBotService.handleShowRooms(sender_psid);
                     break;
                 case 'Menu_Info':
                     chatBotService.handleSendMainMenu(sender_psid);
