@@ -3,7 +3,8 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import moment from "moment"
 import { google } from 'googleapis';
-import { TableModel, TableTypeModel, DishModel, DishTypeModel, MenuModel } from "../model/index.js";
+import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel } from "../model/index";
+
 import { where } from "sequelize";
 import { response } from "express";
 require("dotenv").config();
