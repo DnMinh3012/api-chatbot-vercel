@@ -114,7 +114,7 @@ async function handleMessage(sender_psid, received_message) {
                     if (tableIdEntity) {
                         const tableId = tableIdEntity.value;
                         let customer = chatBotService.CheckReservation(sender_psid, tableId);
-                        console.log("customer AI", customer)
+                        console.log("customer AI", customer.data)
                         response = {
                             "text": `Thông tin bàn số ${tableId} của bạn:
                         `
