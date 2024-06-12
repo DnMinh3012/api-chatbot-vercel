@@ -127,7 +127,7 @@ async function handleMessage(sender_psid, received_message) {
                         console.log("customer AI", customer);
                         response = customer.response;
                     } else {
-                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Thông tin bàn đặt + Mã đặt bàn'." };
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Thay đổi thông tin bàn đặt + Mã đặt bàn'." };
                     }
                     break;
                 case 'Cancel_Reservation':
@@ -138,7 +138,7 @@ async function handleMessage(sender_psid, received_message) {
                         console.log("customer AI", customer);
                         response = customer.response;
                     } else {
-                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Thông tin bàn đặt + Mã đặt bàn'." };
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Huỷ đặt bàn + Mã đặt bàn'." };
                     }
                     break;
                 default:
