@@ -595,6 +595,8 @@ let setapproved = async (req, res) => {
         let Rid = req.params.id;
         if (!Rid) Rid = req.body.psid;
         let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
+        reservation.status = "approved";
+        reservation.save();
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
         console.log("Rid:", {
             "rid": Rid,
