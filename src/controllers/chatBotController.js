@@ -121,7 +121,7 @@ async function handleMessage(sender_psid, received_message) {
                     break;
                 case 'Change_Reservation':
                     const changeTableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
-                    if (tableIdEntity) {
+                    if (changeTableIdEntity) {
                         const RtableId = changeTableIdEntity.value;
                         let customer = await chatBotService.ChangeReservation(sender_psid, RtableId);
                         console.log("customer AI", customer);
