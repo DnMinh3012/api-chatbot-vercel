@@ -5,6 +5,7 @@ import moment from "moment"
 import { google } from 'googleapis';
 import { TableModel, TableTypeModel, DishModel, DishTypeModel, MenuModel } from "../model/index.js";
 import { where } from "sequelize";
+import { response } from "express";
 require("dotenv").config();
 const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
 
@@ -1186,7 +1187,56 @@ Xin vui lòng xác nhận yêu cầu.`
         }
     });
 };
+let CheckReservation = async (psid, tableId) => {
+    try {
+        // Kiểm tra các tham số đầu vào
+        if (!psid || !tableId) {
+            return {
+                errCode: 1,
+                message: "Missing required parameters",
+                response: "Xin hãy gửi tôi mã bàn của bạn"
 
+            };
+        }
+
+        // Tìm kiếm yêu cầu đặt chỗ theo ID
+        let table = await TableModel.findOne({ where: { id: tableId } });
+        if (!reservation) {
+            return {
+                errCode: 2,
+                message: "Reservation request not found",
+                response: "Chúng tôi không tìm thấy bàn đặt của bạn"
+            };
+        }
+        let reservation = await ReservationRequestModel.findOne({ where: { tableId: table.id } });
+        let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+        if (!reservation || !customer) {
+            return {
+                errCode: 2,
+                message: "Reservation request not found",
+                response: "Chúng tôi không tìm thấy thông tin của bạn"
+            };
+        }
+        let data = {
+            name: customer.name,
+            phone: customer.phone,
+            timeOrder: reservation.timeOrder,
+            numberOfSeats: table.numberOfSeats
+        }
+
+        return {
+            errCode: 0,
+            message: "Feedback submitted successfully",
+            data: data
+        };
+    } catch (error) {
+        console.error("Error in feedbackAppointment:", error);
+        return {
+            errCode: 500,
+            message: "An error occurred while processing your request"
+        };
+    }
+}
 module.exports = {
     getFacebookUsername: getFacebookUsername,
     handleGetStartedResponding: handleGetStartedResponding,
@@ -1211,5 +1261,6 @@ module.exports = {
     writeDataToGoogleSheet: writeDataToGoogleSheet,
     timeOutChatbot: timeOutChatbot,
     handleSendMenuDetail: handleSendMenuDetail,
-    adminSendReservationRequest: adminSendReservationRequest
+    adminSendReservationRequest: adminSendReservationRequest,
+    CheckReservation: CheckReservation,
 };

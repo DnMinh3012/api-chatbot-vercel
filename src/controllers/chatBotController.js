@@ -113,7 +113,13 @@ async function handleMessage(sender_psid, received_message) {
                     const tableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
                     if (tableIdEntity) {
                         const tableId = tableIdEntity.value;
-                        response = { "text": `Thông tin bàn số ${tableId} của bạn:` };
+                        let customer = chatBotService.CheckReservation(sender_psid, tableId);
+                        response = {
+                            "text": `Thông tin bàn số ${tableId} của bạn:
+                        \n Tên KH: ${customer.data.name}
+                        \n Số điện thoại: ${customer.data.phone}
+                        \n Giờ đặt bàn: ${customer.data.timeOrder}`
+                        };
                         // Here you can add more logic to handle reservation info for the tableId
                     } else {
                         response = { "text": "Xin vui lòng cung cấp số bàn của bạn." };
