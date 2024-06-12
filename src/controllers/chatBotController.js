@@ -424,10 +424,12 @@ let handleReserveTableAjax = async (req, res) => {
             phoneNumber: req.body.phoneNumber,
         };
         const emailHtml = emailService.getBodyHTMLEmail(dataSend);
+        console.log("Email HTML content:", emailHtml); // Log nội dung email HTML
         // Gửi email thông báo cho người quản lý
         let customerEmail = req.body.email; // Email của khách hàng
         const emailSubject = 'Thông báo đặt bàn mới';
         await emailService.sendEmail(customerEmail, emailSubject, emailHtml);
+        console.log("Email sent successfully"); // Log sau khi gửi email
 
         return res.status(200).json({
             message: 'ok',
