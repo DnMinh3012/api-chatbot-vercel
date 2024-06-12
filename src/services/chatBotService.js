@@ -1190,7 +1190,7 @@ Xin vui lòng xác nhận yêu cầu.`
 };
 let CheckReservation = async (psid, RtableId) => {
     try {
-        if (!psid || !tableId) {
+        if (!psid || !RtableId) {
             return {
                 errCode: 1,
                 message: "Missing required parameters",
@@ -1217,7 +1217,7 @@ let CheckReservation = async (psid, RtableId) => {
         }
 
         let response = {
-            text: `Thông tin bàn số ${tableId} của bạn:\nTên KH: ${customer.name}\nSố điện thoại: ${customer.phone}\nGiờ đặt bàn: ${reservation.timeOrder}`
+            text: `Thông tin bàn số ${RtableId} của bạn:\nTên KH: ${customer.name}\nSố điện thoại: ${customer.phone}\nGiờ đặt bàn: ${reservation.timeOrder}`
         };
 
         return {
