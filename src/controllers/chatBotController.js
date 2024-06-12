@@ -130,11 +130,11 @@ async function handleMessage(sender_psid, received_message) {
                         response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn." };
                     }
                     break;
-                case 'Change_Reservation':
-                    const changeTableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
-                    if (changeTableIdEntity) {
-                        const RtableId = changeTableIdEntity.value;
-                        let customer = await chatBotService.ChangeReservation(sender_psid, RtableId);
+                case 'Cancel_Reservation':
+                    const CancelTableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
+                    if (CancelTableIdEntity) {
+                        const RtableId = CancelTableIdEntity.value;
+                        let customer = await chatBotService.CancelReservation(sender_psid, RtableId);
                         console.log("customer AI", customer);
                         response = customer.response;
                     } else {
