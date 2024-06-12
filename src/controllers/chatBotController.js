@@ -104,13 +104,21 @@ async function handleMessage(sender_psid, received_message) {
                 case 'Make_Reservation':
                     response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
                     chatBotService.handleShowRooms(sender_psid);
-                    break; // Ensure to exit after handling this case
+                    break;
                 case 'Menu_Info':
                     chatBotService.handleSendMainMenu(sender_psid);
                     return; // Exit the function after sending the main menu
                 case 'Check_Reservation':
-                    response = { "text": "Xin gửi tôi số bàn của bạn" };
-                    break; // Ensure to exit after handling this case
+                    // Check if table_id entity exists and get its value
+                    const tableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
+                    if (tableIdEntity) {
+                        const tableId = tableIdEntity.value;
+                        response = { "text": `Thông tin bàn số ${tableId} của bạn:` };
+                        // Here you can add more logic to handle reservation info for the tableId
+                    } else {
+                        response = { "text": "Xin vui lòng cung cấp số bàn của bạn." };
+                    }
+                    break;
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
@@ -162,6 +170,7 @@ async function handleMessage(sender_psid, received_message) {
         callSendAPI(sender_psid, response1);
     }, 10000);
 }
+
 
 
 
