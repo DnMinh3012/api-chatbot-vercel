@@ -423,6 +423,9 @@ let handleReserveTableAjax = async (req, res) => {
         let dataSend = {
             name: username,
             phoneNumber: req.body.phoneNumber,
+            timeOrder: req.body.reserveDate,
+            note: req.body.note,
+            number_of_seats: req.body.currentNumber,
         };
         const emailHtml = emailService.getBodyHTMLEmail(dataSend);
         console.log("Email HTML content:", emailHtml); // Log nội dung email HTML
