@@ -1189,54 +1189,60 @@ Xin vui lòng xác nhận yêu cầu.`
 };
 let CheckReservation = async (psid, tableId) => {
     try {
-        // Kiểm tra các tham số đầu vào
         if (!psid || !tableId) {
             return {
                 errCode: 1,
                 message: "Missing required parameters",
                 response: "Xin hãy gửi tôi mã bàn của bạn"
-
             };
         }
 
-        // Tìm kiếm yêu cầu đặt chỗ theo ID
         let table = await TableModel.findOne({ where: { id: tableId } });
+        if (!table) {
+            return {
+                errCode: 2,
+                message: "Table not found",
+                response: "Chúng tôi không tìm thấy bàn của bạn"
+            };
+        }
+
+        let reservation = await ReservationRequestModel.findOne({ where: { tableId: table.id } });
         if (!reservation) {
             return {
                 errCode: 2,
                 message: "Reservation request not found",
-                response: "Chúng tôi không tìm thấy bàn đặt của bạn"
+                response: "Chúng tôi không tìm thấy yêu cầu đặt chỗ của bạn"
             };
         }
-        let reservation = await ReservationRequestModel.findOne({ where: { tableId: table.id } });
+
         let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
-        if (!reservation || !customer) {
+        if (!customer) {
             return {
                 errCode: 2,
-                message: "Reservation request not found",
-                response: "Chúng tôi không tìm thấy thông tin của bạn"
+                message: "Customer not found",
+                response: "Chúng tôi không tìm thấy thông tin khách hàng của bạn"
             };
         }
-        let data = {
-            name: customer.name,
-            phone: customer.phone,
-            timeOrder: reservation.timeOrder,
-            numberOfSeats: table.numberOfSeats
-        }
+
+        let response = {
+            text: `Thông tin bàn số ${tableId} của bạn:\nTên KH: ${customer.name}\nSố điện thoại: ${customer.phone}\nGiờ đặt bàn: ${reservation.timeOrder}`
+        };
 
         return {
             errCode: 0,
             message: "Feedback submitted successfully",
-            data: data
+            response: response
         };
     } catch (error) {
-        console.error("Error in feedbackAppointment:", error);
+        console.error("Error in CheckReservation:", error);
         return {
             errCode: 500,
-            message: "An error occurred while processing your request"
+            message: "An error occurred while processing your request",
+            response: { text: "Xin lỗi, đã có lỗi xảy ra khi xử lý yêu cầu của bạn." }
         };
     }
-}
+};
+
 module.exports = {
     getFacebookUsername: getFacebookUsername,
     handleGetStartedResponding: handleGetStartedResponding,

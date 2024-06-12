@@ -109,20 +109,12 @@ async function handleMessage(sender_psid, received_message) {
                     chatBotService.handleSendMainMenu(sender_psid);
                     return; // Exit the function after sending the main menu
                 case 'Check_Reservation':
-                    // Check if table_id entity exists and get its value
                     const tableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
                     if (tableIdEntity) {
                         const tableId = tableIdEntity.value;
-                        let customer = chatBotService.CheckReservation(sender_psid, tableId);
-                        console.log("customer AI", customer.data)
-                        response = {
-                            "text": `Thông tin bàn số ${tableId} của bạn:
-                        `
-                            // \n Tên KH: ${customer.data.name}
-                            // \n Số điện thoại: ${customer.data.phone}
-                            // \n Giờ đặt bàn: ${customer.data.timeOrder}
-                        };
-                        // Here you can add more logic to handle reservation info for the tableId
+                        let customer = await chatBotService.CheckReservation(sender_psid, tableId);
+                        console.log("customer AI", customer);
+                        response = customer.response;
                     } else {
                         response = { "text": "Xin vui lòng cung cấp số bàn của bạn." };
                     }
