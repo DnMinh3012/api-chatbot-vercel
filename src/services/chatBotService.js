@@ -1325,7 +1325,7 @@ let CancelReservation = async (psid, RtableId) => {
                                 {
                                     type: "web_url",
                                     url: `${process.env.URL_WEB_VIEW_DELETE}/${psid}/${RtableId}`,
-                                    title: "Thay đổi Thời Gian đặt bàn",
+                                    title: "Huỷ đặt bàn",
                                     webview_height_ratio: "tall",
                                     messenger_extensions: true
                                 }
