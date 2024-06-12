@@ -29,7 +29,6 @@
 
     <!-- Load custom Javascript and CSS-->
     <link rel="stylesheet" href="/src/public/css/style.css">
-
 </head>
 
 <body>
@@ -51,7 +50,7 @@
                     <input type="text" id="phoneNumber" class="form-control" placeholder="Số điện thoại...">
                     <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
                 </div>
-                <button class="btn btn-primary" id="btnReserveTable">Xac Nhan</button>
+                <button class="btn btn-primary" id="btnReserveTable">Xác Nhận</button>
             </div>
         </div>
     </div>
@@ -82,7 +81,6 @@
         function fetchReservationData() {
             $("#email").val(temail || "");
             $("#phoneNumber").val(tphone || "");
-            // Add any additional fields as needed
         }
 
         function validateInputFields() {
