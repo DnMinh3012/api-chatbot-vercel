@@ -104,13 +104,13 @@ async function handleMessage(sender_psid, received_message) {
                 case 'Make_Reservation':
                     response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
                     chatBotService.handleShowRooms(sender_psid);
-                    break;
+                    break; // Ensure to exit after handling this case
                 case 'Menu_Info':
                     chatBotService.handleSendMainMenu(sender_psid);
                     return; // Exit the function after sending the main menu
                 case 'Check_Reservation':
                     response = { "text": "Xin gửi tôi số bàn của bạn" };
-                    return;
+                    break; // Ensure to exit after handling this case
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
