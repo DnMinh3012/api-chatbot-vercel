@@ -110,6 +110,7 @@ async function handleMessage(sender_psid, received_message) {
                     return; // Exit the function after sending the main menu
                 case 'Check_Reservation':
                     response = { "text": "Xin gửi tôi số bàn của bạn" };
+                    return;
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
