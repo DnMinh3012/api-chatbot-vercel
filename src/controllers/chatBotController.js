@@ -93,9 +93,11 @@ async function handleMessage(sender_psid, received_message) {
         }
 
         if (received_message && received_message.text) {
-            const { entities } = await witClient.message(received_message.text, {});
-            console.log('Wit.ai response:', JSON.stringify(entities));
-            const intent = entities['intent'] && entities['intent'][0] && entities['intent'][0].value;
+            const witResponse = await witClient.message(received_message.text, {});
+            console.log('Wit.ai response:', JSON.stringify(witResponse));
+
+            // Adjusted the way to capture intent
+            const intent = witResponse.intents && witResponse.intents[0] && witResponse.intents[0].name;
 
             switch (intent) {
                 case 'Make_Reservation':
@@ -103,7 +105,7 @@ async function handleMessage(sender_psid, received_message) {
                     break;
                 case 'Menu_Info':
                     chatBotService.handleSendMainMenu(sender_psid);
-                    return; // Thoát khỏi hàm sau khi gửi thực đơn chính
+                    return; // Exit the function after sending the main menu
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
@@ -143,10 +145,10 @@ async function handleMessage(sender_psid, received_message) {
         response = { "text": "Xin lỗi, có lỗi xảy ra khi xử lý tin nhắn của bạn." };
     }
 
-    // Gọi hàm callSendAPI để gửi phản hồi về cho người dùng
+    // Call the send API to send the response back to the user
     callSendAPI(sender_psid, response);
 
-    // Xóa timeout cũ và thiết lập timeout mới
+    // Clear old timeout and set up a new timeout
     clearTimeout(timeouts[sender_psid]);
     timeouts[sender_psid] = setTimeout(() => {
         const response1 = {
