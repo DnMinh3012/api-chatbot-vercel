@@ -1160,7 +1160,7 @@ Xin vui lòng xác nhận yêu cầu.`
                                 "buttons": [
                                     {
                                         type: "web_url",
-                                        url: `https://api-chatbot-render.onrender.com/form-approved-table/${psid}/${reservationRequest.id}`,
+                                        url: `https://petrung.id.vn/platform/crud/list/reservation-request-resources`,
                                         title: "Xác nhận yêu cầu",
                                         webview_height_ratio: "tall",
                                         messenger_extensions: true
