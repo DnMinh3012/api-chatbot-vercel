@@ -102,6 +102,12 @@ async function handleMessage(sender_psid, received_message) {
 
             switch (intent) {
                 case 'Make_Reservation':
+                    const AskEntity = witResponse.entities['ask_question:ask_question'] && witResponse.entities['ask_question:ask_question'][0];
+                    if (AskEntity) {
+                        const askQuestion = AskEntity.value;
+                        response = { "text": "có thể vui lòng đặt bàn theo link dưới" }
+                        break;
+                    }
                     response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
                     chatBotService.handleShowRooms(sender_psid);
                     break;
