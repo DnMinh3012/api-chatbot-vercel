@@ -18,7 +18,9 @@ let initWebRoutes = (app) => {
 
     router.post('/set-completed/:id', chatBotController.setCompleted)
     router.post('/set-approved/:id', chatBotController.setapproved)
-
+router.post('/set-arrived/:id', chatBotController.setArrived)
+    router.post('/set-not-arrived/:id', chatBotController.setNotArrived)
+    
     // router.get("/form-feedback-table/:senderId", chatBotController.getFeedbackTable);
     router.get("/webhook", chatBotController.getWebhook);
     router.post("/webhook", chatBotController.postWebhook);
