@@ -689,6 +689,8 @@ let setNotArrived = async (req, res) => {
         };
 
         await chatBotService.sendMessage(customer.sender_id, response1)
+        await chatBotService.sendMessage(customer.sender_id, response)
+        
         return res.status(200).json({
             message: "ok",
             psid: customer,
