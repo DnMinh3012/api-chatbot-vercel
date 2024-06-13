@@ -5,7 +5,6 @@ import moment from "moment"
 import { google } from 'googleapis';
 import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel, MenuModel, DishModel } from "../model/index";
 import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel, MenuModel,DishModel } from "../model/index";
->>>>>>> 9cadea60b56b1e11f0210ba905e95cd5b254e68a
 
 import { where } from "sequelize";
 import { response } from "express";
