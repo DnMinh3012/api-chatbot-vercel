@@ -145,7 +145,7 @@ let handleSendMainMenu = (sender_psid) => {
                 let elements = menus.slice(0, 3).map(table => ({
                     type: "postback",
                     title: table.name,
-                    payload: `SHOW_MENU_${table.id}`
+                    payload: `SHOW_TABLE_TYPES_${table.id}`
                 }));
                 let response = {
                     "attachment": {
