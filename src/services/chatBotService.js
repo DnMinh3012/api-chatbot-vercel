@@ -3,9 +3,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 import moment from "moment"
 import { google } from 'googleapis';
-<<<<<<< HEAD
 import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel, MenuModel, DishModel } from "../model/index";
-=======
 import { CustomerModel, ReservationRequestModel, TableModel, TableTypeModel, FeedbackModel, MenuModel,DishModel } from "../model/index";
 >>>>>>> 9cadea60b56b1e11f0210ba905e95cd5b254e68a
 
