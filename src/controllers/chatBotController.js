@@ -399,23 +399,24 @@ let getAppovedReserveTable = async (req, res) => {
 //     });
 // }
 
-let handleReserveTableAjax = async (req, res) => {
-    try {
-        console.log("Request Body:", req.body); // Kiểm tra dữ liệu đầu vào
-        let username = await chatBotService.getFacebookUsername(req.body.psid);
-        let data = {
-            psid: req.body.psid,
-            name: username,
-            email: req.body.email,
-            phone: req.body.phoneNumber,
-            timeOrder: req.body.reserveDate,
-            TypeId: req.body.tableTpId,
-            note: req.body.note,
-            number_of_seats: req.body.currentNumber,
-        };
+    let handleReserveTableAjax = async (req, res) => {
+        try {
+            console.log("Request Body:", req.body); // Kiểm tra dữ liệu đầu vào
+            let username = await chatBotService.getFacebookUsername(req.body.psid);
+            let data = {
+                psid: req.body.psid,
+                name: username,
+                email: req.body.email,
+                phone: req.body.phoneNumber,
+                timeOrder: req.body.reserveDate,
+                TypeId: req.body.tableTpId,
+                note: req.body.note,
+                number_of_seats: req.body.currentNumber,
+            };
 
-        const bookingResult = await customerService.postBookAppointment(data);
+            const bookingResult = await customerService.postBookAppointment(data);
 
+<<<<<<< HEAD
         if (bookingResult.errCode !== 0) {
             throw new Error(bookingResult.message);
         }
@@ -463,34 +464,83 @@ let handleReserveTableAjax = async (req, res) => {
         await chatBotService.sendMessage(req.body.psid, response2);
         await chatBotService.sendMessage(req.body.psid, response);
         await chatBotService.sendMessage(req.body.psid, response3);
+=======
+            if (bookingResult.errCode !== 0) {
+                throw new Error(bookingResult.message);
+            }
+>>>>>>> 9cadea60b56b1e11f0210ba905e95cd5b254e68a
 
-        let dataSend = {
-            name: username,
-            phoneNumber: req.body.phoneNumber,
-            timeOrder: req.body.reserveDate,
-            note: req.body.note,
-            number_of_seats: req.body.currentNumber,
-        };
-        const emailHtml = emailService.getBodyHTMLEmail(dataSend);
-        console.log("Email HTML content:", emailHtml); // Log nội dung email HTML
-        // Gửi email thông báo cho người quản lý
-        let customerEmail = req.body.email; // Email của khách hàng
-        const emailSubject = 'Thông báo đặt bàn mới';
-        await emailService.sendEmail(customerEmail, emailSubject, emailHtml);
-        console.log("Email sent successfully"); // Log sau khi gửi email
+            let reservationRequest = bookingResult.data;
+            await chatBotService.adminSendReservationRequest(ADMIN_PSID, data, reservationRequest)
+            console.log("reservationRequest::", reservationRequest)
+            let response2 = {
+                "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
+            \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`
+            }
+            let response3 = {
+                "text": `NẾU QUÝ KHÁCH CÓ MUỐN THAY ĐỔI ĐẶT BÀN VUI LÒNG HỦY TRƯỚC 2 TIẾNG`
+            }
+            let response = {
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "generic",
+                        elements: [
+                            {
+                                title: `Thay Đổi giờ đặt bàn của bạn`,
+                                buttons: [
+                                    {
+                                        type: "web_url",
+                                        url: `${process.env.URL_WEB_VIEW_DELETE}/${req.body.psid}/${reservationRequest.id}`,
+                                        title: "Huỷ đặt bàn",
+                                        webview_height_ratio: "tall",
+                                        messenger_extensions: true
+                                    },
+                                    {
+                                        type: "web_url",
+                                        url: `${process.env.URL_WEB_VIEW_EDIT}/${req.body.psid}/${reservationRequest.id}`,
+                                        title: "Thay đổi Thời Gian đặt bàn",
+                                        webview_height_ratio: "tall",
+                                        messenger_extensions: true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            };
+            await chatBotService.sendTypingOn(req.body.psid);
+            await chatBotService.sendMessage(req.body.psid, response2);
+            await chatBotService.sendMessage(req.body.psid, response);
+            await chatBotService.sendMessage(req.body.psid, response3);
 
-        return res.status(200).json({
-            message: 'ok',
-            psid: req.body.psid,
-            TypeId: req.body.tableTpId,
-        });
-    } catch (e) {
-        console.error("Lỗi đặt bàn: ", e);
-        return res.status(500).json({
-            message: e.toString()
-        });
+            let dataSend = {
+                name: username,
+                phoneNumber: req.body.phoneNumber,
+                timeOrder: req.body.reserveDate,
+                note: req.body.note,
+                number_of_seats: req.body.currentNumber,
+            };
+            const emailHtml = emailService.getBodyHTMLEmail(dataSend);
+            console.log("Email HTML content:", emailHtml); // Log nội dung email HTML
+            // Gửi email thông báo cho người quản lý
+            let customerEmail = req.body.email; // Email của khách hàng
+            const emailSubject = 'Thông báo đặt bàn mới';
+            await emailService.sendEmail(customerEmail, emailSubject, emailHtml);
+            console.log("Email sent successfully"); // Log sau khi gửi email
+
+            return res.status(200).json({
+                message: 'ok',
+                psid: req.body.psid,
+                TypeId: req.body.tableTpId,
+            });
+        } catch (e) {
+            console.error("Lỗi đặt bàn: ", e);
+            return res.status(500).json({
+                message: e.toString()
+            });
+        }
     }
-}
 
 let handleEditReserveTableAjax = async (req, res) => {
     try {
