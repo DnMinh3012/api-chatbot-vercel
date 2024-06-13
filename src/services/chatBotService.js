@@ -102,7 +102,7 @@ let handleGetStartedResponding = (username, sender_psid) => {
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "MENU",
+                                        "title": "XEM LOẠI BÀN",
                                         "payload": "MAIN_MENU",
                                     },
                                     {
@@ -140,12 +140,12 @@ let handleGetStartedResponding = (username, sender_psid) => {
 let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let menus = await MenuModel.findAll();
+            let menus = await TableModel.findAll();
             if (menus) {
-                let elements = menus.slice(0, 3).map(menu => ({
+                let elements = menus.slice(0, 3).map(table => ({
                     type: "postback",
-                    title: menu.name,
-                    payload: `SHOW_MENU_${menu.id}`
+                    title: table.name,
+                    payload: `SHOW_MENU_${table.id}`
                 }));
                 let response = {
                     "attachment": {
@@ -154,7 +154,7 @@ let handleSendMainMenu = (sender_psid) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": "Menu chính",
+                                    "title": "LOAI BÀN",
                                     "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại menu sau",
                                     "image_url": IMAGE_MAIN_MENU,
                                     "buttons": elements
