@@ -713,7 +713,7 @@ module.exports = {
     getAppovedReserveTable: getAppovedReserveTable,
     getFeedbackTable: getFeedbackTable,
     setapproved: setapproved,
-    handleFeedbackTableAjax: handleFeedbackTableAjax
+    handleFeedbackTableAjax: handleFeedbackTableAjax,
     setArrived: setArrived,
     setNotArrived: setNotArrived
 };
