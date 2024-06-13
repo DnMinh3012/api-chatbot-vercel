@@ -107,7 +107,6 @@ async function handleMessage(sender_psid, received_message) {
                     if (AskEntity) {
                         const askQuestion = AskEntity.value;
                         response = { "text": "có thể vui lòng đặt bàn theo link dưới" }
-                        break;
                     }
                     chatBotService.handleShowRooms(sender_psid);
                     break;
