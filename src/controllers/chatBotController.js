@@ -102,6 +102,12 @@ async function handleMessage(sender_psid, received_message) {
 
             switch (intent) {
                 case 'Make_Reservation':
+                    const AskEntity = witResponse.entities['ask_question:ask_question'] && witResponse.entities['ask_question:ask_question'][0];
+                    if (AskEntity) {
+                        const askQuestion = AskEntity.value;
+                        response = { "text": "có thể" }
+                        break;
+                    }
                     response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
                     chatBotService.handleShowRooms(sender_psid);
                     break;
@@ -419,7 +425,10 @@ let handleReserveTableAjax = async (req, res) => {
         console.log("reservationRequest::", reservationRequest)
         let response2 = {
             "text": `Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi:
-        \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}\n Mã đặt bàn của bạn là: ${reservationRequest.id}`
+            \nThời gian đặt bàn của bạn là: ${reservationRequest.timeOrder}`
+        }
+        let response3 = {
+            "text": `NẾU QUÝ KHÁCH CÓ MUỐN THAY ĐỔI ĐẶT BÀN VUI LÒNG HỦY TRƯỚC 2 TIẾNG`
         }
         let response = {
             attachment: {
@@ -453,6 +462,7 @@ let handleReserveTableAjax = async (req, res) => {
         await chatBotService.sendTypingOn(req.body.psid);
         await chatBotService.sendMessage(req.body.psid, response2);
         await chatBotService.sendMessage(req.body.psid, response);
+        await chatBotService.sendMessage(req.body.psid, response3);
 
         let dataSend = {
             name: username,
