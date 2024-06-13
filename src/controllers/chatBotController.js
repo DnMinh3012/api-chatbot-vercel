@@ -101,14 +101,14 @@ async function handleMessage(sender_psid, received_message) {
             const intent = witResponse.intents && witResponse.intents[0] && witResponse.intents[0].name;
 
             switch (intent) {
-                case 'Make_Reservation':
+                 case 'Make_Reservation':
+                    response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
                     const AskEntity = witResponse.entities['ask_question:ask_question'] && witResponse.entities['ask_question:ask_question'][0];
                     if (AskEntity) {
                         const askQuestion = AskEntity.value;
                         response = { "text": "có thể vui lòng đặt bàn theo link dưới" }
                         break;
                     }
-                    response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
                     chatBotService.handleShowRooms(sender_psid);
                     break;
                 case 'Menu_Info':
