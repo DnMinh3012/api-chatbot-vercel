@@ -622,6 +622,84 @@ let handleFeedbackTableAjax = async (req, res) => {
         })
     }
 }
+
+let setArrived = async (req, res) => {
+    try {
+        let Rid = req.params.id;
+        if (!Rid) Rid = req.body.psid;
+        let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
+        let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+        console.log("Rid:", {
+            "rid": Rid,
+            "customerId": customer.id,
+            "psid": customer.sender_id
+        })
+        let response1 = {
+            "text": "Tôi đã nhận thông báo bạn đã đến cửa hàng, Cảm ơn bạn đã tin tưởng nhà hàng chúng tôi"
+        };
+
+        await chatBotService.sendMessage(customer.sender_id, response1)
+        return res.status(200).json({
+            message: "ok",
+            psid: customer,
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
+
+let setNotArrived = async (req, res) => {
+    try {
+        let Rid = req.params.id;
+        if (!Rid) Rid = req.body.psid;
+        let reservation = await ReservationRequestModel.findOne({ where: { id: Rid } });
+        let customer = await CustomerModel.findOne({ where: { id: reservation.customerId } });
+        console.log("Rid:", {
+            "rid": Rid,
+            "customerId": customer.id,
+            "psid": customer.sender_id
+        })
+        let response1 = {
+            "text": "Tôi đã nhận thông báo bạn không đến cửa hàng, Bạn có thể cho tôi biết nguyên do không?"
+        };
+        let response = {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: `Nguyên do bạn không tới nhà hàng`,
+                            buttons: [
+                                {
+                                    type: "web_url",
+                                    url: `${process.env.URL_WEB_VIEW_DELETE}/${customer.sender_id}/${Rid}`,
+                                    title: "Huỷ đặt bàn",
+                                    webview_height_ratio: "tall",
+                                    messenger_extensions: true
+                                },
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+
+        await chatBotService.sendMessage(customer.sender_id, response1)
+        return res.status(200).json({
+            message: "ok",
+            psid: customer,
+        })
+    } catch (e) {
+        console.log("Loi Reserve table: ", e);
+        return res.status(500).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
@@ -636,4 +714,6 @@ module.exports = {
     getFeedbackTable: getFeedbackTable,
     setapproved: setapproved,
     handleFeedbackTableAjax: handleFeedbackTableAjax
+    setArrived: setArrived,
+    setNotArrived: setNotArrived
 };
