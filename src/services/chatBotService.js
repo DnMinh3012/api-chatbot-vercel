@@ -140,12 +140,12 @@ let handleGetStartedResponding = (username, sender_psid) => {
 let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let menus = await TableModel.findAll();
+            let menus = await TableTypeModel.findAll();
             if (menus) {
-                let elements = menus.slice(0, 3).map(table => ({
+                let elements = menus.slice(0, 3).map(tableType => ({
                     type: "postback",
-                    title: table.name,
-                    payload: `SHOW_TABLE_TYPES_${table.id}`
+                    title: tableType.name,
+                    payload: `SHOW_TABLE_TYPES_${tableType.id}`
                 }));
                 let response = {
                     "attachment": {
