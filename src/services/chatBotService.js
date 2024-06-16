@@ -140,7 +140,7 @@ let handleGetStartedResponding = (username, sender_psid) => {
 let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let menus = await TableTypeModel.findAll();
+            let menus = await MenuModel.findAll();
             if (menus) {
                 let elements = menus.slice(0, 3).map(tableType => ({
                     type: "postback",
