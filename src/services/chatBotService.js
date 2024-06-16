@@ -154,7 +154,7 @@ let handleSendMainMenu = (sender_psid) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": "LOAI BÀN",
+                                    "title": "MENU CHÍNH",
                                     "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại menu sau",
                                     "image_url": IMAGE_MAIN_MENU,
                                     "buttons": elements
