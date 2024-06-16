@@ -101,18 +101,46 @@ async function handleMessage(sender_psid, received_message) {
             const intent = witResponse.intents && witResponse.intents[0] && witResponse.intents[0].name;
 
             switch (intent) {
-                 case 'Make_Reservation':
+                case 'Make_Reservation':
                     response = { "text": "Bạn muốn đặt bàn. Xin chọn loại bàn bạn muốn đặt." };
-                    const AskEntity = witResponse.entities['ask_question:ask_question'] && witResponse.entities['ask_question:ask_question'][0];
-                    if (AskEntity) {
-                        const askQuestion = AskEntity.value;
-                        response = { "text": "có thể vui lòng đặt bàn theo link dưới" }
-                    }
                     chatBotService.handleShowRooms(sender_psid);
                     break;
                 case 'Menu_Info':
                     chatBotService.handleSendMainMenu(sender_psid);
                     return; // Exit the function after sending the main menu
+                case 'Check_Reservation':
+                    const tableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
+                    if (tableIdEntity) {
+                        const RtableId = tableIdEntity.value;
+                        let customer = await chatBotService.CheckReservation(sender_psid, RtableId);
+                        console.log("customer AI", customer);
+                        response = customer.response;
+                    } else {
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Thông tin bàn đặt + Mã đặt bàn'." };
+                    }
+                    break;
+                case 'Change_Reservation':
+                    const changeTableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
+                    if (changeTableIdEntity) {
+                        const RtableId = changeTableIdEntity.value;
+                        let customer = await chatBotService.ChangeReservation(sender_psid, RtableId);
+                        console.log("customer AI", customer);
+                        response = customer.response;
+                    } else {
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Thay đổi thông tin bàn đặt + Mã đặt bàn'." };
+                    }
+                    break;
+                case 'Cancel_Reservation':
+                    const CancelTableIdEntity = witResponse.entities['table_id:table_id'] && witResponse.entities['table_id:table_id'][0];
+                    if (CancelTableIdEntity) {
+                        const RtableId = CancelTableIdEntity.value;
+                        let customer = await chatBotService.CancelReservation(sender_psid, RtableId);
+                        console.log("customer AI", customer);
+                        response = customer.response;
+                    } else {
+                        response = { "text": "Xin vui lòng cung cấp mã đặt bàn của bạn theo cú pháp 'Huỷ đặt bàn + Mã đặt bàn'." };
+                    }
+                    break;
                 default:
                     response = { "text": "Xin lỗi, tôi không hiểu yêu cầu của bạn." };
             }
