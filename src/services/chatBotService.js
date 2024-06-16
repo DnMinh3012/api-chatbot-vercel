@@ -142,10 +142,10 @@ let handleSendMainMenu = (sender_psid) => {
         try {
             let menus = await MenuModel.findAll();
             if (menus) {
-                let elements = menus.slice(0, 3).map(tableType => ({
+                let elements = menus.slice(0, 3).map(menu => ({
                     type: "postback",
-                    title: tableType.name,
-                    payload: `SHOW_MENU_${tableType.id}`
+                    title: menu.name,
+                    payload: `SHOW_MENU_${menu.id}`
                 }));
                 let response = {
                     "attachment": {
@@ -154,7 +154,7 @@ let handleSendMainMenu = (sender_psid) => {
                             "template_type": "generic",
                             "elements": [
                                 {
-                                    "title": "MENU CHÍNH",
+                                    "title": "Menu chính",
                                     "subtitle": "Cửa hàng chúng tôi chủ yếu phục vụ các loại menu sau",
                                     "image_url": IMAGE_MAIN_MENU,
                                     "buttons": elements
